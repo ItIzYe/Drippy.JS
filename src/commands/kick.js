@@ -5,9 +5,9 @@ module.exports = {
         const member = message.mentions.users.first();
         if(member){
             const memberTarger = message.guild.members.cache.get(member.id);
-            member.send(`Du wurdest vom Server ${message.guild.mentions} gekickt`)
-            memberTarger.kick();
-            message.channel.send(`${member} wurde gekickt`)
+            //memberTarger.kick();
+            message.reply(`${member} wurde gekickt.`)
+            message.reply(`Grund: ${args[1]}`)
         }else{
             message.channel.send('Dieser Member konnte nicht gefunden werden')
         }

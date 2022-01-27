@@ -5,7 +5,7 @@ const g = require('./src/giveaway.json');
 const disbut = require('discord-buttons');
 disbut(client);
 
-const prefix = '!';
+const prefix = '#';
 
 const fs = require('fs');
 
@@ -36,7 +36,9 @@ client.on('message', async message =>{
       client.commands.get('kick').execute(message, args);
     }else if(command == 'ban'){
         client.commands.get('ban').execute(message, args);
-      }
+    }else if(command == 'clear'){
+      client.commands.get('clear').execute(message, args);
+    }
 },
 
 
