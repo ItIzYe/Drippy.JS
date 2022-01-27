@@ -1,0 +1,20 @@
+{
+  "name": "javascriptbot",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "ItIzYe",
+  "license": "ISC",
+  "dependencies": {
+    "ascii": "^1.0.0",
+    "ascii-art": "^2.8.5",
+    "discord-buttons": "^4.0.0-deprecated",
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "fs": "^0.0.1-security"
+  }
+}
