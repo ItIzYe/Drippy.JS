@@ -20,7 +20,14 @@ module.exports = {
             //message.reply(`${member} wurde gekickt.`)
             //message.reply(`Grund: ${args[1]}`)
         }else{
-            message.channel.send('Dieser Member konnte nicht gefunden werden')
+            const exampleEmbed = new MessageEmbed()
+                .setColor('RED')
+                .setTitle('Moderation')
+                .setAuthor("JsBot")
+                .setDescription('Der Command wurde nicht richtig ausgeführt. bitte achte darauf, das alleparameter vorhanden sind.')
+                .addFields({name: 'Command:', value: "`#kick @member (reason)`"})
+                .setTimestamp()
+            message.channel.send({ embed: exampleEmbed})
         }
     }
 }
