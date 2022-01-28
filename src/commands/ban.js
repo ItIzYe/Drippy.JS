@@ -1,3 +1,5 @@
+const { MessageEmbed, Client } = require("discord.js");
+
 module.exports = {
     name: 'ban',
     description: 'Dieser Command bannt einen Member!',
@@ -6,10 +8,26 @@ module.exports = {
         if(member){
             const memberTarger = message.guild.members.cache.get(member.id);
             memberTarger.ban();
-            message.channel.send(`${member} wurde gekickt`)
+            const exampleEmbed = new MessageEmbed()
+                .setColor('RED')
+                .setTitle('Moderation')
+                .setAuthor("JsBot")
+                .setDescription(`${member} wurde gebannt.`)
+                .addFields({name: 'Grund:', value: `${args[1]}`})
+                .setTimestamp()
+            
+            message.channel.send({ embed: exampleEmbed });
             member.send(`Du wurdes vom Server ${message.guild.mentions} gekickt`)
         }else{
-            message.channel.send('Dieser Member konnte nicht gefunden werden')
+            const exampleEmbed = new MessageEmbed()
+                .setColor('RED')
+                .setTitle('Moderation')
+                .setAuthor("JsBot")
+                .setDescription("Der Command wurde nicht richtig ausgeführt. bitte achte darauf, das alle Parameter vorhanden sind.")
+                .addFields({name: 'Command:', value: "`#ban @member (grund)`"})
+                .setTimestamp()
+            
+            message.channel.send({ embed: exampleEmbed });
         }
     }
 }
