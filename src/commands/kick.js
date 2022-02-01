@@ -1,9 +1,9 @@
-const { MessageEmbed, Client } = require("discord.js");
+const { MessageEmbed} = require("discord.js");
 
 module.exports = {
     name: "kick",
     description: "Dieser Command kickt einen Member!",
-    execute(message, args){
+    execute( message, args){
         const member = message.mentions.users.first();
         if(member){
             const memberTarger = message.guild.members.cache.get(member.id);
@@ -24,7 +24,7 @@ module.exports = {
                 .setColor('RED')
                 .setTitle('Moderation')
                 .setAuthor("JsBot")
-                .setDescription('Der Command wurde nicht richtig ausgeführt. bitte achte darauf, das alleparameter vorhanden sind.')
+                .setDescription('Der Command wurde nicht richtig ausgeführt. bitte achte darauf, das alle parameter vorhanden sind.')
                 .addFields({name: 'Command:', value: "`#kick @member (reason)`"})
                 .setTimestamp()
             message.channel.send({ embed: exampleEmbed})

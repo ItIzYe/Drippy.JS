@@ -1,9 +1,9 @@
-const { MessageEmbed, Client } = require("discord.js");
+const { Command, MessageEmbed, Client } = require("discord.js");
 
 module.exports = {
     name: 'ban',
     description: 'Dieser Command bannt einen Member!',
-    execute(message, args){
+    execute( client,message, args){
         const member = message.mentions.users.first();
         if(member){
             const memberTarger = message.guild.members.cache.get(member.id);
