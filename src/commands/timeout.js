@@ -15,7 +15,7 @@ module.exports = new Command({
         const collector = message.channel.createMessageCollector({
             filter,
             max: 1,
-            time: 5000,
+            time: 10000,
             error: 'time'
        });
 

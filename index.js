@@ -44,13 +44,13 @@ client.on('messageCreate', async message =>{
 
 
     if(command == 'kick'){
-      client.commands.get('kick').execute( client, message, args);
+      client.commands.get('kick').execute(  message, args);
     }else if(command == 'ban'){
-        client.commands.get('ban').execute(client,message, args);
+        client.commands.get('ban').execute(message, args);
     }else if(command == 'clear'){
-      client.commands.get('clear').execute(client,message, args);
+      client.commands.get('clear').execute(message, args);
     }else if(command == 'test'){
-      client.commands.get('test').execute(client,message, args);
+      client.commands.get('test').execute(message, args);
     }
 }),
 
@@ -70,25 +70,39 @@ client.on("interactionCreate", async (interaction) =>{
       collector.on('end', collected => {
         collected.forEach((value) => {
           const msgcontent = value.content
-          if(msgcontent === Number){
+          if(msgcontent.startsWith === "1" || "2" || "3" || "4" || "5" || "6" || "7" || "8" || "9" || "0"){
             const embed = new MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Mod Channels')
             .setDescription(`Sie haben <#${msgcontent}> als Kanal für die Moderationsnachrichten angegeben`)
             .setTimestamp()
           
-            interaction.reply({ephemeral: true, embed: [embed]})
-          }else{
-            const embed = new MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle('Mod Channels')
-            .setDescription(`Sie haben ${msgcontent} als Kanal für die Moderationsnachrichten angegeben`)
-            .setTimestamp()
-          
-            interaction.reply({ephemeral: true, embed: [embed]})
+            interaction.followUp({ephemeral: true, embeds: [embed]})
           }
-        })
-      })
+          let text = {"channel": msgcontent}
+          const obj = JSON.stringify(text);
+          if(fs.existsSync(`./src/${interaction.guild.id}`)){
+            fs.writeFile(`./src/${interaction.guild.id}/modch.json`, obj, (err) => { 
+              if (err) { 
+                console.log(err); 
+              }
+            })
+            console.log('saved')
+          }else{
+            fs.mkdir(`./src/${interaction.guild.id}`, (err) => { 
+              if (err) { 
+                console.log(err); 
+              }
+            })
+            fs.writeFile(`./src/${interaction.guild.id}/modch.json`, obj, (err) => { 
+              if (err) { 
+                console.log(err); 
+              }
+            })
+            console.log('saved')
+          }
+        });
+      });
     }
   }
 }),
