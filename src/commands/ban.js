@@ -9,7 +9,7 @@ module.exports = {
         const member = message.mentions.users.first();
         if(member){
             const memberTarger = message.guild.members.cache.get(member.id);
-            //memberTarger.ban();
+            memberTarger.ban();
             const exampleEmbed = new MessageEmbed()
                 .setColor('RED')
                 .setTitle('Moderation')
@@ -21,9 +21,7 @@ module.exports = {
                 console.log(exists ? 'Found' : 'Not found!');
             });
             const jsonData= require(`./servers/${message.guild.id}/modch.json`)
-            console.log(jsonData);
             channel1 = jsonData.channel;
-            console.log(channel1);
             if(channel1 === "none"){
                 message.channel.send({ embeds: [exampleEmbed] });
             }else if(channel1 !== "none"){
