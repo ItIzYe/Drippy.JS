@@ -8,7 +8,7 @@ module.exports = {
         const member = message.mentions.users.first();
         if(member){
             const memberTarger = message.guild.members.cache.get(member.id);
-            //memberTarger.kick();
+            memberTarger.kick();
             const exampleEmbed = new MessageEmbed()
                 .setColor('RED')
                 .setTitle('Moderation')
@@ -28,7 +28,7 @@ module.exports = {
                 channel3 = message.guild.channels.cache.find(channel => channel.id === channel1)
                 channel3.send({ embeds: [exampleEmbed] });
             }
-            !fs.existsSync(`./servers/${message.guild.id}/modch.json`, (exists) => {
+            fs.existsSync(`./servers/${message.guild.id}/modch.json`, (exists) => {
                 console.log(exists ? 'Found' : 'Not found!');
             });
             message.channel.send({ embeds: [exampleEmbed] });
