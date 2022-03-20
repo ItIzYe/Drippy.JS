@@ -14,9 +14,7 @@ The Prefix is *#*. Please remember to NOT import the *node_modules* Folder and t
 *- Channelset Command*
 
 ## Currently working on
-*- Channelset Command*<br>
-*- Clear Command*<br>
-*- Quiz Command*<br>
+- [x] Rewrite Quiz Command from Python to JS
 
 ```
     ___     ___    ___       ___
