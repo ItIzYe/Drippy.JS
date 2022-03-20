@@ -4,8 +4,8 @@ const { Command} = require('reconlx');
 //const m = require('./src/channelsettings/modch.json');
 
 module.exports = new Command({
-    name: "test",
-    description: "Timeoute Member von Text- und Sprachkanälen",
+    name: "set",
+    description: "Stelle Kanäle ein",
     execute(message, args){
         message.channel.send({content: "Das hier ist ein Test. bitte sende eine Nachricht"})
 

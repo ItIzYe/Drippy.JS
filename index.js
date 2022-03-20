@@ -49,8 +49,10 @@ client.on('messageCreate', async message =>{
         client.commands.get('ban').execute(message, args);
     }else if(command == 'clear'){
       client.commands.get('clear').execute(message, args);
-    }else if(command == 'test'){
-      client.commands.get('test').execute(message, args);
+    }else if(command == 'set'){
+      client.commands.get('set').execute(message, args);
+    }else if(command == 'quiz'){
+      client.commands.get('quiz').execute(message, args);
     }
 }),
 
@@ -81,7 +83,7 @@ client.on("interactionCreate", async (interaction) =>{
           }
           let text = {"channel": msgcontent}
           const obj = JSON.stringify(text);
-          if(fs.existsSync(`./src/${interaction.guild.id}`)){
+          if(fs.existsSync(`./src/${interaction.guild.id}/`)){
             fs.writeFile(`./src/${interaction.guild.id}/modch.json`, obj, (err) => { 
               if (err) { 
                 console.log(err); 
