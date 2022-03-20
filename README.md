@@ -18,18 +18,19 @@ The Prefix is *#*. Please remember to NOT import the *node_modules* Folder and t
 *- Clear Command*
 *- Quiz Command
 
-
- ___     ___    ___       ___<br>
-|   |   |   |   \  \     /  /<br>
-|   |   |   |    \  \   /  /<br>
-|   |   |   |     \  \ /  /<br>
-|   |   |   |      \     /<br>
-|   |   |   |       \   /<br>
-|   |   |   |       |   |<br>
-|   |   |   |       |   |<br>
-|   |   |   |       |   |<br>
-|___|   |___|       |___|<br>
+```
+ ___     ___    ___       ___
+|   |   |   |   \  \     /  /
+|   |   |   |    \  \   /  /
+|   |   |   |     \  \ /  /
+|   |   |   |      \     /
+|   |   |   |       \   /
+|   |   |   |       |   |
+|   |   |   |       |   |
+|   |   |   |       |   |
+|___|   |___|       |___|
 
 © 2022 @IIY Development and Partners
        Code can be used with
               Credits
+```
