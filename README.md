@@ -1,7 +1,7 @@
 <h1>JavaScript Bot for Discord</h1>
 
 This Bot is a work in progress JavaScript version of our Python Bot <a href='https://github.com/ItIzYe/Va'>Drippy</a>.
-The Prefix is *#*. Please remember to NOT import the *node_modules* Folder and to REPLACE the token placeholder with your token. If you want to contribute on this project just fork it. I'll take a look at it and implement good Ideas into the project. @ItIzYe
+The Prefix is *#*. Please remember to NOT import the *node_modules* Folder and to REPLACE the token placeholder with your token. If you want to contribute on this project just fork it. I'll take a look at it and implement good Ideas into the project. Have fun with it!
 
 ## Current working Commands
 *- Kick Command*
