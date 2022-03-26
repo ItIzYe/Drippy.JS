@@ -2,12 +2,12 @@ const {MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
 const ms = require('ms');
 const { Command} = require('reconlx');
 //const m = require('./src/channelsettings/modch.json');
+const mod = "Moderation" || "MODERATION" || "moderation" || "MOD" || "mod" || "Mod"
 
 module.exports = new Command({
     name: "set",
     description: "Stelle Kanäle ein",
     execute(message, args){
-        message.channel.send({content: "Das hier ist ein Test. bitte sende eine Nachricht"})
 
         const text = 'okay'
         const filter = m => m.author.id === message.author.id
@@ -26,7 +26,7 @@ module.exports = new Command({
             collected.forEach((value) => {
                 console.log(value.content)
                 const msgcontent = value.content
-                if(msgcontent === "Moderation" || "MODERATION" || "moderation") {
+                if(msgcontent === "Moderation" || "MODERATION" || "moderation" ) {
                     const button = new MessageActionRow()
                     .addComponents(
                         new MessageButton()
