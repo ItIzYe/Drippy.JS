@@ -6,9 +6,9 @@ module.exports = {
     description: 'Startet ein Quiz',
     execute( message, args){
 
-        var status = true;
-        var answer1 = true;
-        var runde = 1;
+        let status = true;
+        let answer1 = true;
+        let runde = 1;
 
         const qa = ['Was bedeutet der Name der russischen Raumstation `Mir` ins deutsche übersetzt? \nA) Frieden \nB) Sieg \nC) Raumstation',
         'Wann hat Venom Aimz seinen Yoututbe Kanal gegründet? \n A) 03.03.2020 \n B) 30.02.2020 \n C) 31.06.2020',
@@ -19,7 +19,7 @@ module.exports = {
         'Was ist die “Goldene Himbeere”? \nA) Ein Preis für die schlechteste Leistung innerhalb eines Filmjahres \nB) Eine Nachspeise aus Russland \nC) Das Symbol einer Sekte',
         'Einen Feinschmecker nennt man auch? \nA) Gourmet \nB) Gourmed \nC) Leckermäulchen',
         'Folgt man dem Äquator um die Welt, legt man wie viele Kilometer zurück? \nA) Rund 40.070 km \nB) Rund 30.070 km \nC) Rund 80.070 km',
-        'Mit welcher Tiergruppe sind die Dinosaurier am engsten verwandt? \nA) Vögeln \B) Eidechsen \nC) Alligatoren',
+        'Mit welcher Tiergruppe sind die Dinosaurier am engsten verwandt? \nA) Vögeln \nB) Eidechsen \nC) Alligatoren',
         'Welches Metall leitet Wärme am besten? \nA) Silber \nB) Kupfer \nC) Aluminium',
         'Wie lautet die Hauptstadt von Frankreich? \nA) Paris \nB) Amsterdam \nC) Oslo',
         'Wie lautet die Hauptstadt von Bayern? \nA) München \nB) Dortmund \nC) Stuttgart',
@@ -156,223 +156,104 @@ module.exports = {
         const Ja = ['Ja', 'ja', 'j', 'Y', 'J', 'Yes', 'yes', 'y'];
         const Nein = ['Nein', 'nein', 'n', 'no'];
 
-        console.log("test 1 Abgeschlossen")
+        const filter = m => m.author.id === message.author.id
+        const collector = message.channel.createMessageCollector({
+            filter,
+            max: 1,
+            time: 10000,
+            error: 'time'
+        });
+        const filter1 = m => m.author.id === message.author.id
+        const collector1 = message.channel.createMessageCollector({
+            filter1,
+            max: 1,
+            time: 10000,
+            error: 'time'
+        });
 
-        while(status === true && answer1 === true){
-            let questa = qa[~~(Math.random() * qa.length)];
-            let questb = qb[~~(Math.random() * qb.length)];
-            let questc = qc[~~(Math.random() * qc.length)];
+        while(status && answer1) {
 
-            let qu = [questa, questb, questc];
-            let quest = qu[~~(Math.random() * qu.length)];
-            let wans1 = wans[~~(Math.random() * wans.length)];
-            let next_round1 = next_round[~~(Math.random() * next_round.length)];
-            let comment1 = comment[~~(Math.random() * comment)];
+            let questa = Math.floor(Math.random() * qa.length);
+            let questb = Math.floor(Math.random() * qb.length);
+            let questc = Math.floor(Math.random() * qc.length);
 
-            
+            let qqa = qa[questa];
+            let qqb = qa[questb];
+            let qqc = qa[questc];
 
-            const exampleEmbed = new MessageEmbed()
+            let question2 = [qqa, qqb, qqc, qqa];
+            let question1 = Math.floor(Math.random() * question2.length)
+            let question = question2[question1];
+
+            let next1 = Math.floor(Math.random() * next_round.length)
+            let next = next_round[next1];
+
+            let comm1 = Math.floor(Math.random() * comment.length)
+            let comm = comment[comm1];
+
+            let wan1 = Math.floor(Math.random() * wans.length)
+            let wan = wans[wan1];
+
+            const em = new MessageEmbed()
             .setColor('ORANGE')
-            .setTitle('Supercooles Quiz')
-            .setDescription(`Powered by Drippy`)
-            .addFields({name: `Frage ${runde}`, value: quest})
+            .setTitle('DRIPPY Quiz')
+            .setDescription(`Runde: ${runde}`)
+            .addField('FRAGE:', question, true)
             .setTimestamp()
+            message.channel.send({embeds: [em]})
 
-            message.channel.send({ embeds: [exampleEmbed]})
-
-            const filter = m => m.author.id === message.author.id
-
-            const collector = message.channel.createMessageCollector({
-                filter,
-                max: 1,
-                time: 10000,
-                error: 'time'
+            collector.on('collect', m => {
             });
-
-            message.channel.send({content: "Welche Settings möchtest du anpassen?"})
-            collector.on('collect', m => {});
             collector.on('end', collected =>{
                 collected.forEach((value) => {
                     console.log(value.content)
                     const msgcontent = value.content
-                    if(quest in questa) {
-                        if(msgcontent in aa){
-                            let status = true;
-                            let runde = runde + 1;
-                            
-                            const exampleEmbed1 = new MessageEmbed()
+
+                    if(qa.includes(question)) {
+
+                        if(aa.includes(msgcontent)) {
+                            status = true
+                            runde = runde++
+                            const em1 = new MessageEmbed()
                             .setColor('GREEN')
-                            .setTitle('Supercooles Quiz')
-                            .setDescription(`Powered by Drippy`)
-                            .addFields({name:random(comment), value:random(next_round)})
+                            .setTitle('DRIPPY Quiz')
+                            .setDescription('powered by DRIPPY')
+                            .addField(comm, next, true)
                             .setTimestamp()
+                            message.channel.send({embeds: [em1]})
 
-                            message.channel.send({ embeds: [exampleEmbed1]})
-
-                            const filter = m => m.author.id === message.author.id
-
-                            const collector = message.channel.createMessageCollector({
-                                filter,
-                                max: 1,
-                                time: 10000,
-                                error: 'time'
+                            collector1.on('collect', m => {
                             });
+                            collector1.on('end', collected1 =>{
+                                collected1.forEach((value1) =>{
+                                    console.log(value1.content)
+                                    const msgcontent1 = value1.content
 
-                            message.channel.send({content: "Welche Settings möchtest du anpassen?"})
-                            collector.on('collect', m => {});
-                            collector.on('end', collected =>{
-                                collected.forEach((value) => {
-                                    console.log(value.content)
-                                    const msgcontent1 = value.content
-
-                                    if(msgcontent1 in Ja){
+                                    if(Ja.includes(msgcontent1)) {
                                         answer1 = true
                                     }else{
                                         answer1 = false
 
-                                        const exampleEmbed2 = new MessageEmbed()
-                                        .setColor('BLUE')
-                                        .setTitle('Supercooles Quiz')
-                                        .setDescription(`Powered by Drippy`)
-                                        .addFields({name:`Wow, du bist bei Runde ${runde} ausgestiegen!`, value: "In Bearbeitung"})
+                                        const em2 = new MessageEmbed()
+                                        .setColor('GREEN')
+                                        .setTitle('DRIPPY Quiz')
+                                        .setDescription('powered by DRIPPY')
+                                        .addField(`Wow, du bist bei Runde ${runde} ausgestiegen`, 'Hier könnte dein Highscore stehen. Dieses Modul ist noch in Bearbeitung', true)
                                         .setTimestamp()
+                                        message.channel.send({embeds: [em2]})
 
-                                        message.channel.send({ embeds: [exampleEmbed2]})
                                     }
                                 });
-                            });
-
-                        }else{
-                            status = false;
-
-                            const exampleEmbed2 = new MessageEmbed()
-                            .setColor('RED')
-                            .setTitle('Supercooles Quiz')
-                            .setDescription(`Powered by Drippy`)
-                            .addFields({name: wans1, value:` Du bist bei Runde ${runde} rausgeflogen. Schreibe #quiz in den Chat um das Quiz neuzustarten`})
-                            .setTimestamp()
-
-                            message.channel.send({ embeds: [exampleEmbed2]})
-                        }  
-                    }else if(quest in questb) {
-                        if(msgcontent in bb){
-                            const status = true;
-                            const runde = runde + 1;
-                            
-                            const exampleEmbed1 = new MessageEmbed()
-                            .setColor('GREEN')
-                            .setTitle('Supercooles Quiz')
-                            .setDescription(`Powered by Drippy`)
-                            .addFields({name: comment1, value: next_round1})
-                            .setTimestamp()
-
-                            message.channel.send({ embeds: [exampleEmbed1]})
-
-                            const filter = m => m.author.id === message.author.id
-
-                            const collector = message.channel.createMessageCollector({
-                                filter,
-                                max: 1,
-                                time: 10000,
-                                error: 'time'
-                            });
-
-                            message.channel.send({content: "Welche Settings möchtest du anpassen?"})
-                            collector.on('collect', m => {});
-                            collector.on('end', collected =>{
-                                collected.forEach((value) => {
-                                    console.log(value.content)
-                                    const msgcontent1 = value.content
-
-                                    if(msgcontent1 in Ja){
-                                        answer1 = true
-                                    }else{
-                                        answer1 = false
-
-                                        const exampleEmbed2 = new MessageEmbed()
-                                        .setColor('BLUE')
-                                        .setTitle('Supercooles Quiz')
-                                        .setDescription(`Powered by Drippy`)
-                                        .addFields({name:`Wow, du bist bei Runde ${runde} ausgestiegen!`, value: "In Bearbeitung"})
-                                        .setTimestamp()
-
-                                        message.channel.send({ embeds: [exampleEmbed2]})
-                                    }
-                                });
-                            });
-                        }else{
-                            status = false;
-
-                            const exampleEmbed2 = new MessageEmbed()
-                            .setColor('RED')
-                            .setTitle('Supercooles Quiz')
-                            .setDescription(`Powered by Drippy`)
-                            .addFields({name: wans1, value:` Du bist bei Runde ${runde} rausgeflogen. Schreibe #quiz in den Chat um das Quiz neuzustarten`})
-                            .setTimestamp()
-
-                            message.channel.send({ embeds: [exampleEmbed2]})
-                        };
-                    }else if(quest in questc) {
-                        if(msgcontent in cc){
-                            let status = true;
-                            let runde = runde + 1;
-                            
-                            const exampleEmbed1 = new MessageEmbed()
-                            .setColor('GREEN')
-                            .setTitle('Supercooles Quiz')
-                            .setDescription(`Powered by Drippy`)
-                            .addFields({name: comment1, value: next_round1})
-                            .setTimestamp()
-
-                            message.channel.send({ embeds: [exampleEmbed1]})
-
-                            const filter = m => m.author.id === message.author.id
-
-                            const collector = message.channel.createMessageCollector({
-                                filter,
-                                max: 1,
-                                time: 10000,
-                                error: 'time'
-                            });
-                            message.channel.send({content: "Welche Settings möchtest du anpassen?"})
-                            collector.on('collect', m => {});
-                            collector.on('end', collected =>{
-                                collected.forEach((value) => {
-                                    console.log(value.content)
-                                    const msgcontent1 = value.content
-
-                                    if(msgcontent1 in Ja){
-                                        answer1 = true
-                                    }else{
-                                        answer1 = false
-
-                                        const exampleEmbed2 = new MessageEmbed()
-                                        .setColor('BLUE')
-                                        .setTitle('Supercooles Quiz')
-                                        .setDescription(`Powered by Drippy`)
-                                        .addFields({name:`Wow, du bist bei Runde ${runde} ausgestiegen!`, value: "In Bearbeitung"})
-                                        .setTimestamp()
-
-                                        message.channel.send({ embeds: [exampleEmbed2]})
-                                    }
-                                });
-                            });
-                        }else{
-                            status = false;
-
-                            const exampleEmbed2 = new MessageEmbed()
-                            .setColor('RED')
-                            .setTitle('Supercooles Quiz')
-                            .setDescription(`Powered by Drippy`)
-                            .addField({name: wans1, value:` Du bist bei Runde ${runde} rausgeflogen. Schreibe #quiz in den Chat um das Quiz neuzustarten`})
-                            .setTimestamp()
-
-                            message.channel.send({ embeds: exampleEmbed2})
-                        };
-                    };
+                            })
+                        }
+                    }
+                    
+                
                 });
                 
-            });
-        };
-    }
+             });
+                    
+            status = false
+        }
+    },
 }
