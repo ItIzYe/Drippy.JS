@@ -5,19 +5,19 @@ The Prefix is *#*. Please remember to NOT import the *node_modules* Folder and t
 
 ## Current working Commands
 *- Kick Command*<br>
-*- Ban Command*
+*- Ban Command*<br>
+*- Clear Command*
 
 ## Currently Fixing Errors
-*- Clear Command*
+*- Quiz Command*
 
 ## Currently not fully usable
 *- Channelset Command*
 
 ## Currently working on
-- [x] Rewrite Quiz Command from Python to JS
+- [] Fix Errors in Quiz Command
 - [ ] Complete Channelset Command
 - [ ] Fix Errors in Clear Command
-
 ```
     ___     ___    ___       ___
    |   |   |   |   \  \     /  /
