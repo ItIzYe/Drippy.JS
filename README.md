@@ -15,7 +15,7 @@ The Prefix is *#*. Please remember to NOT import the *node_modules* Folder and t
 *- Channelset Command*
 
 ## Currently working on
-- [] Fix Errors in Quiz Command
+- [ ] Fix Errors in Quiz Command
 - [ ] Complete Channelset Command
 - [ ] Fix Errors in Clear Command
 ```
