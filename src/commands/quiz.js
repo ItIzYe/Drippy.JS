@@ -1,12 +1,9 @@
 /* Still in progress, not working. Please don't download the file yet. */
 
-/*for pushing*/
 
 
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
-const random = require('random');
 const fs = require('fs');
-const console = require('console');
 
 module.exports = {
     name: 'quiz',
