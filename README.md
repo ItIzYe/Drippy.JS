@@ -7,13 +7,13 @@ See the Website <a href='https://itizye.github.io/Drippy.JS/'>Drippy.JS</a>
 ## Current working Commands
 *- Kick Command*<br>
 *- Ban Command*<br>
-*- Clear Command*
-*- Info/Serverinfo*
-*-Ping*
-*-Help*
-*-Boost*
-*-Automod*
-*-Memberjoin/Guildjoin*
+*- Clear Command*<br>
+*- Info/Serverinfo*<br>
+*-Ping*<br>
+*-Help*<br>
+*-Boost*<br>
+*-Automod*<br>
+*-Memberjoin/Guildjoin*<br>
 
 
 ## Currently Fixing Errors
