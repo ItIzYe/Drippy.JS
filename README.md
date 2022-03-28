@@ -8,6 +8,13 @@ See the Website <a href='https://itizye.github.io/Drippy.JS/'>Drippy.JS</a>
 *- Kick Command*<br>
 *- Ban Command*<br>
 *- Clear Command*
+*- Info/Serverinfo*
+*-Ping*
+*-Help*
+*-Boost*
+*-Automod*
+*-Memberjoin/Guildjoin*
+
 
 ## Currently Fixing Errors
 *- Quiz Command*
