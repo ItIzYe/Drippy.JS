@@ -1,0 +1,107 @@
+{
+  "serverinfo": {
+    "speicherort": "PRIVAT",
+    "prefix": "#",
+    "language": "en"
+  },
+  "tt": {
+    "aktivierung": 0,
+    "info_channel_id": null,
+    "time_next_phase": null,
+    "aktuelle_phase": 0,
+    "repeat_vote": 0,
+    "time_votes": null,
+    "anmeldung": 0,
+    "distance_s_t": 0,
+    "message_ids": {},
+    "channels": {},
+    "locations": [],
+    "vehicels": [],
+    "messages": {}
+  },
+  "moderation": {
+    "roles_admin": {},
+    "roles_mod": {}
+  },
+  "memberjoin": {
+    "infos": {},
+    "message": {},
+    "roles": {}
+  },
+  "log": {},
+  "leveling": {
+    "channels": {},
+    "infos": {
+      "state": "PRIVATE"
+    },
+    "roles": {}
+  },
+  "konten": {},
+  "giveaway": {
+    "infos": {},
+    "nachricht": {},
+    "teilnehmer": {}
+  },
+  "automod": {
+    "ignoredchannels": [],
+    "ignoredlinks": [],
+    "ignoredroles": [],
+    "infos": {},
+    "links": [],
+    "wörter": []
+  },
+  "user": {
+    "userid": {
+      "id": "userid",
+      "leveling": {
+        "xp": 0,
+        "levels": 0,
+        "message_count": 0,
+        "xp_level": 0,
+        "last_message_time": 0,
+        "rank": null
+      },
+      "moderation": {
+        "warn": 0,
+        "mute": 0,
+        "kick": 0,
+        "ban": 0
+      },
+      "vergehen": {
+        "warn": 0,
+        "mute": 0,
+        "kick": 0,
+        "ban": 0
+      },
+      "casino": {
+        "geld_hand": 0,
+        "geld_bank": 0
+      },
+      "bank": {
+        "mainkonto": {
+          "geld": 0,
+          "info": {
+            "kontonummer": null,
+            "IBan": null,
+            "pin": null
+          }
+        },
+        "weiterekonten": {}
+      },
+      "fun": {
+        "tt": {
+          "teilnamhe": 0,
+          "teilnahmen": 0,
+          "gewonnen": 0,
+          "beste_platzierung": null
+        }
+      },
+      "system": {
+        "system_ban": null,
+        "global_ban": null,
+        "leave_question_time": 0,
+        "command_ban": []
+      }
+    }
+  }
+}
