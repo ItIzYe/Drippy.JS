@@ -1,3 +1,8 @@
+/* Still in progress, not working. Please don't download the file yet. */
+
+
+
+
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const random = require('random');
 const fs = require('fs');
@@ -204,16 +209,6 @@ module.exports = {
                     const msgcontent = value.content
                 });
             });
-            
-            /*let msgcontent = fs.readFile('./src/quiz.json', 'utf-8', (err, jsonSring) => {
-                if(err) {
-                    console.log(err);
-                
-                }else{
-                    JSON.parse(jsonSring)
-                }
-            });
-            console.log(msgcontent) */
             
             console.log(msgcontent);
             if(qa.includes(question)) {
