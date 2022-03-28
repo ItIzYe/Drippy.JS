@@ -43,16 +43,42 @@ client.on('messageCreate', async message =>{
     const command = args.shift().toLowerCase();
 
 
-    if(command == 'kick'){
-      client.commands.get('kick').execute(  message, args);
-    }else if(command == 'ban'){
-        client.commands.get('ban').execute(message, args);
-    }else if(command == 'clear'){
-      client.commands.get('clear').execute(message, args);
-    }else if(command == 'set'){
-      client.commands.get('set').execute(message, args);
-    }else if(command == 'quiz'){
-      client.commands.get('quiz').execute(message, args);
+    if(command === `kick`){
+      client.commands.get(`kick`).execute(  message, args);
+    }else if(command === `ban`){
+        client.commands.get(`ban`).execute(message, args);
+    }else if(command === `clear`){
+      client.commands.get(`clear`).execute(message, args);
+    }else if(command === `set`){
+      client.commands.get(`set`).execute(message, args);
+    }else if(command === `quiz`){
+      client.commands.get(`quiz`).execute(message, args);
+    }else if(command === `quildMemberAdd`){
+      client.commands.get(`quildMemberAdd`).execute(message, args);
+    }else if(command === `guildCreate`){
+      client.commands.get(`guildCreate`).execute(message, args);
+    }else if(command === `automod`){
+      client.commands.get(`automod`).execute(message, args);
+    }else if(command === `boost`){
+      client.commands.get(`boost`).execute(message, args);
+    }else if(command === `error`){
+      client.commands.get(`error`).execute(message, args);
+    }else if(command === `help`){
+      client.commands.get(`help`).execute(message, args);
+    }else if(command === `infos`){
+      client.commands.get(`infos`).execute(message, args);
+    }else if(command === `interactioncreatebutton`){
+      client.commands.get(`interactioncreatebutton`).execute(message, args);
+    }else if(command === `leveling`){
+      client.commands.get(`leveling`).execute(message, args);
+    }else if(command === `ping`){
+      client.commands.get(`ping`).execute(message, args);
+    }else if(command === `ranking`){
+      client.commands.get(`ranking`).execute(message, args);
+    }else if(command === `serverinfo`){
+      client.commands.get(`serverinfo`).execute(message, args);
+    }else if(command === `xp`){
+      client.commands.get(`xp`).execute(message, args);
     }
 }),
 

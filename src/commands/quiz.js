@@ -1,5 +1,7 @@
 const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
 const random = require('random');
+const fs = require('fs');
+const console = require('console');
 
 module.exports = {
     name: 'quiz',
@@ -156,14 +158,14 @@ module.exports = {
         const Ja = ['Ja', 'ja', 'j', 'Y', 'J', 'Yes', 'yes', 'y'];
         const Nein = ['Nein', 'nein', 'n', 'no'];
 
-        const filter = m => m.author.id === message.author.id
+        let filter = m => m.author.id === message.author.id
         const collector = message.channel.createMessageCollector({
             filter,
             max: 1,
             time: 10000,
             error: 'time'
         });
-        const filter1 = m => m.author.id === message.author.id
+        let filter1 = m => m.author.id === message.author.id
         const collector1 = message.channel.createMessageCollector({
             filter1,
             max: 1,
@@ -173,26 +175,18 @@ module.exports = {
 
         while(status && answer1) {
 
-            let questa = Math.floor(Math.random() * qa.length);
-            let questb = Math.floor(Math.random() * qb.length);
-            let questc = Math.floor(Math.random() * qc.length);
+            let questa = qa[Math.floor(Math.random() * qa.length)];
+            let questb = qb[Math.floor(Math.random() * qb.length)];
+            let questc = qc[Math.floor(Math.random() * qc.length)];
 
-            let qqa = qa[questa];
-            let qqb = qa[questb];
-            let qqc = qa[questc];
+            let question2 = [questa, questb, questc];
+            let question = question2[Math.floor(Math.random() * question2.length)];
 
-            let question2 = [qqa, qqb, qqc, qqa];
-            let question1 = Math.floor(Math.random() * question2.length)
-            let question = question2[question1];
+            let next = next_round[Math.floor(Math.random() * next_round.length)];
 
-            let next1 = Math.floor(Math.random() * next_round.length)
-            let next = next_round[next1];
+            let comm = comment[Math.floor(Math.random() * comment.length)];
 
-            let comm1 = Math.floor(Math.random() * comment.length)
-            let comm = comment[comm1];
-
-            let wan1 = Math.floor(Math.random() * wans.length)
-            let wan = wans[wan1];
+            let wan = wans[Math.floor(Math.random() * wans.length)];
 
             const em = new MessageEmbed()
             .setColor('ORANGE')
@@ -202,56 +196,76 @@ module.exports = {
             .setTimestamp()
             message.channel.send({embeds: [em]})
 
-            collector.on('collect', m => {
+            let msgcontent = collector.on('collect', m => {
             });
             collector.on('end', collected =>{
                 collected.forEach((value) => {
                     console.log(value.content)
                     const msgcontent = value.content
-
-                    if(qa.includes(question)) {
-
-                        if(aa.includes(msgcontent)) {
-                            status = true
-                            runde = runde++
-                            const em1 = new MessageEmbed()
-                            .setColor('GREEN')
-                            .setTitle('DRIPPY Quiz')
-                            .setDescription('powered by DRIPPY')
-                            .addField(comm, next, true)
-                            .setTimestamp()
-                            message.channel.send({embeds: [em1]})
-
-                            collector1.on('collect', m => {
-                            });
-                            collector1.on('end', collected1 =>{
-                                collected1.forEach((value1) =>{
-                                    console.log(value1.content)
-                                    const msgcontent1 = value1.content
-
-                                    if(Ja.includes(msgcontent1)) {
-                                        answer1 = true
-                                    }else{
-                                        answer1 = false
-
-                                        const em2 = new MessageEmbed()
-                                        .setColor('GREEN')
-                                        .setTitle('DRIPPY Quiz')
-                                        .setDescription('powered by DRIPPY')
-                                        .addField(`Wow, du bist bei Runde ${runde} ausgestiegen`, 'Hier könnte dein Highscore stehen. Dieses Modul ist noch in Bearbeitung', true)
-                                        .setTimestamp()
-                                        message.channel.send({embeds: [em2]})
-
-                                    }
-                                });
-                            })
-                        }
-                    }
-                    
-                
                 });
+            });
+            
+            /*let msgcontent = fs.readFile('./src/quiz.json', 'utf-8', (err, jsonSring) => {
+                if(err) {
+                    console.log(err);
                 
-             });
+                }else{
+                    JSON.parse(jsonSring)
+                }
+            });
+            console.log(msgcontent) */
+            
+            console.log(msgcontent);
+            if(qa.includes(question)) {
+
+                if(aa.includes(msgcontent)) {
+                    status = true
+                    runde = runde++
+                    const em1 = new MessageEmbed()
+                    .setColor('GREEN')
+                    .setTitle('DRIPPY Quiz')
+                    .setDescription('powered by DRIPPY')
+                    .addField(comm, next, true)
+                    .setTimestamp()
+                    message.channel.send({embeds: [em1]})
+
+                    collector1.on('collect', m => {
+                    });
+                    collector1.on('end', collected1 =>{
+                        collected1.forEach((value1) =>{
+                            console.log(value1.content)
+                            const msgcontent1 = value1.content
+
+                            let text = {"msg": msg1content}
+                            const obj = JSON.stringify(text);
+                            fs.writeFile('./src/quiza.json', obj, (err) => { 
+                                if (err) { 
+                                console.log(err); 
+                                }
+                            })
+                        });
+                    });
+
+                    let msgcontent1 = fs.readFile('./src/quiz.json', 'utf-8', (err, jsonString) => {
+                        console.log(jsonString)
+                    });
+
+                    if(Ja.includes(msgcontent1)) {
+                        answer1 = true
+                    }else{
+                        answer1 = false
+
+                        const em2 = new MessageEmbed()
+                        .setColor('GREEN')
+                        .setTitle('DRIPPY Quiz')
+                        .setDescription('powered by DRIPPY')
+                        .addField(`Wow, du bist bei Runde ${runde} ausgestiegen`, 'Hier könnte dein Highscore stehen. Dieses Modul ist noch in Bearbeitung', true)
+                        .setTimestamp()
+                        message.channel.send({embeds: [em2]})
+
+                    }
+                }
+            }
                     
             status = false
         }
