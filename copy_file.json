@@ -1,0 +1,60 @@
+{
+  "serverinfo": {
+    "speicherort": "PRIVAT",
+    "prefix": "#",
+    "language": "en"
+  },
+  "tt": {
+    "aktivierung": 0,
+    "info_channel_id": null,
+    "time_next_phase": null,
+    "aktuelle_phase": 0,
+    "repeat_vote": 0,
+    "time_votes": null,
+    "anmeldung": 0,
+    "distance_s_t": 0,
+    "message_ids": {},
+    "channels": {},
+    "locations": [],
+    "vehicels": [],
+    "messages": {}
+  },
+  "moderation": {
+    "roles_admin": {},
+    "roles_mod": {}
+  },
+  "memberjoin": {
+    "infos": {
+      "channel": null,
+      "color": null,
+      "thumpnail": true
+    },
+    "message": null,
+    "roles": {}
+  },
+  "log": {},
+  "leveling": {
+    "channels": {},
+    "infos": {
+      "state": "PRIVATE"
+    },
+    "roles": {}
+  },
+  "konten": {},
+  "giveaway": {
+    "infos": {},
+    "nachricht": {},
+    "teilnehmer": {}
+  },
+  "automod": {
+    "ignoredchannels": [],
+    "ignoredlinks": [],
+    "ignoredroles": [],
+    "infos": {},
+    "links": [],
+    "wörter": []
+  },
+  "user": {
+
+  }
+}
