@@ -6,7 +6,13 @@ The Prefix is *#*. Please remember to NOT import the *node_modules* Folder and t
 ## Current working Commands
 *- Kick Command*<br>
 *- Ban Command*<br>
-*- Clear Command*
+*- Clear Command*<br>
+*- Info/Serverinfo*<br>
+*-Ping*<br>
+*-Help*<br>
+*-Boost*<br>
+*-Automod*<br>
+*-Memberjoin/Guildjoin*<br>
 
 ## Currently Fixing Errors
 *- Quiz Command*
