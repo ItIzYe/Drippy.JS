@@ -73,9 +73,9 @@ client.on("guildDelete", async (guild) => {
 
 
 client.on("guildMemberAdd", async (member) => {
-    await client.events.get("guildCreate").execute(client, member.guild, false)
-    await sleep(500)
-    client.events.get("guildMemberAdd").execute(client, member, true)
+    await client.events.get("guildCreate").execute(client, member.guild, false);
+    await sleep(500);
+    client.events.get("guildMemberAdd").execute(client, member, true);
 });
 
 
@@ -104,6 +104,8 @@ const set = ["SET", "Set", "set"];
 const purge = ["PURGE", "Purge", "purge"];
 
 const quiz = ["QUIZ", "Quiz", "quiz"];
+
+const lb = ["LB", "Lb", "lb"];
 
 
 
@@ -175,21 +177,21 @@ client.on('interactionCreate', async (interaction) => {
 client.on('messageCreate', async message => {
 
     if (message.author.bot) return;
-    console.log("Create");
+
     await client.events.get("guildCreate").execute(client, message.member.guild, false);
     await sleep(200);
-    console.log("Member");
+
     await client.events.get("guildMemberAdd").execute(client, message.member, false);
     await sleep(500);
-    console.log("Auto");
+
     var r = client.commands.get("automod").execute(client, message);
     if (r === 1) {
         return;
     }
-    console.log("Level");
+
     client.commands.get("leveling").execute(client, message);
     await sleep(200);
-    console.log("Rank");
+
     client.commands.get("ranking").execute(client, message);
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -220,11 +222,15 @@ client.on('messageCreate', async message => {
     } if (xp.includes(command) && command != null) {
         client.commands.get("rank").execute(client, message, args);
     } if (command === "admin") {
-        await client.events.get("guildCreate").execute(client, message.member.guild, false)
-        await sleep(500)
-        client.events.get("guildMemberAdd").execute(client, message.member, true)
+        await client.events.get("guildCreate").execute(client, message.member.guild, false);
+        await sleep(500);
+        client.events.get("guildMemberAdd").execute(client, message.member, true);
     } if (command === "admin2") {
-        client.events.get("guildCreate").execute(client, message.member.guild, false)
+        client.events.get("guildCreate").execute(client, message.member.guild, false);
+    } if (lb.includes(command) && command !== null) {
+        await client.events.get("guildCreate").execute(client, message.member.guild, false);
+        await sleep(500);
+        client.commands.get("lb").execute(client, message);
     }
 });
 

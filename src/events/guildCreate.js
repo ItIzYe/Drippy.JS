@@ -12,7 +12,7 @@ module.exports = {
         //console.log(jsonFiles);
 
         if (jsonFiles.includes(`${guild.id}.json`)) {
-            console.log("False");
+
         } else {
 
             fs.readFile("copy_file.json", "utf8", async function (err,data) {

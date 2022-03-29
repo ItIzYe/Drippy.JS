@@ -1,6 +1,5 @@
 const prefix = '!#';
 const {MessageEmbed, Permissions, Client} = require('discord.js');
-//const { MessageButton, MessageActionRow } = require("discord-buttons");
 fs = require('fs');
 
 module.exports = {
@@ -20,12 +19,21 @@ module.exports = {
 
 
             const json_data = JSON.parse(data);
+
+            //Timestap überprüfen
+            if (Date.now() - 60000 < json_data.user[userid].leveling.last_message_time) return;
+
+
             json_data.user[userid].leveling.message_count ++;
             //old_xp steht für die XP vor der Message
             var old_xp = json_data.user[userid]["leveling"].xp
             //new_xp steht für die XP nach der Message
             var new_xp = old_xp + xp
             json_data.user[userid]["leveling"].xp = new_xp
+
+            //Timestap
+            json_data.user[userid].leveling.last_message_time = Date.now()
+
 
             if (new_xp < 100) {
                 //Level wir auf 0 gesetzt

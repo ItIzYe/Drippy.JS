@@ -36,7 +36,6 @@ module.exports = {
             p = guild;
         }
 
-        console.log(p);
 
         fs.readFile(`Server/${p}.json`, "utf8", async function (err,data) {
             if (err) {

@@ -9,27 +9,30 @@ module.exports = {
     description: "XP Abfrage",
     async execute (client, message, member) {
 
+        //Überprüft Member
         if (member === []) {
             member = message.author;
         } else {
             try {
-            member[0] = member[0].split("<@!").join("").split(">").join("");
-            member = client.users.cache.find(user => user.id === member[0]);
-            if (member === null) {
-                member = message.author;
-            }
-            var test = member.id;
+                //Versucht die User ID zu bekommen und zu User umzuwandeln
+                member[0] = member[0].split("<@!").join("").split(">").join("");
+                member = client.users.cache.find(user => user.id === member[0]);
+                if (member === null) {
+                    member = message.author;
+                }
+                var test = member.id;
             }
 
             catch(error) {
+                //Sonst ist Member = Message Author
                 member = message.author;
-                console.log(error);
             }
         }
 
 
         var guildid = message.guild.id
 
+        //Führt guildMemberAdd aus
         await client.events.get("guildMemberAdd").execute(client, member, false, guildid);
         await sleep(200);
 
@@ -39,9 +42,10 @@ module.exports = {
                 console.log(err);
             }
 
+            //Hohlt sich alle Infos fürs Ranking
 
             var userid = member.id.toString()
-            console.log(userid);
+            
             const json_data = JSON.parse(data);
             const xp = json_data.user[userid].leveling.xp;
             const level = json_data.user[userid].leveling.levels;
