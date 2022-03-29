@@ -1,20 +1,48 @@
 const prefix = '!#';
-const {MessageEmbed, Permissions, Client} = require('discord.js');
+const {MessageEmbed, Permissions, Client, GuildMember} = require('discord.js');
+const sleep = require("sleep-promise");
 //const { MessageButton, MessageActionRow } = require("discord-buttons");
 fs = require('fs');
 
 module.exports = {
     name: "rank",
     description: "XP Abfrage",
-    async execute (client, message, args) {
-        fs.readFile("Server/test.json", "utf8", async function (err,data) {
+    async execute (client, message, member) {
+
+        if (member === []) {
+            member = message.author;
+        } else {
+            try {
+            member[0] = member[0].split("<@!").join("").split(">").join("");
+            member = client.users.cache.find(user => user.id === member[0]);
+            if (member === null) {
+                member = message.author;
+            }
+            var test = member.id;
+            }
+
+            catch(error) {
+                member = message.author;
+                console.log(error);
+            }
+        }
+
+
+        var guildid = message.guild.id
+
+        await client.events.get("guildMemberAdd").execute(client, member, false, guildid);
+        await sleep(200);
+
+
+        fs.readFile(`Server/${message.member.guild.id.toString()}.json`, "utf8", async function (err,data) {
             if (err) {
                 console.log(err);
             }
 
-            var userid = "userid"
+
+            var userid = member.id.toString()
+            console.log(userid);
             const json_data = JSON.parse(data);
-            const author_id = message.member.id;
             const xp = json_data.user[userid].leveling.xp;
             const level = json_data.user[userid].leveling.levels;
             const xp_level = json_data.user[userid].leveling.xp_level;
@@ -22,16 +50,13 @@ module.exports = {
             const rank = json_data.user[userid].leveling.rank;
 
 
-            //console.log(message.member);
-            //console.log(message.author);
-
 
             //embed
 
             const levelEmbed = new MessageEmbed()
                 .setColor("#0015ff")
                 .setTimestamp()
-                .setTitle(`${message.author.username} - Level`)
+                .setTitle(`${member.username} - Level`)
                 .setDescription("Here you can see information about your current level and your total XP as well as the XP of your current level.")
                 .addFields(
                     {name: `Your current level: `, value: `${level}`},
@@ -41,8 +66,6 @@ module.exports = {
                     {name: "Your current rank: ", value: `${rank}`}
                 )
 
-
-            console.log(xp);
             await message.reply({embeds: [levelEmbed]});
         });
 

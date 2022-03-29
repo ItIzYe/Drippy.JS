@@ -6,7 +6,7 @@ module.exports = {
     description: "Guild Join",
     async execute(client, guild, join) {
 
-        const jsonFiles = fs.readdirSync('./Server/').filter(file => file.endsWith('.json'));
+        const jsonFiles = fs.readdirSync('Server/').filter(file => file.endsWith('.json'));
 
 
         //console.log(jsonFiles);

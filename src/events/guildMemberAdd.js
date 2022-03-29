@@ -4,12 +4,12 @@ const fs = require('fs');
 module.exports = {
     name: "guildMemberAdd",
     description: "Member Join",
-    async execute(client, member, join) {
+    async execute(client, member, join, guild) {
 
-        const jsonFilesUser = fs.readdirSync('./User/').filter(file => file.endsWith('.json'));
+        const jsonFilesUser = fs.readdirSync('User/').filter(file => file.endsWith('.json'));
 
         if (!jsonFilesUser.includes(member.id + ".json")) {
-            fs.readFile(`./copy_user.json`, "utf-8", async function (err, data) {
+            fs.readFile(`copy_user.json`, "utf-8", async function (err, data) {
                 if (err) {
                     console.log(err);
                 }
@@ -18,16 +18,27 @@ module.exports = {
 
                 json_data_user.id = member.id.toString()
 
-                fs.writeFile(`./User/${member.id}.json`, JSON.stringify(json_data_user), () => {});
+                fs.writeFile(`User/${member.id}.json`, JSON.stringify(json_data_user), () => {});
             });
         }
 
         var exists = false;
 
+        var p;
 
-        var channel = member.guild.channels.cache.get(member.guild.systemChannelId);
+        try {
+            p = member.guild.id;
+            if (p === null) {
+                p = guild;
+            }
 
-        fs.readFile(`./Server/${member.guild.id}.json`, "utf8", async function (err,data) {
+        } catch (error) {
+            p = guild;
+        }
+
+        console.log(p);
+
+        fs.readFile(`Server/${p}.json`, "utf8", async function (err,data) {
             if (err) {
                 console.log(err);
             }
@@ -44,7 +55,7 @@ module.exports = {
 
             if (exists === false) {
 
-                fs.readFile(`./copy_member.json`, "utf8", async function (err, data2) {
+                fs.readFile(`copy_member.json`, "utf8", async function (err, data2) {
                     if (err) {
                         console.log(err);
                     }
@@ -53,13 +64,15 @@ module.exports = {
 
                     json_data.user[member.id.toString()] = json_data2;
                     json_data.user[member.id.toString()].id = member.id.toString()
-                    fs.writeFile(`Server/${member.guild.id}.json`, JSON.stringify(json_data), () => {});
+                    fs.writeFile(`Server/${p}.json`, JSON.stringify(json_data), () => {});
 
                 });
 
             }
 
             if (!join) return;
+
+            var channel = member.guild.channels.cache.get(member.guild.systemChannelId);
 
             if (json_data.memberjoin.infos.channel !== null) {
                 channel = member.guild.channels.cache.get(json_data.memberjoin.infos.channel);

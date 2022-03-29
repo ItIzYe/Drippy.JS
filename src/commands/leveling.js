@@ -9,14 +9,18 @@ module.exports = {
     async execute (client, message) {
         var xp = Math.floor(Math.random() * 10) + 20;
 
-        fs.readFile("Server/test.json", "utf8", async function (err,data) {
+
+
+        fs.readFile(`Server/${message.member.guild.id.toString()}.json`, "utf8", async function (err,data) {
             if (err) {
                 console.log(err);
             }
 
-            var userid = "userid"//message.author.id
+            var userid = message.member.id.toString()
+
 
             const json_data = JSON.parse(data);
+            json_data.user[userid].leveling.message_count ++;
             //old_xp steht für die XP vor der Message
             var old_xp = json_data.user[userid]["leveling"].xp
             //new_xp steht für die XP nach der Message
@@ -36,7 +40,7 @@ module.exports = {
                 l = l - 1
                 json_data.user[userid]["leveling"].levels = l
             }
-            //fs.writeFile("Server/test.json", JSON.stringify(json_data), () => {})
+            fs.writeFile(`Server/${message.member.guild.id.toString()}.json`, JSON.stringify(json_data), () => {})
         });
     }
 }

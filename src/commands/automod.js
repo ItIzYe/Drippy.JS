@@ -1,6 +1,5 @@
 const prefix = '!#';
 const {MessageEmbed, Permissions, Client} = require('discord.js');
-//const { MessageButton, MessageActionRow } = require("discord-buttons");
 fs = require('fs');
 
 
@@ -8,7 +7,7 @@ module.exports = {
     name: "automod",
     description: "Automod",
     async execute (client, message) {
-        fs.readFile("Server/test.json", "utf8", async function (err,data) {
+        fs.readFile(`Server/${message.member.guild.id.toString()}.json`, "utf8", async function (err,data) {
             if (err) {
                 console.log(err);
             }

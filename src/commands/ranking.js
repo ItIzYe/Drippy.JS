@@ -8,7 +8,7 @@ module.exports = {
 
         for (var i of client.guilds.cache) {
             //Öffnet die JSON Datei
-            fs.readFile(`Server/test.json`, "utf8", function (err,data) {
+            fs.readFile(`Server/${message.member.guild.id.toString()}.json`, "utf8", function (err,data) {
                 if (err) {
                     console.log(err);
                 }
@@ -34,7 +34,7 @@ module.exports = {
                 }
 
                 //Speichers in der JSON File
-                fs.writeFile(`Server/test.json`, JSON.stringify(json_data), () => {});
+                fs.writeFile(`Server/${message.member.guild.id.toString()}.json`, JSON.stringify(json_data), () => {});
 
         });
         }
