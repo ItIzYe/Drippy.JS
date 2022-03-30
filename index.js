@@ -107,6 +107,8 @@ const quiz = ["QUIZ", "Quiz", "quiz"];
 
 const lb = ["LB", "Lb", "lb"];
 
+const bug = ["BUG", "Bug", "bug"];
+
 
 
 //Command Listen Ende
@@ -221,15 +223,9 @@ client.on('messageCreate', async message => {
         client.commands.get("boost").execute(client, message, args);
     } if (xp.includes(command) && command != null) {
         client.commands.get("rank").execute(client, message, args);
-    } if (command === "admin") {
-        await client.events.get("guildCreate").execute(client, message.member.guild, false);
-        await sleep(500);
-        client.events.get("guildMemberAdd").execute(client, message.member, true);
-    } if (command === "admin2") {
-        client.events.get("guildCreate").execute(client, message.member.guild, false);
-    } if (lb.includes(command) && command !== null) {
-        await client.events.get("guildCreate").execute(client, message.member.guild, false);
-        await sleep(500);
+    } if (bug.includes(command) && command != null) {
+        client.commands.get("bug").execute(client, message, args);
+    } if (lb.includes(command) && command != null) {
         client.commands.get("lb").execute(client, message);
     }
 });
