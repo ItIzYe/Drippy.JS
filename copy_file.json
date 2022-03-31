@@ -54,6 +54,12 @@
     "links": [],
     "wörter": []
   },
+  "system": {
+    "globalbann_level": 0,
+    "systembann": false,
+    "leave_question_time": 0,
+    "globalbann_count": 0
+  },
   "user": {
 
   }
