@@ -10,6 +10,17 @@ Everything you expect from `require('events').EventEmitter` in both the browser 
 - `.allOff()` : removes all events from this emitter
 - `.emitter` : the internal emitter used, in case you need direct access.
 
+import
+------
+**CommonJS**
+```javascript
+const Emitter = require('extended-emitter');
+```
+**ES6 imports(babel browser tools)**
+```javascript
+import { Emitter } from 'extended-emitter/browser-es6';
+```
+
 optional criteria
 -----------------
 you can now using [mongo-style](https://docs.mongodb.com/manual/reference/operator/query/) queries (supported by [sift](https://www.npmjs.com/package/sift)) to subscribe to specific events (in this context `.once()` means meeting the criteria, not just firing an event of that type).

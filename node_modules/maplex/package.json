@@ -1,6 +1,6 @@
 {
     "name": "maplex",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "main": "maplex.js",
     "description": "An asynchronous, multiplexed iterable mapper",
     "author": "Abbey Hawk Sparrow <@khrome> (http://patternweaver.com)",

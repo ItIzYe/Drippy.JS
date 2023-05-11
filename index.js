@@ -1,35 +1,63 @@
-const Discord = require('discord.js');
-const {Intents, Client} = require('discord.js');
-const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
-const fs = require('fs');
+const {GatewayIntentBits, Client, EmbedBuilder, Partials, Collection, Events, Message} = require('discord.js');
+
+const fs = require('node:fs');
+const path = require('node:path');
+
 const sleep = require('sleep-promise');
 
 
 
 
 const client = new Client({ intents: [
-        Intents.FLAGS.GUILD_PRESENCES,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
+       /* Intents.FLAGS.GUILD_PRESENCES,
         Intents.FLAGS.GUILD_MEMBERS,
         Intents.FLAGS.GUILDS,
         Intents.FLAGS.DIRECT_MESSAGES,
         Intents.FLAGS.GUILD_MESSAGES,
         Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
         Intents.FLAGS.GUILD_MESSAGE_TYPING,
-        Intents.FLAGS.GUILD_PRESENCES]});
+Intents.FLAGS.GUILD_PRESENCES*/], partials: [Partials.Channel, Partials.GuildMember, Partials.Message, Partials.User]});
 
 require('dotenv').config();
 
 const g = require('./src/giveaway.json');
-
+const eventHandler = require('./src/handlers/eventHandler');
 
 
 const prefix = process.env.PREFIX;
 
 
 
-client.commands = new Discord.Collection();
-client.events = new Discord.Collection();
 
+client.commands = new Collection();
+client.events = new Collection();
+
+
+/*
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isChatInputCommand()) return;
+
+	const command = interaction.client.commands.get(interaction.commandName);
+
+	if (!command) {
+		console.error(`No command matching ${interaction.commandName} was found.`);
+		return;
+	}
+
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		if (interaction.replied || interaction.deferred) {
+			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+		} else {
+			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		}
+	}
+});
 
 
 const commandFiles = fs.readdirSync('./src/commands/').filter(file => file.endsWith('.js'));
@@ -46,18 +74,13 @@ for(const file of eventFiles){
 
     client.events.set(event.name, event);
 }
+*/
 
 
-client.once('ready', () => {
-    console.log(`==========================================`);
-    console.log(`Eingeloggt als ${client.user.tag} auf ${client.guilds.cache.size} Servern.`);
-    console.log(`==========================================`);
-    client.user.setActivity({"name": "STOP THE WAR!", "type": "PLAYING"});
-});
+eventHandler(client);
 
 
-
-client.on("guildCreate", async (guild) => {
+/*client.on("guildCreate", async (guild) => {
     client.events.get("guildCreate").execute(client, guild, true);
 });
 
@@ -78,7 +101,7 @@ client.on("guildMemberAdd", async (member) => {
     client.events.get("guildMemberAdd").execute(client, member, true);
 });
 
-
+/*
 
 //Command Listen Anfang
 const kick = ["KICK", "Kick", "kick"];
@@ -114,6 +137,7 @@ const bug = ["BUG", "Bug", "bug"];
 //Command Listen Ende
 
 
+
 //*
 client.on('interactionCreate', async (interaction) => {
     if (interaction.isButton()) {
@@ -133,7 +157,7 @@ client.on('interactionCreate', async (interaction) => {
                 collected.forEach((value) => {
                     const msgcontent = value.content
                     if(msgcontent.startsWith === "1" || "2" || "3" || "4" || "5" || "6" || "7" || "8" || "9" || "0"){
-                        const embed = new MessageEmbed()
+                        const embed = new EmbedBuilder()
                             .setColor('#0099ff')
                             .setTitle('Mod Channels')
                             .setDescription(`Sie haben <#${msgcontent}> als Kanal für die Moderationsnachrichten angegeben`)
@@ -175,8 +199,9 @@ client.on('interactionCreate', async (interaction) => {
 
 
 
-
+/*
 client.on('messageCreate', async message => {
+    console.log(message)
 
     if (message.author.bot) return;
 
@@ -202,7 +227,7 @@ client.on('messageCreate', async message => {
 
 
     if (kick.includes(command) && command != null) {
-        client.commands.get('kick').execute(message, args);
+        client.commands.get('kick').execute(message, args)
     } if (ban.includes(command) && command != null) {
         client.commands.get('ban').execute(message, args);
     } if (purge.includes(command) && command != null) {
@@ -214,7 +239,7 @@ client.on('messageCreate', async message => {
     } if (ping.includes(command) && command != null) {
         client.commands.get("ping").execute(client, message, args);
     } if (help.includes(command) && command != null) {
-        client.commands.get("help").execute(message, null);
+        client.commands.get("!#help").execute(message, null);
     } if (info.includes(command) && command != null) {
         client.commands.get("info").execute(client, message);
     } if (serverinfo.includes(command) && command != null) {
@@ -228,7 +253,10 @@ client.on('messageCreate', async message => {
     } if (lb.includes(command) && command != null) {
         client.commands.get("lb").execute(client, message);
     }
+    
+
 });
+*/
 
 
 

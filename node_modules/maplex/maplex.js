@@ -1,4 +1,15 @@
-var asynk = require('async');
+(function (root, factory){
+    if(typeof define === 'function' && define.amd){
+        // AMD. Register as an anonymous module.
+        define(['async'], factory);
+    }else if (typeof module === 'object' && module.exports){
+        module.exports = factory(require('async'));
+    }else{
+        // Browser globals (root is window)
+        root.Maplex = factory(root.async);
+    }
+}(this, function(asynk){
+    
 var ready = function(mappables, cb){
     //todo: support
     //   - collections.js objects
@@ -16,6 +27,7 @@ Maplex.convert = function(mappable){
 }
 
 Maplex.map = function(){
+    //console.log('INMAP', arguments[0], arguments[1])
     var mappables = Array.prototype.slice.call(arguments);
     var mapFn = mappables.pop();
     var completeFn;
@@ -24,6 +36,7 @@ Maplex.map = function(){
         mapFn = mappables.pop();
     }
     mappables = mappables.map( this.convert || Maplex.convert );
+    //console.log('mappables', mappables);
     mappables = mappables.map( item => new Maplex.Iterable(item) );
     var row;
     var results = [];
@@ -73,6 +86,7 @@ Maplex.prototype.constructor = Maplex;
 Maplex.Iterable = function(iterable){
     this.iterable = iterable;
     var ob = this;
+    this.defaultItem = Maplex.Iterable.defaultItem;
     Object.defineProperty(this, 'length', {
         get: function() {
             return ob.size();
@@ -104,13 +118,19 @@ Maplex.Iterable.prototype.size = function(){
     return this.iterable.length;
 }
 Maplex.Iterable.prototype.next = function(cb){
+    var ob = this;
     var item = this.thisItem;
     var status = this.isDone
     setTimeout(function(){
-        cb(status?false:item); //return this iteration
+        cb(status?false:(item)); //return this iteration
     }, 0);
-    this.thisDone(); //trigger iterate
+    try{
+        this.thisDone(); //trigger iterate
+    }catch(ex){ //if it can't iterate deliver an empty char
+        item = ob.defaultItem;
+    }
 }
 
+return Maplex;
 
-module.exports = Maplex;
+}));
