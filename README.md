@@ -38,7 +38,7 @@ See the Website <a href='https://itizye.github.io/Drippy.JS/'>Drippy.JS</a>
    |   |   |   |       |   |
    |___|   |___|       |___|
 
-© 2022 @IIY Development and Partners
+© 2024 @IIY Development and Partners
        Code can be used with
               Credits
 ```
