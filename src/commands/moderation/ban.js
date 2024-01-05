@@ -38,22 +38,30 @@ module.exports = {
         const reason =
             interaction.options.get('reason')?.value || 'No reason provided';
 
-        const embed = new MessageEmbed()
-            .setTitle("1")
-
-        await interaction.deferReply({embeds: [embed]});
+        await interaction.deferReply();
 
         const targetUser = await interaction.guild.members.fetch(targetUserId);
 
         if (!targetUser) {
-            await interaction.editReply("That user doesn't exist in this server.");
+            const embed = new MessageEmbed()
+                .setColor('YELLOW')
+                .setTitle('BANN')
+                .setDescription('Ein Fehler liegt vor')
+                .setFields(
+                    {name: 'Fehler', value:'Ich konnte den Member nicht bannen da er nicht mehr auf dem Server ist', inline: true}
+                )
+            await interaction.editReply({embeds: [embed]});
             return;
         }
 
-        if (targetUser.id === interaction.guild.ownerId) {
-            await interaction.editReply(
-                "You can't ban that user because they're the server owner."
-            );
+        if (targetUser.id === interaction.guild.ownerId) {const embed = new MessageEmbed()
+            .setColor('YELLOW')
+            .setTitle('BANN')
+            .setDescription('Ein Fehler liegt vor')
+            .setFields(
+                {name: 'Fehler', value:'Ich konnte den Member nicht bannen da er der Server Owner ist', inline: true}
+            )
+            await interaction.editReply({embeds: [embed]});
             return;
         }
 
@@ -62,16 +70,27 @@ module.exports = {
         const botRolePosition = interaction.guild.members.me.roles.highest.position; // Highest role of the bot
 
         if (targetUserRolePosition >= requestUserRolePosition) {
-            await interaction.editReply(
-                "You can't ban that user because they have the same/higher role than you."
-            );
+            const embed = new MessageEmbed()
+                .setColor('YELLOW')
+                .setTitle('BANN')
+                .setDescription('Ein Fehler liegt vor')
+                .setFields(
+                    {name: 'Fehler', value:'Ich konnte den Member nicht bannen da er die selbe/höhere Rolle als du hat', inline: true}
+                )
+            await interaction.editReply({embeds: [embed]});
             return;
         }
 
         if (targetUserRolePosition >= botRolePosition) {
-            await interaction.editReply(
-                "I can't ban that user because they have the same/higher role than me."
-            );
+            const embed = new MessageEmbed()
+                .setColor('YELLOW')
+                .setTitle('BANN')
+                .setDescription('Ein Fehler liegt vor')
+                .setFields(
+                    {name: 'Fehler', value:'Ich konnte den Member nicht bannen da er die selbe/höhere Rolle als ich hat', inline: true}
+                )
+
+            await interaction.editReply({embeds: [embed]});
             return;
         }
 
@@ -82,7 +101,11 @@ module.exports = {
                 .setColor('RED')
                 .setTitle('BANN')
                 .setDescription('Ein User wurde gebannt')
-                .setFields({name: 'Member', value: `${targetUser}`, inline: true},{name: '---------', value: '      ', inline:true}, {name: 'Grund', value: `${reason}`, inline: true})
+                .setFields(
+                    {name: 'Member', value: `${targetUser}`, inline: true},
+                    {name: '---------', value: '      ', inline:true},
+                    {name: 'Grund', value: `${reason}`, inline: true}
+                )
 
             await targetUser.ban({ reason });
             await interaction.editReply({embeds : [embed]});
