@@ -2,6 +2,7 @@ const {
     Client,
     Interaction,
     Permissions,
+    MessageEmbed,
 
     ApplicationCommandOptionType,
     PermissionFlagsBits,
@@ -10,6 +11,23 @@ const {
 } = require('discord.js');
 
 module.exports = {
+    name: 'ban',
+    description: 'Bans a member from this server.',
+    options: [
+        {
+            name: 'target-user',
+            description: 'The user you want to ban.',
+            required: true,
+            type: 6,
+        },
+        {
+            name: 'reason',
+            description: 'The reason you want to ban.',
+            type: 3,
+        },
+    ],
+    permissionsRequired: [Permissions.FLAGS.BAN_MEMBERS],
+
     /**
      *
      * @param {Client} client
@@ -20,7 +38,10 @@ module.exports = {
         const reason =
             interaction.options.get('reason')?.value || 'No reason provided';
 
-        await interaction.deferReply();
+        const embed = new MessageEmbed()
+            .setTitle("1")
+
+        await interaction.deferReply({embeds: [embed]});
 
         const targetUser = await interaction.guild.members.fetch(targetUserId);
 
@@ -56,29 +77,18 @@ module.exports = {
 
         // Ban the targetUser
         try {
+
+            const embed = new MessageEmbed()
+                .setColor('RED')
+                .setTitle('BANN')
+                .setDescription('Ein User wurde gebannt')
+                .setFields({name: 'Member', value: `${targetUser}`, inline: true},{name: '---------', value: '      ', inline:true}, {name: 'Grund', value: `${reason}`, inline: true})
+
             await targetUser.ban({ reason });
-            await interaction.editReply(
-                `User ${targetUser} was banned\nReason: ${reason}`
-            );
+            await interaction.editReply({embeds : [embed]});
         } catch (error) {
             console.log(`There was an error when banning: ${error}`);
         }
     },
 
-    name: 'ban',
-    description: 'Bans a member from this server.',
-    options: [
-        {
-            name: 'target-user',
-            description: 'The user you want to ban.',
-            required: true,
-            type: 6,
-        },
-        {
-            name: 'reason',
-            description: 'The reason you want to ban.',
-            type: 3,
-        },
-    ],
-    permissionsRequired: [Permissions.FLAGS.BAN_MEMBERS],
 };
