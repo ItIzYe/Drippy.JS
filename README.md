@@ -66,7 +66,7 @@ When finished creating a command, just restart the bot. **DO NOT CHANGE ANY CODE
    |   |   |   |       |   |
    |___|   |___|       |___|
 
-© 2022 @IIY Development and Partners
+© 2024 @IIY Development and Partners
        Code can be used with
               Credits
 ```
