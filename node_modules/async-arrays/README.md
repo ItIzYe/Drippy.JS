@@ -5,7 +5,7 @@ async-arrays.js
 [![npm](https://img.shields.io/npm/dt/async-arrays.svg)]()
 [![Travis](https://img.shields.io/travis/khrome/async-arrays.svg)]()
 
-This used to be an array-oriented flow control library. While it still is, [async]() does it better.
+This used to be an array-oriented flow control library. While it still is, [async](https://caolan.github.io/async/v3/) does it more completely.
 
 Now it's just something to use when I want something more lightweight. YMMV
 
@@ -15,7 +15,8 @@ I find, most of the time, my asynchronous logic emerges from an array and I real
 
 you can either retain an instance and use it that way:
 
-    var arrays = require('async-arrays');
+    import * as arrays from 'async-arrays';
+    // OR: const arrays = require('async-arrays');
     arrays.forEach(array, iterator, calback);
     
 

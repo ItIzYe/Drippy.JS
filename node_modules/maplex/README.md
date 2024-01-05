@@ -9,7 +9,9 @@ Usage
 -----
 
 ```js
-    var Maplex = require('maplex');
+    import { Maplex } from 'maplex';
+    // or
+    const { Maplex } = require('maplex');
     Maplex.map(arrayA, ... arrayN, function(itemA, ... itemN){
         //do your work here and store it in finalItem
         return finalItem;
