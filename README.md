@@ -12,9 +12,9 @@ a command should **ALWAYS** look like this:
 module.exports = {
     name: String,
     description: String,
+    // options: Object[],
     // devOnly: Boolean,
     // testOnly: true,
-    // options: Object[],
     // deleted: Boolean,
 
     callback: async (client, interaction) => {
@@ -54,6 +54,7 @@ When finished creating a command, just restart the bot. **DO NOT CHANGE ANY CODE
 - [ ] Fix Errors in Quiz Command
 - [ ] Complete Channelset Command
 - [ ] Fix Errors in Clear Command
+- [ ] Fix Help Command
 ```
     ___     ___    ___       ___
    |   |   |   |   \  \     /  /
