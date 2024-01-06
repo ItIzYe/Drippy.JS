@@ -10,7 +10,7 @@ module.exports = {
      */
     name: "boost",
     description: "Get the Serverboost advantages",
-    async execute(client, interaction) {
+    callback: async (client, interaction) => {
 
         var level_1a = "> :smile: +50 mehr Server Emoji Slots (Insgesamt 100)";
         var level_1b = "> :musical_note: 128 Kbps Audio Qualität";
