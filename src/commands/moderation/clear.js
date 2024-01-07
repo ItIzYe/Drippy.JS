@@ -32,13 +32,13 @@ module.exports = {
 
         args[0]++;
 
+        await interaction.channel.messages.fetch({limit: args}).then(messages =>{
+            interaction.channel.bulkDelete(messages)
+        })
         const embed = new MessageEmbed()
             .setColor('GREEN')
             .setTitle('Clear')
             .setDescription(`${args} Nachrichten wurden gelöscht`)
-
-        await interaction.channel.messages.fetch({limit: args}).then(messages =>{
-            interaction.channel.bulkDelete(messages)
-        })
+        await interaction.reply({embeds:[embed]})
     }
 };
