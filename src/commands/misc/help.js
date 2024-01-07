@@ -6,30 +6,31 @@ const {
     PermissionFlagsBits, Permissions,MessageEmbed
 } = require('discord.js');
 
+const mod = ["Moderation", "moderation", "MODERATION", "MOD", "Mod", "mod"];
+
+const infos = ['Infos','infos', 'INFOS', 'INFO', 'Info', 'info'];
+
+const fun = ['Fun', 'FUN', "fun"];
+
+const level = ['Level', 'LEVEL', "level", 'RANK', 'rank', 'Rank'];
 
 module.exports = {
     /**
      *
      * @param {Client} client
-     * @param {Interaction} interaction
-     * @param {ButtonInteraction} buttonInteraction
+     * @param {Interaction, ButtonInteraction} interaction
      */
     name: 'help',
     description: 'Help Commands',
-    options: [],
+    options: [{name: "section", description: "Please insert a section", required: false, type: 3}],
+
+
     callback: async (client, interaction) => {
 
-        const mod = ["Moderation", "moderation", "MODERATION", "MOD", "Mod", "mod"];
 
-        const infos = ['Infos', 'INFOS', 'INFO', 'Info', 'info'];
+        const section = interaction.options.get('section')?.value;
 
-        const fun = ['Fun', 'FUN', "fun"];
-
-        const level = ['Level', 'LEVEL', "level", 'RANK', 'rank', 'Rank'];
-
-
-
-        if (args == null || !args[0]) {
+        if (section == null) {
             //language en
             const helpEmbed = new MessageEmbed()
 
@@ -76,15 +77,14 @@ module.exports = {
             }
 
 
-        await interaction.reply({
-            embeds: [helpEmbed],
-            components: [row2]
-        });
-
+            await interaction.reply({
+                embeds: [helpEmbed],
+                //components: [row2]
+            });
         }
 
 
-        else if (mod.includes(args[0]) && args[0] != null) {
+        else if (mod.includes(section)) {
             //language en
             const helpEmbed = new MessageEmbed()
 
@@ -94,31 +94,31 @@ module.exports = {
                 .addFields(
                     {name: "⠀", value: "__**Owner**__"},
                     {
-                        name: `${prefix}nuke [Channel]`,
+                        name: `nuke [Channel]`,
                         value: "-> Deletes the specified channel and creates it again",
                         inline: true
                     },
                     {name: "⠀", value: "__**Mod**__"},
                     {
-                        name: `${prefix}ban [Member] [Grund]`,
+                        name: `ban [Member] [Grund]`,
                         value: "-> Bans a member from the server",
                         inline: true
                     },
-                    {name: `${prefix}mute [Member] [Reason]`, value: "-> Mutes a member", inline: true},
-                    {name: `${prefix}unmute [Member]`, value: "-> Unmutes a member", inline: true},
+                    {name: `mute [Member] [Reason]`, value: "-> Mutes a member", inline: true},
+                    {name: `unmute [Member]`, value: "-> Unmutes a member", inline: true},
                     {
-                        name: `${prefix}tempmute [Zeit in h] [Member] [Reason]`,
+                        name: `tempmute [Zeit in h] [Member] [Reason]`,
                         value: "-> Mutes a member for a certain period of time",
                         inline: true
                     },
                     {name: `⠀`, value: "__**Supporter**__"},
-                    {name: `${prefix}kick [Member] [Reason]`, value: "-> Kicks a Member", inline: true},
-                    {name: `${prefix}warn [Member] [Reason]`, value: "-> Warns a Member", inline: true}
+                    {name: `kick [Member] [Reason]`, value: "-> Kicks a Member", inline: true},
+                    {name: `warn [Member] [Reason]`, value: "-> Warns a Member", inline: true}
                 );
             await interaction.reply({embeds: [helpEmbed], ephemeral: true});
 
 
-        } else if (infos.includes(args[0]) && args[0] != null) {
+        } else if (infos.includes(section)) {
             //language en
                 const helpEmbed = new MessageEmbed()
 
@@ -126,18 +126,18 @@ module.exports = {
                     .setTitle("Help - Infos")
                     .setTimestamp()
                     .addFields(
-                        {name: `${prefix}info`, value: "-> Shows you some info about the bot"},
-                        {name: `${prefix}serverinfo`, value: "-> Shows you some info about the server"},
-                        {name: `${prefix}userinfo`, value: "-> Shows you some info about a user"},
-                        {name: `${prefix}ping`, value: "-> Shows you the ping"},
+                        {name: `info`, value: "-> Shows you some info about the bot"},
+                        {name: `serverinfo`, value: "-> Shows you some info about the server"},
+                        {name: `userinfo`, value: "-> Shows you some info about a user"},
+                        {name: `ping`, value: "-> Shows you the ping"},
                         {
-                            name: `${prefix}boost`,
+                            name: `boost`,
                             value: "-> Shows you the advantages you get when you boost the server."
                         }
                     );
                 await interaction.reply({embeds: [helpEmbed]});
         }
-        else if (fun.includes(args[0]) && args[0] != null) {
+        else if (fun.includes(section)) {
         //language en
             const helpEmbed = new MessageEmbed()
 
@@ -145,15 +145,15 @@ module.exports = {
                 .setTitle("Help - Fun")
                 .setTimestamp()
                 .addFields(
-                    {name: `${prefix}meme`, value: "-> Show you a random meme"},
-                    {name: `${prefix}quiz`, value: "-> Play a quiz!"},
-                    {name: `${prefix}game`, value: "-> Play a dice game! `(In progress)`"}
+                    {name: `meme`, value: "-> Show you a random meme"},
+                    {name: `quiz`, value: "-> Play a quiz!"},
+                    {name: `game`, value: "-> Play a dice game! `(In progress)`"}
                 )
             await interaction.reply({embeds: [helpEmbed]});
 
         }
 
-        else if (level.includes(args[0]) && args[0] != null) {
+        else if (level.includes(section)) {
             //language en
             const helpEmbed = new MessageEmbed()
 
@@ -161,16 +161,16 @@ module.exports = {
                 .setTitle("Help - Leveling")
                 .setTimestamp()
                 .addFields(
-                    {name: `${prefix}level [Member]`, value: "-> Shows you the current level."},
-                    {name: `${prefix}rank [Member]`, value: "-> Still under development..."},
-                    {name: `${prefix}xp [Member]`, value: "-> Shows you the current XP."},
-                    {name: `${prefix}leaderboard`, value: "-> Shows you the current leaderboard of the server."},
+                    {name: `level [Member]`, value: "-> Shows you the current level."},
+                    {name: `rank [Member]`, value: "-> Still under development..."},
+                    {name: `xp [Member]`, value: "-> Shows you the current XP."},
+                    {name: `leaderboard`, value: "-> Shows you the current leaderboard of the server."},
                     {
-                        name: `${prefix}add-xp [amout] [Member]`,
+                        name: `add-xp [amout] [Member]`,
                         value: "-> Adds XP to a member. (only Mods & Admins)"
                     },
                     {
-                        name: `${prefix}remove-xp [amout] [Member]`,
+                        name: `remove-xp [amout] [Member]`,
                         value: "-> Removes XP from a member. (only Mods & Admins)"
                     }
                 )
