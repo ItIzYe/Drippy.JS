@@ -12,16 +12,16 @@ module.exports = {
     description: "Get the Serverboost advantages",
     callback: async (client, interaction) => {
 
-        var level_1a = "> :smile: +50 mehr Server Emoji Slots (Insgesamt 100)";
-        var level_1b = "> :musical_note: 128 Kbps Audio Qualität";
-        var level_1c = "> :desktop: Animiertes Server Icon";
-        var level_2a = "> :smile: nochmal +50 mehr Server Emoji Slots (Insgesamt 150)";
-        var level_2b = "> :musical_note: 256 Kbps Audio Qualität";
-        var level_2c = "> :arrow_up: 50MB Upload Limit für alle Mitglieder";
-        var level_2d = "> :frame_photo: Server Banner";
-        var level_3a = "> :smile: nochmal +100 mehr Server Emoji Slots (Insgesamt 250)";
-        var level_3b = "> :musical_note: 384 Kbps Audio Qualität";
-        var level_3c = "> :arrow_up: 100MB Upload Limit für alle Mitglieder";
+        const level_1a = "> :smile: +50 mehr Server Emoji Slots (Insgesamt 100)";
+        const level_1b = "> :musical_note: 128 Kbps Audio Qualität";
+        const level_1c = "> :desktop: Animiertes Server Icon";
+        const level_2a = "> :smile: nochmal +50 mehr Server Emoji Slots (Insgesamt 150)";
+        const level_2b = "> :musical_note: 256 Kbps Audio Qualität";
+        const level_2c = "> :arrow_up: 50MB Upload Limit für alle Mitglieder";
+        const level_2d = "> :frame_photo: Server Banner";
+        const level_3a = "> :smile: nochmal +100 mehr Server Emoji Slots (Insgesamt 250)";
+        const level_3b = "> :musical_note: 384 Kbps Audio Qualität";
+        const level_3c = "> :arrow_up: 100MB Upload Limit für alle Mitglieder";
 
 
 
