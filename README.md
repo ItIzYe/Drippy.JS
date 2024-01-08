@@ -32,6 +32,49 @@ module.exports = {
 When finished creating a command, just restart the bot. **DO NOT CHANGE ANY CODE OTHER THAN CODE IN THE COMMAND FOLDER AND SELF-CREATED FOLDERS**
 
 
+### Interaction Option Types
+Please remember that *InteractionOptionTypes* are no longer given through keywords but through numbers. Following a list of the numbers and for what they stand:
+```
+SUB_COMMAND 1   
+SUB_COMMAND_GROUP 2 
+STRING 3    
+INTEGER 4
+BOOLEAN 5   
+USER 6  
+CHANNEL 7
+ROLE 8  
+MENTIONABLE 9
+NUMBER 10
+ATTACHMENT 11
+```
+
+## MongoDB -> Mongoose
+
+as we installed mongoose as our Database, please contact ItIzYe to request a login.
+Models have to look like this:
+```js
+const {Schema, model} = require('mongoose');
+
+const PlaceholderConfigSchema = new Schema({
+    placeholder: {
+        type: String,
+        //"Not important", "Important","Very important"
+        default: "Not important",
+        unique: true,
+    }
+});
+
+module.exports = model('PlaceholderConfigSchema', PlaceholderConfigSchema)
+```
+default can also be an empty array *[]*. Also the type can vary
+
+You can update values seperatley via:
+```js
+const newCustomId = new PlaceholderConfigSchema({
+    placeholder: new_status,
+    })
+    await PlaceholderConfigSchema.updateOne();
+```
 
 ## Current working Commands
 *- Kick Command*<br>
