@@ -25,6 +25,7 @@
     "pretty-ms": "^8.0.0",
     "random": "^3.0.6",
     "reconlx": "^2.5.2",
+    "sapphire": "^0.0.3",
     "sleep-promise": "^9.1.0"
   }
 }
