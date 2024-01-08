@@ -20,6 +20,11 @@ const BugConfigSchema = new Schema({
         //"pending", "approved","denied"
         default: "pending"
     },
+    memberCount: {
+        type: String,
+        //"pending", "approved","denied"
+        default: "pending"
+    },
     bug: {
         type: String,
         //"pending", "approved","denied"

@@ -56,8 +56,14 @@ module.exports = {
             await interaction.editReply({content: `${newImportance.importance}`})
         }
 
-        if(new_status === "Pending") {
-
+        if(interaction.options.get('set-status') && !interaction.options.get('set-importance')){
+            await interaction.editReply(`${newCustomId.status}`)
+        }
+        if(!interaction.options.get('set-status') && interaction.options.get('set-importance')){
+            await interaction.editReply(`${newImportance.importance}`)
+        }
+        if(interaction.options.get('set-status') && interaction.options.get('set-importance')){
+            await interaction.editReply(`${newImportance.importance}  ${newCustomId.status}`)
         }
     }
 

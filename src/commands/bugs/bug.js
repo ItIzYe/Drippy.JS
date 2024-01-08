@@ -1,6 +1,6 @@
 const {MessageEmbed, Permissions, Client, Interaction} = require('discord.js');
 const mongoose = require('mongoose');
-const { BugConfig } = require('../../models/BugConfig');
+const BugConfig = require('../../models/BugConfig');
 const GuildConfiguration = require("../../models/GuildConfiguration");
 
 
@@ -55,18 +55,29 @@ module.exports = {
             )
             .setTimestamp()
 
+        const newBugContent = new BugConfig({
+            guildID: guildId,
+            userTag: userTag,
+            userID: userId,
+            region: region,
+            memberCount: memberCount,
+            bug: bugReport,
+            bugID: messageId
+        })
+        await BugConfig.updateMany();
+
         const new_bug_report = new MessageEmbed()
             .setColor("#9fb1fd")
             .setTitle("Bugreport auf dem Server " + interaction.guild.name)
             .setThumbnail(interaction.guild.iconURL())
             .setFields(
-                {name: "GUILD ID:", value: `${guildId}`, inline: false},
-                {name: "USER:", value:`${userTag}`, inline: false},
-                {name: "USER ID:", value: `${userId}`, inline: false},
-                {name: "Region:", value:`${region}`, inline: false},
-                {name: "Membercount:",value: `${memberCount}`, inline: false},
-                {name: "BUG:", value:`${bugReport}`, inline: false},
-                {name: "BUG ID:", value:`${messageId}`, inline: false})
+                {name: "GUILD ID:", value: `${newBugContent.guildID}`, inline: false},
+                {name: "USER:", value:`${newBugContent.userTag}`, inline: false},
+                {name: "USER ID:", value: `${newBugContent.userID}`, inline: false},
+                {name: "Region:", value:`${newBugContent.region}`, inline: false},
+                {name: "Membercount:",value: `${newBugContent.memberCount}`, inline: false},
+                {name: "BUG:", value:`${newBugContent.bug}`, inline: false},
+                {name: "BUG ID:", value:`${newBugContent.bugID}`, inline: false})
             .setTimestamp()
 
         const row2 = {
