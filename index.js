@@ -4,6 +4,9 @@ const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('
 const fs = require('fs');
 const sleep = require('sleep-promise');
 const eventHandler = require('./src/handlers/eventHandler');
+const mongoose = require('mongoose');
+
+
 require('dotenv').config();
 
 
@@ -25,4 +28,8 @@ eventHandler(client);
 
 
 
-client.login(process.env.Discord_Bot_Token);
+mongoose.connect(process.env.MONGODB_URL).then(() => {
+        console.log('Connected to MongoDB')
+
+        client.login(process.env.Discord_Bot_Token);
+})
