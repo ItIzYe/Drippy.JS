@@ -1,4 +1,4 @@
-const {MessageEmbed, Client, Interaction} = require('discord.js');
+const {EmbedBuilder, Client, Interaction} = require('discord.js');
 
 module.exports = {
     /**
@@ -12,7 +12,7 @@ module.exports = {
 
     callback: async (client, interaction) => {
 
-        const infoEmbed = new MessageEmbed()
+        const infoEmbed = new EmbedBuilder()
             .setColor("#1f8a4c")
             .setTitle("Info")
             .setDescription("Hier ein paar Bot-Infos")
