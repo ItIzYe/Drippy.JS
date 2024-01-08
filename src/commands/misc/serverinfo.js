@@ -1,5 +1,4 @@
-const prefix = '!#';
-const {MessageEmbed, Permissions, Client, Interaction} = require('discord.js');
+const {EmbedBuilder, Permissions, Client, Interaction} = require('discord.js');
 
 
 module.exports = {
@@ -13,15 +12,15 @@ module.exports = {
     callback: async (client, interaction) => {
         //console.log(message.guild);
 
-        const owner = client.users.cache.find(user => user.id === interaction.guild.ownerId);
+        const serverOwner = await interaction.guild.fetchOwner()
 
 
-        const svinfoEmbed = new MessageEmbed()
+        const svinfoEmbed = new EmbedBuilder()
             .setColor("#00fdfe")
             .setTitle(interaction.guild.name)
             .setThumbnail(interaction.guild.iconURL())
             .addFields(
-                {name: "Owner: ", value: owner.username, inline: false},
+                {name: "Owner: ", value: serverOwner.displayName, inline: false},
                 {name: "Region: ", value: interaction.guild.preferredLocale.toString(), inline: false},
                 {name: "Membercount: ", value: interaction.guild.memberCount.toString(), inline: false}
             )
