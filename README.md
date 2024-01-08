@@ -76,6 +76,9 @@ const newCustomId = new PlaceholderConfigSchema({
     await PlaceholderConfigSchema.updateOne();
 ```
 
+## Command Folders
+Please note that if you have command sections that include two or more commands (e.g. Bug: ```bug.js```,```bugconfig.js``` which are concluded in ```src/commands/bugs```). This makes it easier for other devs to see through the structure of the bot.
+
 ## Current working Commands
 *- Kick Command*<br>
 *- Ban Command*<br>
@@ -96,8 +99,11 @@ const newCustomId = new PlaceholderConfigSchema({
 ## Currently working on
 - [ ] Fix Errors in Quiz Command
 - [ ] Complete Channelset Command
-- [ ] Fix Errors in Clear Command
+- [ ] Update Bug Command
 - [ ] Fix Help Command
+
+## Completed commands
+- [x] Fix Errors in Clear Command
 ```
     ___     ___    ___       ___
    |   |   |   |   \  \     /  /
