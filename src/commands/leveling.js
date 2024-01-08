@@ -1,4 +1,3 @@
-const prefix = '!#';
 const {MessageEmbed, Permissions, Client} = require('discord.js');
 fs = require('fs');
 
