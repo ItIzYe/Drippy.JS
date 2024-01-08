@@ -3,7 +3,7 @@ const {
     Interaction,
     ButtonInteraction,
     ApplicationCommandOptionType,
-    PermissionFlagsBits, Permissions,MessageEmbed
+    PermissionFlagsBits, Permissions,EmbedBuilder
 } = require('discord.js');
 
 const mod = ["Moderation", "moderation", "MODERATION", "MOD", "Mod", "mod"];
@@ -18,7 +18,7 @@ module.exports = {
     /**
      *
      * @param {Client} client
-     * @param {Interaction, ButtonInteraction} interaction
+     * @param {Interaction} interaction
      */
     name: 'help',
     description: 'Help Commands',
@@ -32,7 +32,7 @@ module.exports = {
 
         if (section == null) {
             //language en
-            const helpEmbed = new MessageEmbed()
+            const helpEmbed = new EmbedBuilder()
 
                 .setColor("#3497da")
                 .setTitle("Help")
@@ -86,7 +86,7 @@ module.exports = {
 
         else if (mod.includes(section)) {
             //language en
-            const helpEmbed = new MessageEmbed()
+            const helpEmbed = new EmbedBuilder()
 
                 .setColor("#9b59b5")
                 .setTitle("Help - Moderation")
@@ -120,7 +120,7 @@ module.exports = {
 
         } else if (infos.includes(section)) {
             //language en
-                const helpEmbed = new MessageEmbed()
+                const helpEmbed = new EmbedBuilder()
 
                     .setColor("#9b59b5")
                     .setTitle("Help - Infos")
@@ -139,7 +139,7 @@ module.exports = {
         }
         else if (fun.includes(section)) {
         //language en
-            const helpEmbed = new MessageEmbed()
+            const helpEmbed = new EmbedBuilder()
 
                 .setColor("#9b59b5")
                 .setTitle("Help - Fun")
@@ -155,7 +155,7 @@ module.exports = {
 
         else if (level.includes(section)) {
             //language en
-            const helpEmbed = new MessageEmbed()
+            const helpEmbed = new EmbedBuilder()
 
                 .setColor("#9b59b5")
                 .setTitle("Help - Leveling")
