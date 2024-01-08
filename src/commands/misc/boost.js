@@ -1,5 +1,4 @@
-const prefix = '!#';
-const {MessageEmbed, Permissions, Client, Interaction} = require('discord.js');
+const {EmbedBuilder, Permissions, Client, Interaction} = require('discord.js');
 
 
 module.exports = {
@@ -25,7 +24,7 @@ module.exports = {
 
 
 
-        const boostEmbed = new MessageEmbed()
+        const boostEmbed = new EmbedBuilder()
             .setColor("#9b59b5")
             .setTitle("Serverboosting")
             .setDescription("Ihr habt die Möglichkeit unseren Server monatlich mit einem Nitro Boostzu boosten. " +
