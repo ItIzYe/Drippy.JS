@@ -1,5 +1,5 @@
 const GuildConfiguration = require('../../models/GuildConfiguration');
-const {Client, Interaction, Permissions, PermissionsBitField,} = require('discord.js')
+const {Client, Interaction, GuildChannelTypes, PermissionsBitField,} = require('discord.js')
 const mongoose = require('mongoose');
 
 
