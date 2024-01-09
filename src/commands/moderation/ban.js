@@ -1,38 +1,35 @@
 const {
     Client,
     Interaction,
-    Permissions,
-    MessageEmbed,
-
     ApplicationCommandOptionType,
     PermissionFlagsBits,
-    ApplicationCommand,
-    ApplicationCommandPermissionsManager
+    EmbedBuilder
 } = require('discord.js');
 
 module.exports = {
+    /**
+     *
+     * @param {Client} client
+     * @param {Interaction} interaction
+     */
     name: 'ban',
     description: 'Bans a member from this server.',
     options: [
         {
             name: 'target-user',
             description: 'The user you want to ban.',
+            type: ApplicationCommandOptionType.Mentionable,
             required: true,
-            type: 6,
         },
         {
             name: 'reason',
             description: 'The reason you want to ban.',
-            type: 3,
+            type: ApplicationCommandOptionType.String,
         },
     ],
-    permissionsRequired: [Permissions.FLAGS.BAN_MEMBERS],
+    permissionsRequired: [PermissionFlagsBits.BanMembers],
+    botPermissions: [PermissionFlagsBits.BanMembers],
 
-    /**
-     *
-     * @param {Client} client
-     * @param {Interaction} interaction
-     */
     callback: async (client, interaction) => {
         const targetUserId = interaction.options.get('target-user').value;
         const reason =
@@ -43,8 +40,8 @@ module.exports = {
         const targetUser = await interaction.guild.members.fetch(targetUserId);
 
         if (!targetUser) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('BANN')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -54,13 +51,14 @@ module.exports = {
             return;
         }
 
-        if (targetUser.id === interaction.guild.ownerId) {const embed = new MessageEmbed()
-            .setColor('YELLOW')
-            .setTitle('BANN')
-            .setDescription('Ein Fehler liegt vor')
-            .setFields(
-                {name: 'Fehler', value:'Ich konnte den Member nicht bannen da er der Server Owner ist', inline: true}
-            )
+        if (targetUser.id === interaction.guild.ownerId) {
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
+                .setTitle('BANN')
+                .setDescription('Ein Fehler liegt vor')
+                .setFields(
+                    {name: 'Fehler', value:'Ich konnte den Member nicht bannen da er der Server Owner ist', inline: true}
+                )
             await interaction.editReply({embeds: [embed]});
             return;
         }
@@ -70,8 +68,8 @@ module.exports = {
         const botRolePosition = interaction.guild.members.me.roles.highest.position; // Highest role of the bot
 
         if (targetUserRolePosition >= requestUserRolePosition) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('BANN')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -82,8 +80,8 @@ module.exports = {
         }
 
         if (targetUserRolePosition >= botRolePosition) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('BANN')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -96,9 +94,8 @@ module.exports = {
 
         // Ban the targetUser
         try {
-
-            const embed = new MessageEmbed()
-                .setColor('RED')
+            const embed = new EmbedBuilder()
+                .setColor('Red')
                 .setTitle('BANN')
                 .setDescription('Ein User wurde gebannt')
                 .setFields(
@@ -113,5 +110,4 @@ module.exports = {
             console.log(`There was an error when banning: ${error}`);
         }
     },
-
 };
