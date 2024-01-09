@@ -1,40 +1,35 @@
-const {Client,
-    Interaction,
-    MessageEmbed,
-    ApplicationCommandOptionType,
-    PermissionFlagsBits, Permissions,
-} = require('discord.js');
-
+const { Client, Interaction, ApplicationCommandOptionType, PermissionFlagsBits, EmbedBuilder} = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
+    /**
+     *
+     * @param {Client} client
+     * @param {Interaction} interaction
+     */
     name: 'timeout',
     description: 'Timeout a user.',
     options: [
         {
             name: 'target-user',
             description: 'The user you want to timeout.',
-            type: 6,
+            type: ApplicationCommandOptionType.Mentionable,
             required: true,
         },
         {
             name: 'duration',
             description: 'Timeout duration (30m, 1h, 1 day).',
-            type: 3,
+            type: ApplicationCommandOptionType.String,
             required: true,
         },
         {
             name: 'reason',
             description: 'The reason for the timeout.',
-            type: 3,
+            type: ApplicationCommandOptionType.String,
         },
     ],
-    permissionsRequired: [Permissions.FLAGS.MUTE_MEMBERS],
-    /**
-     *
-     * @param {Client} client
-     * @param {Interaction} interaction
-     */
+    permissionsRequired: [PermissionFlagsBits.MuteMembers],
+    botPermissions: [PermissionFlagsBits.MuteMembers],
 
     callback: async (client, interaction) => {
         const mentionable = interaction.options.get('target-user').value;
@@ -45,8 +40,8 @@ module.exports = {
 
         const targetUser = await interaction.guild.members.fetch(mentionable);
         if (!targetUser) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('TIMEOUT')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -57,8 +52,8 @@ module.exports = {
         }
 
         if (targetUser.user.bot) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('TIMEOUT')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -70,8 +65,8 @@ module.exports = {
 
         const msDuration = ms(duration);
         if (isNaN(msDuration)) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('TIMEOUT')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -82,8 +77,8 @@ module.exports = {
         }
 
         if (msDuration < 5000 || msDuration > 2.419e9) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('TIMEOUT')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -98,8 +93,8 @@ module.exports = {
         const botRolePosition = interaction.guild.members.me.roles.highest.position; // Highest role of the bot
 
         if (targetUserRolePosition >= requestUserRolePosition) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('TIMEOUT  ')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -110,8 +105,8 @@ module.exports = {
         }
 
         if (targetUserRolePosition >= botRolePosition) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('TIMEOUT')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -127,8 +122,8 @@ module.exports = {
 
             if (targetUser.isCommunicationDisabled()) {
                 await targetUser.timeout(msDuration, reason);
-                const embed = new MessageEmbed()
-                    .setColor('RED')
+                const embed = new EmbedBuilder()
+                    .setColor('Red')
                     .setTitle('TIMEOUT')
                     .setDescription('Ein Timeout wurde geändert')
                     .setFields(
@@ -136,13 +131,13 @@ module.exports = {
                         {name: 'Neuer Timeout', value:prettyMs(msDuration, {verbose:true}), inline:true},
                         {name: 'Grund', value: `${reason}`, inline: true}
                     )
-                await interaction.editReply(`${targetUser}'s timeout has been updated to ${prettyMs(msDuration, { verbose: true })}\nReason: ${reason}`);
+                await interaction.editReply({embeds: [embed]});
                 return;
             }
 
             await targetUser.timeout(msDuration, reason);
-            const embed = new MessageEmbed()
-                .setColor('RED')
+            const embed = new EmbedBuilder()
+                .setColor('Red')
                 .setTitle('TIMEOUT')
                 .setDescription('Ein Member wurde getimeoutet')
                 .setFields(
