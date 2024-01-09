@@ -1,3 +1,4 @@
+const GuildConfiguration = require('../../models/GuildConfiguration');
 const {
     Client,
     Interaction,
