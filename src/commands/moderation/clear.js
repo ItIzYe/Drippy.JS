@@ -2,7 +2,7 @@ const {
     Client,
     Interaction,
     ApplicationCommandOptionType,
-    PermissionFlagsBits, Permissions, MessageEmbed,
+    PermissionFlagsBits, Permissions, EmbedBuilder,
 } = require('discord.js');
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
         description: 'How many messages do you want to delete',
         required: true
     }],
-    permissionsRequired:[Permissions.FLAGS.MANAGE_MESSAGES],
+    permissionsRequired:[PermissionFlagsBits.MessageManager],
 
 
     callback: async (client, interaction) => {
@@ -35,8 +35,8 @@ module.exports = {
         await interaction.channel.messages.fetch({limit: args}).then(messages =>{
             interaction.channel.bulkDelete(messages)
         })
-        const embed = new MessageEmbed()
-            .setColor('GREEN')
+        const embed = new EmbedBuilder()
+            .setColor('Green')
             .setTitle('Clear')
             .setDescription(`${args} Nachrichten wurden gelöscht`)
         await interaction.reply({embeds:[embed]})
