@@ -1,5 +1,5 @@
 const GuildConfiguration = require('../../models/GuildConfiguration');
-const {Client, Interaction, Permissions,} = require('discord.js')
+const {Client, Interaction, Permissions, PermissionsBitField,} = require('discord.js')
 const mongoose = require('mongoose');
 
 
@@ -35,7 +35,7 @@ module.exports = {
             required: true
             }]
         }],
-    permissionsRequired: [Permissions.FLAGS.ADMINISTRATOR],
+    permissionsRequired: [PermissionsBitField.Administrator],
 
     callback: async(client, interaction) => {
         let guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
