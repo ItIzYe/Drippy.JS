@@ -8,6 +8,10 @@ const guildConfigurationSchema = new Schema({
     suggestionChannelIds: {
         type: [String],
         default: []
+    },
+    moderationChannelIds: {
+        type: [String],
+        default: []
     }
 });
 
