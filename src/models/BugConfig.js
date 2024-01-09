@@ -2,8 +2,8 @@ const {Schema, model} = require('mongoose');
 
 const BugConfigSchema = new Schema({
     guildID: {
-    type: String,
-    default: "pending"
+        type: String,
+        default: "pending"
     },
     userTag: {
         type: String,

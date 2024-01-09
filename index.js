@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const {Intents, Client} = require('discord.js');
+const {IntentsBitField, Client} = require('discord.js');
 const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
 const fs = require('fs');
 const sleep = require('sleep-promise');
@@ -12,15 +12,7 @@ require('dotenv').config();
 
 
 
-const client = new Client({ intents: [
-        Intents.FLAGS.GUILD_PRESENCES,
-        Intents.FLAGS.GUILD_MEMBERS,
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.DIRECT_MESSAGES,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        Intents.FLAGS.GUILD_MESSAGE_TYPING,
-        Intents.FLAGS.GUILD_PRESENCES]});
+const client = new Client({ intents: 3276799});
 
 
 eventHandler(client);
