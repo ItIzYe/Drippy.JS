@@ -94,17 +94,38 @@ module.exports = {
 
         // Kick the targetUser
         try {
-            await targetUser.kick({ reason });
-            const embed = new EmbedBuilder()
-                .setColor('Red')
-                .setTitle('KICK')
-                .setDescription('Ein Member wurde gekickt')
-                .setFields(
-                    {name: 'Member', value: `${targetUser}`, inline: true},
-                    {name: '---------', value: '      ', inline:true},
-                    {name: 'Grund', value: `${reason}`, inline: true}
-                )
-            await interaction.editReply({embeds: [embed]});
+            let guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
+            console.log(guildConfiguration.moderationChannelIds[0])
+            if(guildConfiguration.moderationChannelIds) {
+                const messageChannel = client.channels.cache.get(guildConfiguration.moderationChannelIds[0])
+                await targetUser.kick({reason});
+                const embed = new EmbedBuilder()
+                    .setColor('Red')
+                    .setTitle('KICK')
+                    .setDescription('Ein Member wurde gekickt')
+                    .setFields(
+                        {name: 'Member', value: `${targetUser}`, inline: true},
+                        {name: '---------', value: '      ', inline: true},
+                        {name: 'Grund', value: `${reason}`, inline: true}
+                    )
+                await messageChannel.send({embeds: [embed]});
+
+                const answerEmbed = new EmbedBuilder()
+                    .setTitle('Person wurde gekickt')
+
+                await interaction.editReply({embeds: [answerEmbed]});
+            }else if(!guildConfiguration.moderationChannelIds) {
+                const embed = new EmbedBuilder()
+                    .setColor('Red')
+                    .setTitle('KICK')
+                    .setDescription('Ein Member wurde gekickt')
+                    .setFields(
+                        {name: 'Member', value: `${targetUser}`, inline: true},
+                        {name: '---------', value: '      ', inline: true},
+                        {name: 'Grund', value: `${reason}`, inline: true}
+                    )
+                await interaction.editReply({embeds: [embed]});
+            }
         } catch (error) {
             console.log(`There was an error when kicking: ${error}`);
         }

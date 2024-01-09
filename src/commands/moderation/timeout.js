@@ -7,6 +7,7 @@ module.exports = {
      *
      * @param {Client} client
      * @param {Interaction} interaction
+     * @param {Object} param0
      */
     name: 'timeout',
     description: 'Timeout a user.',
@@ -122,31 +123,82 @@ module.exports = {
             const { default: prettyMs } = await import('pretty-ms');
 
             if (targetUser.isCommunicationDisabled()) {
-                await targetUser.timeout(msDuration, reason);
-                const embed = new EmbedBuilder()
-                    .setColor('Red')
-                    .setTitle('TIMEOUT')
-                    .setDescription('Ein Timeout wurde geändert')
-                    .setFields(
-                        {name: 'Member', value: `${targetUser}`, inline: true},
-                        {name: 'Neuer Timeout', value:prettyMs(msDuration, {verbose:true}), inline:true},
-                        {name: 'Grund', value: `${reason}`, inline: true}
-                    )
-                await interaction.editReply({embeds: [embed]});
-                return;
+                let guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
+                console.log(guildConfiguration.moderationChannelIds[0])
+                if(guildConfiguration.moderationChannelIds){
+                    const messageChannel= client.channels.cache.get(guildConfiguration.moderationChannelIds[0])
+
+                    await targetUser.timeout(msDuration, reason);
+                    const embed = new EmbedBuilder()
+                        .setColor('Red')
+                        .setTitle('TIMEOUT')
+                        .setDescription('Ein Timeout wurde geändert')
+                        .setFields(
+                            {name: 'Member', value: `${targetUser}`, inline: true},
+                            {name: 'Neuer Timeout', value:prettyMs(msDuration, {verbose:true}), inline:true},
+                            {name: 'Grund', value: `${reason}`, inline: true},
+                        )
+                    await messageChannel.send({embeds: [embed]});
+
+                    const answerEmbed = new EmbedBuilder()
+                        .setTitle('Timeout wurde bearbeitet')
+
+                    await interaction.editReply({embeds: [answerEmbed]});
+
+                } else if(!guildConfiguration.moderationChannelIds) {
+                    await targetUser.timeout(msDuration, reason);
+                    const embed = new EmbedBuilder()
+                        .setColor('Red')
+                        .setTitle('TIMEOUT')
+                        .setDescription('Ein Timeout wurde geändert')
+                        .setFields(
+                            {name: 'Member', value: `${targetUser}`, inline: true},
+                            {name: 'Neuer Timeout', value:prettyMs(msDuration, {verbose:true}), inline:true},
+                            {name: 'Grund', value: `${reason}`, inline: true},
+                        )
+                    await interaction.editReply({embeds: [embed]});
+
+                }
+            } else {
+                let guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
+                console.log(guildConfiguration.moderationChannelIds[0])
+                if(guildConfiguration){
+                    const messageChannel= client.channels.cache.get(guildConfiguration.moderationChannelIds[0])
+
+                    await targetUser.timeout(msDuration, reason);
+                    const embed = new EmbedBuilder()
+                        .setColor('Red')
+                        .setTitle('TIMEOUT')
+                        .setDescription('Ein Member wurde getimeoutet')
+                        .setFields(
+                            {name: 'Member', value: `${targetUser}`, inline: true},
+                            {name: 'Dauer', value: prettyMs(msDuration), inline:true},
+                            {name: 'Grund', value: `${reason}`, inline: true}
+                        )
+                    await messageChannel.send({embeds: [embed]});
+
+                    const answerEmbed = new EmbedBuilder()
+                        .setTitle('Timeout wurde erstellt')
+
+                    await interaction.editReply({embeds: [answerEmbed]});
+
+
+                } else if(!guildConfiguration.moderationChannelIds) {
+                    await targetUser.timeout(msDuration, reason);
+                    const embed = new EmbedBuilder()
+                        .setColor('Red')
+                        .setTitle('TIMEOUT')
+                        .setDescription('Ein Member wurde getimeoutet')
+                        .setFields(
+                            {name: 'Member', value: `${targetUser}`, inline: true},
+                            {name: 'Dauer', value: prettyMs(msDuration), inline:true},
+                            {name: 'Grund', value: `${reason}`, inline: true}
+                        )
+                    await interaction.editReply({embeds: [embed]});
+                    return;
+                }
             }
 
-            await targetUser.timeout(msDuration, reason);
-            const embed = new EmbedBuilder()
-                .setColor('Red')
-                .setTitle('TIMEOUT')
-                .setDescription('Ein Member wurde getimeoutet')
-                .setFields(
-                    {name: 'Member', value: `${targetUser}`, inline: true},
-                    {name: 'Dauer', value: prettyMs(msDuration), inline:true},
-                    {name: 'Grund', value: `${reason}`, inline: true}
-                )
-            await interaction.editReply({embeds: [embed]});
         } catch (error) {
             console.log(`There was an error when timing out: ${error}`);
         }
