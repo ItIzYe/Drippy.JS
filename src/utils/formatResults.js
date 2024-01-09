@@ -1,10 +1,10 @@
 const pb = {
-    le: '<:_le:1125454286004949053>',
-    me: '<:_me:11254225481150566>',
-    re: '<:_re',
-    lf: '',
-    mf: '',
-    rf: '',
+    le: '<:_le:1194078627353083945>',
+    me: '<:_me:1194078620545712168>',
+    re: '<:_re:1194078622621909092>',
+    lf: '<:_lf:1194078628527472700>',
+    mf: '<:_mf:1194078625021046824>',
+    rf: '<:_rf:1194078623775338607>',
 };
 
 function formatResults(upvotes = [], downvotes = []) {
@@ -14,7 +14,7 @@ function formatResults(upvotes = [], downvotes = []) {
     const emptySquares = progressBarLength - filledSquares || 0;
 
     if (!filledSquares && !emptySquares) {
-        emptySquares = progressBarLength;
+        let emptySquares = progressBarLength;
     }
 
     const upPercentage = (upvotes.length / totalVotes) * 100 || 0;
