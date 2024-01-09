@@ -2,31 +2,33 @@ const {
     Client,
     Interaction,
     ApplicationCommandOptionType,
-    PermissionFlagsBits, Permissions, MessageEmbed,
+    PermissionFlagsBits,
+    EmbedBuilder
 } = require('discord.js');
 
 module.exports = {
+    /**
+     *
+     * @param {Client} client
+     * @param {Interaction} interaction
+     */
     name: 'kick',
     description: 'Kicks a member from this server.',
     options: [
         {
             name: 'target-user',
             description: 'The user you want to kick.',
+            type: ApplicationCommandOptionType.Mentionable,
             required: true,
-            type: 6,
         },
         {
             name: 'reason',
             description: 'The reason you want to kick.',
-            type: 3,
+            type: ApplicationCommandOptionType.String,
         },
     ],
-    permissionsRequired: [Permissions.FLAGS.KICK_MEMBERS],
-    /**
-     *
-     * @param {Client} client
-     * @param {Interaction} interaction
-     */
+    permissionsRequired: [PermissionFlagsBits.KickMembers],
+    botPermissions: [PermissionFlagsBits.KickMembers],
 
     callback: async (client, interaction) => {
         const targetUserId = interaction.options.get('target-user').value;
@@ -38,8 +40,8 @@ module.exports = {
         const targetUser = await interaction.guild.members.fetch(targetUserId);
 
         if (!targetUser) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('KICK')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -50,8 +52,8 @@ module.exports = {
         }
 
         if (targetUser.id === interaction.guild.ownerId) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('KICK')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -66,8 +68,8 @@ module.exports = {
         const botRolePosition = interaction.guild.members.me.roles.highest.position; // Highest role of the bot
 
         if (targetUserRolePosition >= requestUserRolePosition) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('KICK')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -78,8 +80,8 @@ module.exports = {
         }
 
         if (targetUserRolePosition >= botRolePosition) {
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Yellow')
                 .setTitle('KICK')
                 .setDescription('Ein Fehler liegt vor')
                 .setFields(
@@ -92,8 +94,8 @@ module.exports = {
         // Kick the targetUser
         try {
             await targetUser.kick({ reason });
-            const embed = new MessageEmbed()
-                .setColor('YELLOW')
+            const embed = new EmbedBuilder()
+                .setColor('Red')
                 .setTitle('KICK')
                 .setDescription('Ein Member wurde gekickt')
                 .setFields(
@@ -106,4 +108,5 @@ module.exports = {
             console.log(`There was an error when kicking: ${error}`);
         }
     },
+
 };
