@@ -1,4 +1,5 @@
 const GuildConfiguration = require('../../models/GuildConfiguration');
+const ImageConfiguration = require('../../models/Images');
 const {
     Client,
     Interaction,
@@ -12,6 +13,7 @@ module.exports = {
      *
      * @param {Client} client
      * @param {Interaction} interaction
+     * @param {Object} 0param
      */
     name: 'kick',
     description: 'Kicks a member from this server.',
@@ -94,6 +96,9 @@ module.exports = {
 
         // Kick the targetUser
         try {
+            let moderationImage = await ImageConfiguration.findOne({guildId: '865934977270546462'});
+            let kickImage = moderationImage.moderationKickImages;
+            let random = kickImage[Math.floor(Math.random() * kickImage.length)];
             let guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
             console.log(guildConfiguration.moderationChannelIds[0])
             if(guildConfiguration.moderationChannelIds) {
@@ -102,6 +107,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor('Red')
                     .setTitle('KICK')
+                    .setThumbnail(random)
                     .setDescription('Ein Member wurde gekickt')
                     .setFields(
                         {name: 'Member', value: `${targetUser}`, inline: true},
@@ -118,6 +124,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor('Red')
                     .setTitle('KICK')
+                    .setThumbnail(random)
                     .setDescription('Ein Member wurde gekickt')
                     .setFields(
                         {name: 'Member', value: `${targetUser}`, inline: true},

@@ -99,14 +99,10 @@ module.exports = {
         // Ban the targetUser
         try {
             let moderationImage = await ImageConfiguration.findOne({guildId: '865934977270546462'});
-            console.log(moderationImage.moderationImages);
             let banImage = moderationImage.moderationImages;
-            console.log(banImage);
             let random = banImage[Math.floor(Math.random() * banImage.length)];
-            console.log(random);
 
             let guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
-            console.log(guildConfiguration.moderationChannelIds[0])
             if(guildConfiguration.moderationChannelIds) {
                 const messageChannel = client.channels.cache.get(guildConfiguration.moderationChannelIds[0])
                 const embed = new EmbedBuilder()
