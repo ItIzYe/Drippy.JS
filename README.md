@@ -79,6 +79,11 @@ const newCustomId = new PlaceholderConfigSchema({
 ## Command Folders
 Please note that if you have command sections that include two or more commands (e.g. Bug: ```bug.js```,```bugconfig.js``` which are concluded in ```src/commands/bugs```). This makes it easier for other devs to see through the structure of the bot.
 
+
+### Use of Gifs
+To use Gifs, use ``open immage in new tag`` then copy link from the searchbar.
+
+
 ## Current working Commands
 *- Kick Command*<br>
 *- Ban Command*<br>
@@ -122,3 +127,5 @@ Please note that if you have command sections that include two or more commands 
        Code can be used with
               Credits
 ```
+
+
