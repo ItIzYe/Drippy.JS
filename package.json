@@ -16,7 +16,7 @@
     "collections": "^5.1.13",
     "discord-buttons": "^4.0.0-deprecated",
     "discord-rich-presence": "^0.0.8",
-    "discord.js": "^13.17.1",
+    "discord.js": "^14.14.1",
     "dotenv": "^10.0.0",
     "fs": "^0.0.1-security",
     "mongoose": "^6.12.5",
