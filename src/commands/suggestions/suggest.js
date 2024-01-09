@@ -1,5 +1,5 @@
-const GuildConfiguration = require('./models/GuildConfiguration')
-const Suggestion = require('./models/Suggestion')
+const GuildConfiguration = require('../../models/GuildConfiguration')
+const Suggestion = require('../../models/Suggestion')
 const {Modal, TextInputComponent, TextInputStyle, MessageActionRow, ModalOptions, ModalActionRowComponentOptions, ModalMessageModalSubmitInteraction} = require('discord.js')
 
 module.exports = {
