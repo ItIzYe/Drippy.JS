@@ -1,4 +1,4 @@
-const {MessageEmbed, Permissions, Client, Interaction} = require('discord.js');
+const {EmbedBuilder, Permissions, Client, Interaction,} = require('discord.js');
 const mongoose = require('mongoose');
 const BugConfig = require('../../models/BugConfig');
 const GuildConfiguration = require("../../models/GuildConfiguration");
@@ -13,7 +13,7 @@ module.exports = {
      */
     name: "bug",
     description: "Bug Report",
-    devOnly: true,
+    //devOnly: true,
     //testOnly: true,
     options: [{
         name: "bug-report",
@@ -33,11 +33,11 @@ module.exports = {
         const region =  interaction.guildLocale;
         const memberCount = interaction.guild.memberCount;
         const bugReport = interaction.options.get('bug-report').value;
-        const messageId = interaction.id
+        //const messageId = interaction.id
 
         const bug_report_channel = client.channels.cache.get("899379299256250438");
 
-        const msg_no_reason = new MessageEmbed()
+        const msg_no_reason = new EmbedBuilder()
             .setColor("#ff0000")
             .setTitle(interaction.guild.name)
             .setThumbnail(interaction.guild.iconURL())
@@ -46,7 +46,7 @@ module.exports = {
             )
             .setTimestamp()
 
-        const bug_reported = new MessageEmbed()
+        const bug_reported = new EmbedBuilder()
             .setColor("#9fb1fd")
             .setTitle(interaction.guild.name)
             .setThumbnail(interaction.guild.iconURL())
@@ -55,29 +55,20 @@ module.exports = {
             )
             .setTimestamp()
 
-        const newBugContent = new BugConfig({
-            guildID: guildId,
-            userTag: userTag,
-            userID: userId,
-            region: region,
-            memberCount: memberCount,
-            bug: bugReport,
-            bugID: messageId
-        })
-        await BugConfig.updateMany();
 
-        const new_bug_report = new MessageEmbed()
+
+        const new_bug_report = new EmbedBuilder()
             .setColor("#9fb1fd")
             .setTitle("Bugreport auf dem Server " + interaction.guild.name)
             .setThumbnail(interaction.guild.iconURL())
             .setFields(
-                {name: "GUILD ID:", value: `${newBugContent.guildID}`, inline: false},
-                {name: "USER:", value:`${newBugContent.userTag}`, inline: false},
-                {name: "USER ID:", value: `${newBugContent.userID}`, inline: false},
-                {name: "Region:", value:`${newBugContent.region}`, inline: false},
-                {name: "Membercount:",value: `${newBugContent.memberCount}`, inline: false},
-                {name: "BUG:", value:`${newBugContent.bug}`, inline: false},
-                {name: "BUG ID:", value:`${newBugContent.bugID}`, inline: false})
+                {name: "GUILD ID:", value: `${guildId}`, inline: false},
+                {name: "USER:", value:`${userTag}`, inline: false},
+                {name: "USER ID:", value: `${userId}`, inline: false},
+                {name: "Region:", value:`${region}`, inline: false},
+                {name: "Membercount:",value: `${memberCount}`, inline: false},
+                {name: "BUG:", value:`${bugReport}`, inline: false},
+                /**{name: "BUG ID:", value:`${messageId}`, inline: false}**/)
             .setTimestamp()
 
         const row2 = {
@@ -104,6 +95,45 @@ module.exports = {
 
 
 
-        return bug_report_channel.send({embeds: [new_bug_report], components: [row2]});
+        let message = await bug_report_channel.send({embeds: [new_bug_report], components: [row2]});
+        const messageId1 = message.id
+        console.log(messageId1)
+        const newBugContent = new BugConfig({
+            guildID: guildId,
+            userTag: userTag,
+            userID: userId,
+            region: region,
+            memberCount: memberCount,
+            bug: bugReport,
+            bugID: messageId1
+        })
+        await newBugContent.save();
+
+        const new_bug_report1 = new EmbedBuilder()
+            .setColor("#9fb1fd")
+            .setTitle("Bugreport auf dem Server " + interaction.guild.name)
+            .setThumbnail(interaction.guild.iconURL())
+            .setFields(
+                {name: "GUILD ID:", value: `${guildId}`, inline: false},
+                {name: "USER:", value:`${userTag}`, inline: false},
+                {name: "USER ID:", value: `${userId}`, inline: false},
+                {name: "Region:", value:`${region}`, inline: false},
+                {name: "Membercount:",value: `${memberCount}`, inline: false},
+                {name: "BUG:", value:`${bugReport}`, inline: false},
+                {name: "BUG ID:", value:`${messageId1}`, inline: false})
+            .setTimestamp()
+
+        const row1 = {
+            "type": 1,
+            "components": [{
+                "type": 2,
+                "label": "sent by Drippy",
+                "style": 1,
+                "custom_id": "bugDrippy",
+                "disabled": true,
+            }]
+        }
+
+        await message.edit({embeds:[new_bug_report1]})
     },
 };
