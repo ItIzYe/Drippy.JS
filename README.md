@@ -94,16 +94,18 @@ Please note that if you have command sections that include two or more commands 
 *- Quiz Command*
 
 ## Currently not fully usable
-*- Channelset Command*
+*- Channelset Command*<br>
+*- Help Command*
 
 ## Currently working on
 - [ ] Fix Errors in Quiz Command
 - [ ] Complete Channelset Command
-- [ ] Update Bug Command
 - [ ] Fix Help Command
 
 ## Completed commands
 - [x] Fix Errors in Clear Command
+- [x] Update Bug Command
+- [x] Create Suggestion Command
 ```
     ___     ___    ___       ___
    |   |   |   |   \  \     /  /
