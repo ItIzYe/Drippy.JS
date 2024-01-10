@@ -2,7 +2,7 @@ const {Schema, model} = require('mongoose');
 
 
 const levelSchema = new Schema({
-    userId: {
+    userID: {
         type: String,
         required: true
     },
