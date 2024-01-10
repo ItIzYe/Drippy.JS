@@ -19,11 +19,15 @@ module.exports = {
     description: "Erstellt Server ranking",
     callback: async (client, interaction) => {
 
-        await interaction.guild.members.cache.forEach(member => {
-            //Öffnet die JSON Datei
-            let memberXp =  Level.findOne({userID: member.user.id});
-            const finMemberXp = memberXp?.query.userID;
-            console.log(finMemberXp)
+        const levelsArray = await Level.find({guildId: interaction.guild.id})
+        const verifiedUser = levelsArray.map((user) => user)
+
+        console.log(verifiedUser[verifiedUser.userId])
+         interaction.guild.members.cache.forEach(member => {
+            if(levelsArray.includes(member.user.id)){
+                console.log(levelsArray)
+            }
+            // ...
         });
     }
 }
