@@ -17,7 +17,7 @@ module.exports = {
      * @param {Object} 0param
      */
     name: "ranking",
-    testOnly: true,
+    deleted: true,
     description: "Erstellt Server ranking",
     callback: async (client, interaction) => {
 
