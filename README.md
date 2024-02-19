@@ -10,6 +10,8 @@ For our commands, we use the `callback` option rather than the `execute` option.
 module.exports = {
     name: String,
     description: String,
+    options: [],
+    devOptions
     callback: async (client, interaction) => {
         // Code
     },
@@ -17,7 +19,7 @@ module.exports = {
 ```
 
 
-| Option    |                                                            desciption                                                             |
+| Option    |                                                            description                                                             |
 |-----------|:---------------------------------------------------------------------------------------------------------------------------------:|
 | *devOnly* |          When set to `true`, only registered developers can use this Command. More about registering <a href="">here</a>          |
 |*testOnly* | When set to `true`, the Command can only be used on the test-Server. More about registering a test-Server <a href="">here</a><br> |
