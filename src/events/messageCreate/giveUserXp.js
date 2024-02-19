@@ -20,7 +20,7 @@ module.exports = async (client, message) => {
     const xpToGive = getRandomXp(5, 15);
 
     const query = {
-        userId: message.author.id,
+        userID: message.author.id,
         guildId: message.guild.id,
     };
 
@@ -51,7 +51,7 @@ module.exports = async (client, message) => {
         else {
             // create new level
             const newLevel = new Level({
-                userId: message.author.id,
+                userID: message.author.id,
                 guildId: message.guild.id,
                 xp: xpToGive,
             });

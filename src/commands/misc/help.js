@@ -21,6 +21,7 @@ module.exports = {
      * @param {Interaction} interaction
      */
     name: 'help',
+    testOnly: true,
     description: 'Help Commands',
     options: [{name: "section", description: "Please insert a section", required: false, type: 3}],
 
