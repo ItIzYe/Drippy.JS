@@ -7,7 +7,7 @@ const {
     GuildMember
 } = require('discord.js');
 
-const Level = require('../src/models/Level')
+const Level = require('../../models/Level')
 fs = require('fs');
 module.exports = {
     /**
