@@ -55,6 +55,7 @@ module.exports = {
             await announcement_channel.send({embeds: [embed]});
 
         }
+        interaction.reply("Announcement has been sent")
 
     },
 };
