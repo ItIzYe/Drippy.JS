@@ -1,0 +1,297 @@
+{
+  "languages": ["english", "german"],
+  "translations": {
+    "BUG_REPORTET_TITLE": {
+      "english": "Bug reported:",
+      "german": " Bug wurde gemeldet: "
+    },
+    "BUG_REPORTET": {
+      "english": "Thank you for your bug report. We will make sure that the bug is fixed as soon as possible.",
+      "german": "Vielen Dank für deine Meldung. Wir werden uns so schnell wie möglich daran machen, den Bug zu fixen."
+    },
+    "BOOST_EXPLANATION": {
+      "english": "You have the chance to boost our server once a month with your Nitro Boost. A Subscription costs either 9,99$/month or 99,99$/year. Following are the needed Boosts and their advantages for our Server and You",
+      "german": "Ihr habt die Möglichkeit unseren Server monatlich mit einem Nitro Boost zu boosten. Ein Abonnement kostet entweder monatlich 9,99$ oder jährlich 99,99$. Im folgenden sind die jeweiligen benötigten Boosts und Vorteile aufgeführt,es hat also auch Vorteile für euch und wir freuen uns über jeden einzelnen Boost!"
+    },
+    "BOOST_1A": {
+      "english": "> :smile: +50 more Server Emoji Slots (Altogether 100)",
+      "german": "> :smile: +50 mehr Server Emoji Slots (Insgesamt 100)"
+    },
+    "BOOST_1B": {
+      "english": "> :musical_note: 128 Kbps Audio Quality",
+      "german": "> :musical_note: 128 Kbps Audio Qualität"
+    },
+    "BOOST_1C": {
+      "english": "> :desktop: Animated Server Icon",
+      "german": "> :desktop: Animiertes Server Icon"
+    },
+    "BOOST_2A": {
+      "english": "> :smile: again +50 mehr Server Emoji Slots (Altogether 150)",
+      "german": "> :smile: nochmal +50 mehr Server Emoji Slots (Insgesamt 150)"
+    },
+    "BOOST_2B": {
+      "english": "> :musical_note: 256 Kbps Audio Quality",
+      "german": "> :musical_note: 256 Kbps Audio Qualität"
+    },
+    "BOOST_2C": {
+      "english": "> :arrow_up: 50MB Upload Limit for all Servermembers",
+      "german": "> :arrow_up: 50MB Upload Limit für alle Mitglieder"
+    },
+    "BOOST_2D": {
+      "english": "> :frame_photo: Server Banner",
+      "german": "> :frame_photo: Server Banner"
+    },
+    "BOOST_3A": {
+      "english": "> :smile: again +100 more Server Emoji Slots (Altogether 250)",
+      "german": "> :smile: nochmal +100 mehr Server Emoji Slots (Insgesamt 250)"
+    },
+    "BOOST_3B": {
+      "english": "> :musical_note: 384 Kbps Audio Quality",
+      "german": "> :musical_note: 384 Kbps Audio Qualität"
+    },
+    "BOOST_3C": {
+      "english": "> :arrow_up: 100MB Upload Limit for all Servermembers",
+      "german": "> :arrow_up: 100MB Upload Limit für alle Mitglieder"
+    },
+    "BOOST_FIELD1": {
+      "english": "Level 1 - 2 Boosts",
+      "german": "Level 1 - ab 2 Boosts"
+    },
+    "BOOST_FIELD2": {
+      "english": "Level 2 - 7 Boosts",
+      "german": "Level 2 - ab 7 Boosts"
+    },
+    "BOOST_FIELD3": {
+      "english": "Level 3 - 15 Boosts",
+      "german": "Level 3 - ab 15 Boosts"
+    },
+    "HELP_MAINTITLE": {
+      "english": "Help",
+      "german": "Hilfe"
+    },
+    "HELP_DESCRIPTION": {
+      "english": "Here you can see all our commands and the categories into which the commands are divided. If you still have question, don't bother joining our support server. :) https://discord.gg/M8mqCr4vzf",
+      "german": "Hier kannst du alle Commands und ihre Kategorien einsehen. Solltest du danach immer noch fragen haben, komm gerne auf unseren Support Server. :) https://discord.gg/M8mqCr4vzf"
+    },
+    "INFO_FIELD2": {
+      "english": "Number of Servers",
+      "german": "Anzahl der Server"
+    },
+    "INFO_FIELD5": {
+      "english": "Last Update",
+      "german": "Letztes Update"
+    },
+    "INFO_FIELD6": {
+      "english": "Bug Report",
+      "german": "Bugs Melden"
+    },
+    "INFO_FIELD6_VALUE": {
+      "english": "Bugs can be reported via [bug]",
+      "german": "Bugs können über den Command [Bug] reported werden"
+    },
+    "BAN_EMBED_TITLE": {
+      "english": "BAN",
+      "german": "BANN"
+    },
+    "BAN_EMBED_ERROR": {
+      "english": "Error",
+      "german": "Fehler"
+    },
+    "BAN_EMBED_ERROR_TITLE": {
+      "english": "There was an error",
+      "german": "Ein Fehler liegt vor"
+    },
+    "BAN_EMBED_ERROR_DESCRIPTION1": {
+      "english": "The member couldn't be banned because he's not on the Server anymore",
+      "german": "Ich konnte den Member nicht bannen da er nicht mehr auf dem Server ist"
+    },
+    "BAN_EMBED_ERROR_DESCRIPTION2": {
+      "english": "The member couldn't be banned because he's the Server Owner",
+      "german": "Ich konnte den Member nicht bannen da er der Server Owner ist"
+    },
+    "BAN_EMBED_ERROR_DESCRIPTION3": {
+      "english": "The member couldn't be banned because he has the same/higher role than you",
+      "german": "Ich konnte den Member nicht bannen da er die selbe/höhere Rolle hat als du"
+    },
+    "BAN_EMBED_ERROR_DESCRIPTION4": {
+      "english": "The member couldn't be banned because he has the same/higher role than me",
+      "german": "Ich konnte den Member nicht bannen da er die selber/höhere Role hat als ich"
+    },
+    "BAN_EMBED_BANNED": {
+      "english": "A User has been banned",
+      "german": "Ein User wurde gebannt"
+    },
+    "BAN_EMBED_BANNED_REASON": {
+      "english": "Reason:",
+      "german": "Grund"
+    },
+    "BAN_ANSWER": {
+      "english": "Person has been banned",
+      "german": "Person wurde gebannt"
+    },
+    "CLEAR_GIVE_AMOUNT": {
+      "english": "Please specify a amount",
+      "german": "Bitte gebe an wieviele Nachrichten gelöscht werden sollen"
+    },
+    "CLEAR_REAL": {
+      "english": "Please insert a real number",
+      "german": "Bitte gib eine echte Nummer an"
+    },
+    "CLEAR_MORE_THAN_100": {
+      "english": "You can't delete more than 100 Messages at once",
+      "german": "Du kannst nicht mehr als 100 Nachrichten gleichzeitig löschen"
+    },
+    "CLEAR_LESS_THAN_1": {
+      "english": "You have to delete at least one Message",
+      "german": "Du musst mindestens eine Nachricht löschen"
+    },
+    "CLEAR_EMBED_DESCRIPTION": {
+      "english": "Messages have been deleted",
+      "german": "Nachrichten wurden gelöscht"
+    },
+    "CONFIG_MOD_ALREADY": {
+      "english": "has already been added as a Moderation channel",
+      "german": "ist schon ein Moderations channel"
+    },
+    "CONFIG_MOD_ADDED": {
+      "english": "has been added as a Moderation channel",
+      "german": "wurde als Moderations channel geaddet"
+    },
+    "CONFIG_MOD_NOT": {
+      "english": "is not a Moderation channel",
+      "german": "ist kein Moderations channel"
+    },
+    "CONFIG_MOD_REM": {
+      "english": "has been removed as a Moderation channel",
+      "germam": "wurde als Moderations channel entfernt"
+    },
+    "KICK_EMBED_ERROR_TITLE": {
+      "english": "There was an error",
+      "german": "Ein Fehler liegt vor"
+    },
+    "KICK_EMBED_ERROR_DESCRIPTION1": {
+      "english": "The member couldn't be kicked because he's not on the Server anymore",
+      "german": "Ich konnte den Member nicht kicken da er nicht mehr auf dem Server ist"
+    },
+    "KICK_EMBED_ERROR_DESCRIPTION2": {
+      "english": "The member couldn't be kicked because he's the Server Owner",
+      "german": "Ich konnte den Member nicht kicken da er der Server Owner ist"
+    },
+    "KICK_EMBED_ERROR_DESCRIPTION3": {
+      "english": "The member couldn't be kicked because he has the same/higher role than you",
+      "german": "Ich konnte den Member nicht kicken da er die selbe/höhere Rolle hat als du"
+    },
+    "KICK_EMBED_ERROR_DESCRIPTION4": {
+      "english": "The member couldn't be kicked because he has the same/higher role than me",
+      "german": "Ich konnte den Member nicht kicken da er die selber/höhere Role hat als ich"
+    },
+    "KICK_EMBED_KICKED": {
+      "english": "A User has been kicked",
+      "german": "Ein User wurde gekickt"
+    },
+    "KICK_EMBED_KICKED_REASON": {
+      "english": "Reason:",
+      "german": "Grund"
+    },
+    "KICK_ANSWER": {
+      "english": "Person has been kicked",
+      "german": "Person wurde gekickt"
+    },
+    "TIMEOUT_EMBED_ERROR_TITLE": {
+      "english": "There was an error",
+      "german": "Ein Fehler liegt vor"
+    },
+    "TIMEOUT_EMBED_ERROR_DESCRIPTION1": {
+      "english": "The member couldn't be timeouted because he's not on the Server anymore",
+      "german": "Ich konnte den Member nicht timeouten da er nicht mehr auf dem Server ist"
+    },
+    "TIMEOUT_EMBED_ERROR_DESCRIPTION2": {
+      "english": "I can't timeout Bots",
+      "german": "Ich kann keine Bots timeouten"
+    },
+    "TIMEOUT_EMBED_ERROR_DESCRIPTION3": {
+      "english": "You have to specify a Timeout-Duration",
+      "german": "Eine Timeout-Dauer muss festgelegt sein"
+    },
+    "TIMEOUT_EMBED_ERROR_DESCRIPTION54": {
+      "english": "The Timeout-Duration has to be between 5 seconds and 28 days long",
+      "german": "Die Timeout-Dauer muss zwischen 5 Sekunden und 28 Tagen betragen"
+    },
+    "TIMEOUT_EMBED_ERROR_DESCRIPTION5": {
+      "english": "The member couldn't be timeouted because he has the same/higher role than you",
+      "german": "Ich konnte den Member nicht timeouten da er die selber/höhere Role hat als du"
+    },
+    "TIMEOUT_EMBED_ERROR_DESCRIPTION6": {
+      "english": "The member couldn't be timeouted because he has the same/higher role than me",
+      "german": "Ich konnte den Member nicht timeouten da er die selber/höhere Role hat als ich"
+    },
+    "TIMEOUT_EMBED_TIMEOUTED": {
+      "english": "A User has been timeouted",
+      "german": "Ein User wurde getimeoutet"
+    },
+    "TIMEOUT_EMBED_TIMEOUTED_REASON": {
+      "english": "Reason:",
+      "german": "Grund"
+    },
+    "TIMEOUT_EMBED_TIMEOUTED_DURATION": {
+      "english": "Duration:",
+      "german": "Dauer:"
+    },
+    "TIMEOUT_EMBED_TIMEOUTED_CHANGED": {
+      "english": "A Timeout has been changed",
+      "german": "Ein Timeout wurde geändert"
+    },
+    "TIMEOUT_EMBED_TIMEOUTED_CREATED": {
+      "english": "A Timeout has been created",
+      "german": "Ein Timout wurde erstellt"
+    },
+    "TIMEOUT_ANSWER": {
+      "english": "Person has been timeouted",
+      "german": "Person wurde getimeoutet"
+    },
+    "CONFIG_SUGG_ALREADY": {
+      "english": "has already been added as a Suggestion channel",
+      "german": "ist schon ein Suggestion channel"
+    },
+    "CONFIG_SUGG_ADDED": {
+      "english": "has been added as a Suggestion channel",
+      "german": "wurde als Suggestion channel geaddet"
+    },
+    "CONFIG_SUGG_NOT": {
+      "english": "is not a Suggestion channel",
+      "german": "ist kein Suggestion channel"
+    },
+    "CONFIG_SUGG_REM": {
+      "english": "has been removed as a Suggestion channel",
+      "germam": "wurde als Suggestion channel entfernt"
+    },
+    "SUGGESTION_NOT": {
+      "english": "The Serve hasn't been configured for suggestions yet. Please talk to an Admin.",
+      "german": "Der Server wurde noch nicht für Suggestions konfiguriert. Bitte wende dich an einen Administratoren für die freischaltung"
+    },
+    "SUGGESTION_CHANNEL_NOT": {
+      "english": "This channel hasn't been configured fpr suggestions yet. Please try one of this Channels:",
+      "german": "Dieser Kanal wurde nicht für suggestions eingerichtet. Bitte versuche einen dieser Kanäle:"
+    },
+    "SUGGESTION_CREATE_EMBED_TITLE": {
+      "english": "create a suggestion",
+      "german": "Erstelle eine Suggestion"
+    },
+    "SUGGESTION_CREATE_EMBED_LABEL": {
+      "english": "What do you want to suggest?",
+      "german": "Was willst du vorschlagen?"
+    },
+    "SUGGESTION_CREATE": {
+      "english": "Suggestion is created...",
+      "german": "Suggestion wird erstellt..."
+    },
+    "SUGGESTION_CREATE_ERROR": {
+      "english": "Suggestion couldn't be created",
+      "german": "Suggestion konnte nicht erstellt werden"
+    },
+    "SUGGESTION_CREATE_FIN":{
+      "english": "Suggestion has been created",
+      "german": "Suggestion wurde erstellt"
+    }
+  }
+}
