@@ -22,22 +22,22 @@ module.exports = {
             const guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
 
             if(!guildConfiguration?.suggestionChannelIds.length) {
-                await interaction.reply("Der Server wurde noch nicht für Suggestions konfiguriert. Bitte wende dich an einen Administratoren für die freischaltung");
+                await interaction.reply(`${language(guild, 'SUGGESTION_NOT')}`);
                 return;
             }
 
             if(!guildConfiguration.suggestionChannelIds.includes(interaction.channelId)){
-                await interaction(`Dieser Kanal wurde nicht für suggestions eingerichtet. Bitte versuche einen dieser Kanäle: ${guildConfiguration.suggestionChannelIds.map((id) => `<#${id}>`).join(',')}`);
+                await interaction(`${language(guild, 'SUGGESTION_CHANNEL_NOT')} ${guildConfiguration.suggestionChannelIds.map((id) => `<#${id}>`).join(',')}`);
                 return;
             }
 
             const modal = new ModalBuilder()
-                .setTitle('Erstelle eine Suggestion')
+                .setTitle(`${language(guild, 'SUGGESTION_CREATE_EMBED_TITLE')}`)
                 .setCustomId(`suggestion-${interaction.user.id}`)
 
             const textInput = new TextInputBuilder()
                 .setCustomId('suggestion-input')
-                .setLabel('Was willst du vorschlagen?')
+                .setLabel(`${language(guild, 'SUGGESTION_CREATE_EMBED_LABEL')}`)
                 .setStyle(TextInputStyle.Paragraph)
                 .setRequired(true)
                 .setMaxLength(1000);
@@ -62,9 +62,9 @@ module.exports = {
             let suggestionMessage;
 
             try {
-                suggestionMessage = await interaction.channel.send('Suggestion wird erstellt...');
+                suggestionMessage = await interaction.channel.send(`${language(guild, 'SUGGESTION_CREATE')}`);
             } catch (error) {
-                modalInteraction.editReply('Suggestion konnte nicht erstellt werden');
+                modalInteraction.editReply(`${language(guild, 'SUGGESTION_CREATE_ERROR')}`);
                 return;
             }
 
@@ -79,7 +79,7 @@ module.exports = {
 
             await newSuggestion.save();
 
-            modalInteraction.editReply('Suggestion wurde erstellt');
+            modalInteraction.editReply(`${language(guild, 'SUGGESTION_CREATE_FIN')}`);
 
             const suggestionEmbed = new EmbedBuilder()
                 .setAuthor({

@@ -2,6 +2,8 @@ const GuildConfiguration = require('../../models/GuildConfiguration');
 const { Client, Interaction, ApplicationCommandOptionType, PermissionFlagsBits, EmbedBuilder} = require('discord.js');
 const ms = require('ms');
 
+const language = require("../../handlers/languages");
+
 module.exports = {
     /**
      *
@@ -34,6 +36,9 @@ module.exports = {
     botPermissions: [PermissionFlagsBits.MuteMembers],
 
     callback: async (client, interaction) => {
+
+        const { guild } = interaction
+
         const mentionable = interaction.options.get('target-user').value;
         const duration = interaction.options.get('duration').value; // 1d, 1 day, 1s 5s, 5m
         const reason = interaction.options.get('reason')?.value || 'No reason provided';
@@ -45,9 +50,9 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
                 .setTitle('TIMEOUT')
-                .setDescription('Ein Fehler liegt vor')
+                .setDescription(`${language(guild, 'TIMEOUT_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Ich konnte den Member nicht timeouten da er sich nicht mehr auf dem Server befindet', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value: `${language(guild, 'TIMEOUT_EMBED_ERROR_DESCRIPTION1')}`, inline: true}
                 )
             await interaction.editReply({embeds:[embed]});
             return;
@@ -57,9 +62,9 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
                 .setTitle('TIMEOUT')
-                .setDescription('Ein Fehler liegt vor')
+                .setDescription(`${language(guild, 'TIMEOUT_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Ich kann keine Bots timeouten', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value: `${language(guild, 'TIMEOUT_EMBED_ERROR_DESCRIPTION2')}`, inline: true}
                 )
             await interaction.editReply({embeds:[embed]});
             return;
@@ -70,9 +75,9 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
                 .setTitle('TIMEOUT')
-                .setDescription('Ein Fehler liegt vor')
+                .setDescription(`${language(guild, 'TIMEOUT_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Eine Timeout-Dauer muss festgelegt sein', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value:`${language(guild, 'TIMEOUT_EMBED_ERROR_DESCRIPTION3')}`, inline: true}
                 )
             await interaction.editReply({embeds:[embed]});
             return;
@@ -82,9 +87,9 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
                 .setTitle('TIMEOUT')
-                .setDescription('Ein Fehler liegt vor')
+                .setDescription(`${language(guild, 'TIMEOUT_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Die Timeout-Dauer muss zwischen 5 Sekunden und 28 Tagen sein', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value:`${language(guild, 'TIMEOUT_EMBED_ERROR_DESCRIPTION4')}`, inline: true}
                 )
             await interaction.editReply({embeds:[embed]});
             return;
@@ -98,9 +103,9 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
                 .setTitle('TIMEOUT  ')
-                .setDescription('Ein Fehler liegt vor')
+                .setDescription(`${language(guild, 'TIMEOUT_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Ich konnte den Member nicht timeouten da er die gleiche/höhere Rolle hat als du', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value: `${language(guild, 'TIMEOUT_EMBED_ERROR_DESCRIPTION5')}`, inline: true}
                 )
             await interaction.editReply({embeds:[embed]});
             return;
@@ -110,9 +115,9 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
                 .setTitle('TIMEOUT')
-                .setDescription('Ein Fehler liegt vor')
+                .setDescription(`${language(guild, 'TIMEOUT_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Ich konnte den Member nicht timeouten da er die gleiche/höhere Rolle hat als ich', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value: `${language(guild, 'TIMEOUT_EMBED_ERROR_DESCRIPTION6')}`, inline: true}
                 )
             await interaction.editReply({embeds:[embed]});
             return;
@@ -132,16 +137,16 @@ module.exports = {
                     const embed = new EmbedBuilder()
                         .setColor('Red')
                         .setTitle('TIMEOUT')
-                        .setDescription('Ein Timeout wurde geändert')
+                        .setDescription(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CHANGED')}`)
                         .setFields(
                             {name: 'Member', value: `${targetUser}`, inline: true},
-                            {name: 'Neuer Timeout', value:prettyMs(msDuration, {verbose:true}), inline:true},
-                            {name: 'Grund', value: `${reason}`, inline: true},
+                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_DURATION')}`, value:prettyMs(msDuration, {verbose:true}), inline:true},
+                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_REASON')}`, value: `${reason}`, inline: true},
                         )
                     await messageChannel.send({embeds: [embed]});
 
                     const answerEmbed = new EmbedBuilder()
-                        .setTitle('Timeout wurde bearbeitet')
+                        .setTitle(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CHANGED')}`)
 
                     await interaction.editReply({embeds: [answerEmbed]});
 
@@ -150,11 +155,11 @@ module.exports = {
                     const embed = new EmbedBuilder()
                         .setColor('Red')
                         .setTitle('TIMEOUT')
-                        .setDescription('Ein Timeout wurde geändert')
+                        .setDescription(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CHANGED')}`)
                         .setFields(
                             {name: 'Member', value: `${targetUser}`, inline: true},
-                            {name: 'Neuer Timeout', value:prettyMs(msDuration, {verbose:true}), inline:true},
-                            {name: 'Grund', value: `${reason}`, inline: true},
+                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_DURATION')}`, value:prettyMs(msDuration, {verbose:true}), inline:true},
+                            {name:`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_REASON')}` , value: `${reason}`, inline: true},
                         )
                     await interaction.editReply({embeds: [embed]});
 
@@ -169,16 +174,16 @@ module.exports = {
                     const embed = new EmbedBuilder()
                         .setColor('Red')
                         .setTitle('TIMEOUT')
-                        .setDescription('Ein Member wurde getimeoutet')
+                        .setDescription(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED')}`)
                         .setFields(
                             {name: 'Member', value: `${targetUser}`, inline: true},
-                            {name: 'Dauer', value: prettyMs(msDuration), inline:true},
-                            {name: 'Grund', value: `${reason}`, inline: true}
+                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_DURATION')}`, value: prettyMs(msDuration), inline:true},
+                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_REASON')}`, value: `${reason}`, inline: true}
                         )
                     await messageChannel.send({embeds: [embed]});
 
                     const answerEmbed = new EmbedBuilder()
-                        .setTitle('Timeout wurde erstellt')
+                        .setTitle(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CREATED')}`)
 
                     await interaction.editReply({embeds: [answerEmbed]});
 
@@ -188,14 +193,14 @@ module.exports = {
                     const embed = new EmbedBuilder()
                         .setColor('Red')
                         .setTitle('TIMEOUT')
-                        .setDescription('Ein Member wurde getimeoutet')
+                        .setDescription(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED')}`)
                         .setFields(
                             {name: 'Member', value: `${targetUser}`, inline: true},
-                            {name: 'Dauer', value: prettyMs(msDuration), inline:true},
-                            {name: 'Grund', value: `${reason}`, inline: true}
+                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_DURATION')}`, value: prettyMs(msDuration), inline:true},
+                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_REASON')}`, value: `${reason}`, inline: true}
                         )
                     await interaction.editReply({embeds: [embed]});
-                    return;
+
                 }
             }
 

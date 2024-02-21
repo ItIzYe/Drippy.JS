@@ -5,6 +5,7 @@ const {
     ApplicationCommandOptionType,
     PermissionFlagsBits, Permissions, EmbedBuilder,
 } = require('discord.js');
+const language = require("../../handlers/languages");
 
 module.exports = {
     /**
@@ -13,7 +14,7 @@ module.exports = {
      * @param {Interaction} interaction
      */
     name: 'clear',
-    description: 'Löscht Nachrichten',
+    description: 'Deletes a specific amount of Messages',
     options: [{
         name: 'amount',
         type: 4,
@@ -24,12 +25,15 @@ module.exports = {
 
 
     callback: async (client, interaction) => {
-        const args = interaction.options.get('amount').value;
-        if(!args) return interaction.reply('Bitte gebe an wieviele Nachrichten gelöscht werden sollen');
-        if(isNaN(args)) return interaction.reply('Bitte gib eine echte Nummer an');
 
-        if(args > 100) return interaction.reply('Du kannst nicht mehr als 100 Nachrichten gleichzeitig löschen');
-        if(args < 1) return interaction.reply('Du musst mindestens eine Nachricht löschen');
+        const { guild } = interaction
+
+        const args = interaction.options.get('amount').value;
+        if(!args) return interaction.reply(`${language(guild, 'CLEAR_GIVE_AMOUNT')}`);
+        if(isNaN(args)) return interaction.reply(`${language(guild, 'CLEAR_REAL')}`);
+
+        if(args > 100) return interaction.reply(`${language(guild, 'CLEAR_MORE_THAN_100')}`);
+        if(args < 1) return interaction.reply(`${language(guild, 'CLEAR_LESS_THAN_1')}`);
 
         args[0]++;
 
@@ -39,7 +43,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor('Green')
             .setTitle('Clear')
-            .setDescription(`${args} Nachrichten wurden gelöscht`)
+            .setDescription(`${args} ${language(guild, 'CLEAR_EMBED_DESCRIPTION')}`)
         await interaction.reply({embeds:[embed]})
     }
 };

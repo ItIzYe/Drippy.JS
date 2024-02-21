@@ -7,6 +7,7 @@ const {
     PermissionFlagsBits,
     EmbedBuilder
 } = require('discord.js');
+const language = require("../../handlers/languages");
 
 
 module.exports = {
@@ -35,6 +36,7 @@ module.exports = {
     botPermissions: [PermissionFlagsBits.BanMembers],
 
     callback: async (client, interaction) => {
+        const { guild } = interaction
         const targetUserId = interaction.options.get('target-user').value;
         const reason =
             interaction.options.get('reason')?.value || 'No reason provided';
@@ -46,11 +48,9 @@ module.exports = {
         if (!targetUser) {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
-                .setTitle('BANN')
-                .setDescription('Ein Fehler liegt vor')
-                .setFields(
-                    {name: 'Fehler', value:'Ich konnte den Member nicht bannen da er nicht mehr auf dem Server ist', inline: true}
-                )
+                .setTitle(`${language(guild, 'BAN_EMBED_TITLE')}`)
+                .setDescription(`${language(guild, 'BAN_EMBED_ERROR_TITLE')}`)
+                .setFields({name: `${language(guild, 'BAN_EMBED_ERROR')}`, value: `${language(guild, 'BAN_EMBED_ERROR_DESCRIPTION1')}`, inline: true})
             await interaction.editReply({embeds: [embed]});
             return;
         }
@@ -58,10 +58,10 @@ module.exports = {
         if (targetUser.id === interaction.guild.ownerId) {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
-                .setTitle('BANN')
-                .setDescription('Ein Fehler liegt vor')
+                .setTitle(`${language(guild, 'BAN_EMBED_TITLE')}`)
+                .setDescription(`${language(guild, 'BAN_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Ich konnte den Member nicht bannen da er der Server Owner ist', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value: `${language(guild, 'BAN_EMBED_ERROR_DESCRIPTION2')}`, inline: true}
                 )
             await interaction.editReply({embeds: [embed]});
             return;
@@ -74,10 +74,10 @@ module.exports = {
         if (targetUserRolePosition >= requestUserRolePosition) {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
-                .setTitle('BANN')
-                .setDescription('Ein Fehler liegt vor')
+                .setTitle(`${language(guild, 'BAN_EMBED_TITLE')}`)
+                .setDescription(`${language(guild, 'BAN_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Ich konnte den Member nicht bannen da er die selbe/höhere Rolle als du hat', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value:`${language(guild, 'BAN_EMBED_ERROR_DESCRIPTION3')}`, inline: true}
                 )
             await interaction.editReply({embeds: [embed]});
             return;
@@ -86,10 +86,10 @@ module.exports = {
         if (targetUserRolePosition >= botRolePosition) {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
-                .setTitle('BANN')
-                .setDescription('Ein Fehler liegt vor')
+                .setTitle(`${language(guild, 'BAN_EMBED_TITLE')}`)
+                .setDescription(`${language(guild, 'BAN_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Ich konnte den Member nicht bannen da er die selbe/höhere Rolle als ich hat', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value:`${language(guild, 'BAN_EMBED_ERROR_DESCRIPTION4')}`, inline: true}
                 )
 
             await interaction.editReply({embeds: [embed]});
@@ -107,13 +107,13 @@ module.exports = {
                 const messageChannel = client.channels.cache.get(guildConfiguration.moderationChannelIds[0])
                 const embed = new EmbedBuilder()
                     .setColor('Red')
-                    .setTitle('BANN')
+                    .setTitle(`${language(guild, 'BAN_EMBED_TITLE')}`)
                     .setThumbnail(random)
-                    .setDescription('Ein User wurde gebannt')
+                    .setDescription(`${language(guild, 'BAN_EMBED_BANNED')}`)
                     .setFields(
                         {name: 'Member', value: `${targetUser}`, inline: true},
                         {name: '---------', value: '      ', inline:true},
-                        {name: 'Grund', value: `${reason}`, inline: true}
+                        {name: `${language(guild, 'BAN_EMBED_BANNED_REASON')}`, value: `${reason}`, inline: true}
                     )
 
                 await targetUser.ban({ reason });
@@ -121,19 +121,19 @@ module.exports = {
                 console.log(message.embeds[0].image)
 
                 const answerEmbed = new EmbedBuilder()
-                    .setTitle('Person wurde gebannt')
+                    .setTitle(`${language(guild, 'BAN_EMBED_BANNED')}`)
 
                 await interaction.editReply({embeds: [answerEmbed]});
             } else if(!guildConfiguration.moderationChannelIds) {
                 const embed = new EmbedBuilder()
                     .setColor('Red')
                     .setThumbnail(random)
-                    .setTitle('BANN')
-                    .setDescription('Ein User wurde gebannt')
+                    .setTitle(`${language(guild, 'BAN_EMBED_TITLE')}`)
+                    .setDescription(`${language(guild, 'BAN_EMBED_BANNED')}`)
                     .setFields(
                         {name: 'Member', value: `${targetUser}`, inline: true},
                         {name: '---------', value: '      ', inline:true},
-                        {name: 'Grund', value: `${reason}`, inline: true}
+                        {name: `${language(guild, 'BAN_EMBED_BANNED_REASON')}`, value: `${reason}`, inline: true}
                     )
 
                 await targetUser.ban({ reason });

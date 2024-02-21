@@ -1,4 +1,5 @@
 const {EmbedBuilder, Client, Interaction} = require('discord.js');
+const language = require("../../handlers/languages");
 
 module.exports = {
     /**
@@ -12,17 +13,19 @@ module.exports = {
 
     callback: async (client, interaction) => {
 
+        const { guild } = interaction
+
         const infoEmbed = new EmbedBuilder()
             .setColor("#1f8a4c")
             .setTitle("Info")
             .setDescription("Hier ein paar Bot-Infos")
             .addFields(
                 {name: "Name", value: "Drippy#5683", inline: false},
-                {name: "Number of servers: ", value: "Count: " + client.guilds.cache.size, inline: false},
-                {name: "Developer: ", value: "ItIzYe#7590,\nR.M.S Titanic#7956,\nCanadianAgent | Jury#9388", inline: false},
+                {name: `${language(guild, 'INFO_FIELD2')}`, value: "Count: " + client.guilds.cache.size, inline: false},
+                {name: "Developer: ", value: "itizye,\nr.m.stitanic,\ncanadianagent", inline: false},
                 {name: "Version: ", value: "1.0.0 Beta", inline: false},
-                {name: "Last Update: ", value: "05.01.2022", inline: false},
-                {name: "Bug Report", value: `Bugs can be reported via bug [bug].`, inline: false}
+                {name: `${language(guild, 'INFO_FIELD5')}`, value: "05.01.2022", inline: false},
+                {name: `${language(guild, 'INFO_FIELD6')}`, value: `${language(guild, 'INFO_FIELD6_VALUE')}`, inline: false}
             )
             .setTimestamp()
 

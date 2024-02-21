@@ -2,6 +2,8 @@ const GuildConfiguration = require('../../models/GuildConfiguration');
 const {Client, Interaction, GuildChannelTypes, PermissionsBitField,} = require('discord.js')
 const mongoose = require('mongoose');
 
+const language = require("../../handlers/languages");
+
 
 module.exports = {
     /**
@@ -38,6 +40,8 @@ module.exports = {
     permissionsRequired: [PermissionsBitField.Administrator],
 
     callback: async(client, interaction) => {
+        const { guild } = interaction
+
         let guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
 
         if(!guildConfiguration) {
@@ -49,14 +53,14 @@ module.exports = {
             const channel = interaction.options.getChannel('channel');
 
             if(guildConfiguration.suggestionChannelIds.includes(channel.id)){
-                await interaction.reply(`${channel} ist schon ein Suggestions channel`);
+                await interaction.reply(`${channel} ${language(guild, 'CONFIG_SUGG_ALREADY')}`);
                 return;
             }
 
             guildConfiguration.suggestionChannelIds.push(channel.id)
             await guildConfiguration.save();
 
-            await interaction.reply(`${channel} wurde als Suggestionchannel geaddet`);
+            await interaction.reply(`${channel} ${language(guild, 'CONFIG_SUGG_ADDED')}`);
             return;
         };
 
@@ -64,14 +68,14 @@ module.exports = {
             const channel = interaction.options.getChannel('channel');
 
             if(!guildConfiguration.suggestionChannelIds.includes(channel.id)){
-                await interaction.reply(`${channel} ist kein Suggestionchannel`);
+                await interaction.reply(`${channel} ${language(guild, 'CONFIG_SUGG_NOT')}`);
                 return;
             }
 
             guildConfiguration.suggestionChannelIds = guildConfiguration.suggestionChannelIds.filter((id) =>id !== channel.id)
             await guildConfiguration.save();
 
-            await interaction.reply(`${channel} wurde als Suggestionchannel removed`);
+            await interaction.reply(`${channel} ${language(guild, 'CONFIG_SUGG_REM')}`);
             return;
         }
     }

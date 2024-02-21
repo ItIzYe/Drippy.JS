@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const BugConfig = require('../../models/BugConfig');
 const GuildConfiguration = require("../../models/GuildConfiguration");
 
+const language = require('../../handlers/languages')
 
 module.exports = {
     /**
@@ -24,34 +25,32 @@ module.exports = {
     //deleted: Boolean,
 
     callback: async (client, interaction) => {
+        //console.log(interaction)
         await interaction.deferReply();
 
 
-        const guildId = interaction.guildId;
-        const userTag = interaction.user.tag;
+        const guildId = interaction.guild.id;
+        const userTag = interaction.user.username;
         const userId = interaction.user.id;
         const region =  interaction.guildLocale;
         const memberCount = interaction.guild.memberCount;
         const bugReport = interaction.options.get('bug-report').value;
         //const messageId = interaction.id
+        const { guild } = interaction
+
+
+
 
         const bug_report_channel = client.channels.cache.get("899379299256250438");
 
-        const msg_no_reason = new EmbedBuilder()
-            .setColor("#ff0000")
-            .setTitle(interaction.guild.name)
-            .setThumbnail(interaction.guild.iconURL())
-            .setFields(
-                {name: "ERROR", value: ":x: Please specify the bug :x:", inline: false}
-            )
-            .setTimestamp()
+
 
         const bug_reported = new EmbedBuilder()
             .setColor("#9fb1fd")
             .setTitle(interaction.guild.name)
             .setThumbnail(interaction.guild.iconURL())
             .setFields(
-                {name: "Bug reported: ", value: "Thank you for your bug report. We will make sure that the bug is fixed as soon as possible.", inline: false}
+                {name: `${language(guild, 'BUG_REPORTET_TITLE')}`, value: `${language(guild, 'BUG_REPORTET')}`, inline: false}
             )
             .setTimestamp()
 

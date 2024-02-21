@@ -8,6 +8,8 @@ const {
     EmbedBuilder
 } = require('discord.js');
 
+const language = require("../../handlers/languages");
+
 module.exports = {
     /**
      *
@@ -34,6 +36,9 @@ module.exports = {
     botPermissions: [PermissionFlagsBits.KickMembers],
 
     callback: async (client, interaction) => {
+
+        const { guild } = interaction
+
         const targetUserId = interaction.options.get('target-user').value;
         const reason =
             interaction.options.get('reason')?.value || 'No reason provided';
@@ -46,9 +51,9 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
                 .setTitle('KICK')
-                .setDescription('Ein Fehler liegt vor')
+                .setDescription(`${language(guild, 'KICK_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Ich konnte den Member nicht kicken da er sich nicht mehr auf dem Server befindet', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value:`${language(guild, 'KICK_EMBED_ERROR_DESCRIPTION1')}`, inline: true}
                 )
             await interaction.editReply({embeds: [embed]});
             return;
@@ -58,9 +63,9 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
                 .setTitle('KICK')
-                .setDescription('Ein Fehler liegt vor')
+                .setDescription(`${language(guild, 'KICK_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Ich konnte den Member nicht kicken da ihm der Server gehört', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value:`${language(guild, 'KICK_EMBED_ERROR_DESCRIPTION2')}`, inline: true}
                 )
             await interaction.editReply({embeds: [embed]});
             return;
@@ -74,9 +79,9 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
                 .setTitle('KICK')
-                .setDescription('Ein Fehler liegt vor')
+                .setDescription(`${language(guild, 'KICK_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Ich konnte den Member nicht kicken da er die selbe/höhere Rolle als du hat', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value:`${language(guild, 'KICK_EMBED_ERROR_DESCRIPTION3')}`, inline: true}
                 )
             await interaction.editReply({embeds: [embed]});
             return;
@@ -86,9 +91,9 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('Yellow')
                 .setTitle('KICK')
-                .setDescription('Ein Fehler liegt vor')
+                .setDescription(`${language(guild, 'KICK_EMBED_ERROR_TITLE')}`)
                 .setFields(
-                    {name: 'Fehler', value:'Ich konnte den Member nicht kicken da er die selbe/höhere Rolle als ich hat', inline: true}
+                    {name: `${language(guild, 'BAN_EMBED_ERROR')}`, value:`${language(guild, 'KICK_EMBED_ERROR_DESCRIPTION4')}`, inline: true}
                 )
             await interaction.editReply({embeds:[embed]});
             return;
@@ -108,16 +113,16 @@ module.exports = {
                     .setColor('Red')
                     .setTitle('KICK')
                     .setThumbnail(random)
-                    .setDescription('Ein Member wurde gekickt')
+                    .setDescription(`${language(guild, 'KICK_EMBED_KICKED')}`)
                     .setFields(
                         {name: 'Member', value: `${targetUser}`, inline: true},
                         {name: '---------', value: '      ', inline: true},
-                        {name: 'Grund', value: `${reason}`, inline: true}
+                        {name: `${language(guild, 'KICK_EMBED_KICKED_REASON')}`, value: `${reason}`, inline: true}
                     )
                 await messageChannel.send({embeds: [embed]});
 
                 const answerEmbed = new EmbedBuilder()
-                    .setTitle('Person wurde gekickt')
+                    .setTitle(`${language(guild, 'KICK_EMBED_KICKED')}`)
 
                 await interaction.editReply({embeds: [answerEmbed]});
             }else if(!guildConfiguration.moderationChannelIds) {
@@ -125,11 +130,11 @@ module.exports = {
                     .setColor('Red')
                     .setTitle('KICK')
                     .setThumbnail(random)
-                    .setDescription('Ein Member wurde gekickt')
+                    .setDescription(`${language(guild, 'KICK_EMBED_KICKED')}`)
                     .setFields(
                         {name: 'Member', value: `${targetUser}`, inline: true},
                         {name: '---------', value: '      ', inline: true},
-                        {name: 'Grund', value: `${reason}`, inline: true}
+                        {name: `${language(guild, 'KICK_EMBED_KICKED_REASON')}`, value: `${reason}`, inline: true}
                     )
                 await interaction.editReply({embeds: [embed]});
             }
