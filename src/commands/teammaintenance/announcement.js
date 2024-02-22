@@ -11,6 +11,12 @@ const language = require("../../handlers/languages");
 
 
 module.exports = {
+    /**
+     *
+     * @param {Client} client
+     * @param {Interaction} interaction
+     * @param {Object} 0param
+     */
     name: 'announcement',
     description: 'Create an Bot announcement',
     devOnly: true,
@@ -34,7 +40,7 @@ module.exports = {
     ],
 
     callback: async (client, interaction) => {
-        await interaction.deferReply();
+        //await interaction.deferReply();
 
         const announcement_message = interaction.options.get('message').value;
         const announcement_type = interaction.options.get('message-type').value;
@@ -47,14 +53,23 @@ module.exports = {
                 {name: `${announcement_type}`, value: `${announcement_message}`, inline: true}
             )
 
-        for(const guild of client.guilds.cache){
+        let guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
+
+        client.guilds.cache.forEach( guild =>{
             //console.log(guild)
+            const announcement_channel = client.channels.cache.get(`${guild.systemChannelId}`);
 
-            const announcement_channel = client.channels.cache.get(`${guild[1].systemChannelId}`);
-            console.log(announcement_channel)
-            await announcement_channel.send({embeds: [embed]});
+            //console.log(announcement_channel)
 
-        }
+            if(guildConfiguration.announcementChannelIds && guildConfiguration.announcementChannelIds.length > 0) {
+                const messageChannel = client.channels.cache.get(guildConfiguration.announcementChannelIds[0])
+                //console.log(guildConfiguration.announcementChannelIds)
+                messageChannel.send({embeds: [embed]});
+            } else {
+                announcement_channel.send({embeds: [embed]});
+            }
+        })
+
         interaction.reply("Announcement has been sent")
 
     },

@@ -163,7 +163,7 @@
     },
     "CONFIG_MOD_REM": {
       "english": "has been removed as a Moderation channel",
-      "germam": "wurde als Moderations channel entfernt"
+      "german": "wurde als Moderations channel entfernt"
     },
     "KICK_EMBED_ERROR_TITLE": {
       "english": "There was an error",
@@ -263,7 +263,7 @@
     },
     "CONFIG_SUGG_REM": {
       "english": "has been removed as a Suggestion channel",
-      "germam": "wurde als Suggestion channel entfernt"
+      "german": "wurde als Suggestion channel entfernt"
     },
     "SUGGESTION_NOT": {
       "english": "The Serve hasn't been configured for suggestions yet. Please talk to an Admin.",
@@ -292,6 +292,22 @@
     "SUGGESTION_CREATE_FIN":{
       "english": "Suggestion has been created",
       "german": "Suggestion wurde erstellt"
+    },
+    "CONFIG_ANN_ALREADY": {
+      "english": "has already been added as a Announcement channel",
+      "german": "ist schon ein Announcement channel"
+    },
+    "CONFIG_ANN_ADDED": {
+      "english": "has been added as a Announcement channel",
+      "german": "wurde als Announcement channel geaddet"
+    },
+    "CONFIG_ANN_NOT": {
+      "english": "is not a Announcement channel",
+      "german": "ist kein Announcement channel"
+    },
+    "CONFIG_ANN_REM": {
+      "english": "has been removed as a Announcement channel",
+      "german": "wurde als Announcement channel entfernt"
     }
   }
 }
