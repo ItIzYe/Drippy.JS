@@ -23,7 +23,7 @@ module.exports = {
                 {name: "Name", value: "Drippy#5683", inline: false},
                 {name: `${language(guild, 'INFO_FIELD2')}`, value: "Count: " + client.guilds.cache.size, inline: false},
                 {name: "Developer: ", value: "itizye,\nr.m.stitanic,\ncanadianagent", inline: false},
-                {name: "Version: ", value: "1.0.7 Beta", inline: false},
+                {name: "Version: ", value: "1.0.9 Beta", inline: false},
                 {name: `${language(guild, 'INFO_FIELD5')}`, value: "22.02.2024", inline: false},
                 {name: `${language(guild, 'INFO_FIELD6')}`, value: `${language(guild, 'INFO_FIELD6_VALUE')}`, inline: false}
             )
