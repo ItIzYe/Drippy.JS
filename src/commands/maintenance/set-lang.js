@@ -27,6 +27,7 @@ module.exports = {
             name: 'select-language',
             description: 'you can choose between english and german.',
             type: 3,
+            choices: [{name:'German',description:'Set language to german', value:'german'}, {name:'English',description:'Set language to English', value: 'english'}],
             required: true,
         },
     ],

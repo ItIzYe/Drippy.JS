@@ -9,6 +9,7 @@ module.exports = {
      */
     name: 'setup-welcome-message',
     description: 'Setup a channel to send welcome messages to.',
+    deleted: true,
     options: [
         {
             name: 'target-channel',

@@ -9,6 +9,7 @@ module.exports = {
      */
     name: 'remove-welcome-channel',
     description: 'Remove a welcome channel',
+    deleted: true,
     options: [
         {
             name: 'target-channel',
