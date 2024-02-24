@@ -7,7 +7,7 @@ module.exports = {
      * @param {Client} client
      * @param {Interaction} interaction
      */
-    name: "sv",
+    name: "serverinfo",
     description: "Get Serverinfos",
     callback: async (client, interaction) => {
         //console.log(message.guild);

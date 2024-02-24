@@ -1,56 +1,69 @@
-const { Actionrowbuilder, ButtonBuilder, ButtonStyle, ComponentType} = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType} = require('discord.js');
 
-module.exports = async (interaction, pages, time = 30*1000) => {
+module.exports = async (interaction, pages, time = 30 * 1000) => {
+    console.log('test')
+
     try {
         if (!interaction || !pages || !pages > 0) throw new Error('[Pagination] Invalid args');
+
+        console.log('test')
 
         await interaction.deferReply();
 
         if (pages.length === 1){
             return await interaction.edit({embeds: pages, components:[], fetchReply: true});
+            console.log('test')
         }
 
-        var index = 0;
+        console.log('test')
+
+        let index = 0;
+
+        console.log('test')
 
         const first = new ButtonBuilder()
             .setCustomId('pagefirst')
             .setEmoji('⏪')
-            .setStyle(ButtonStyle.PRIMARY)
+            .setStyle(ButtonStyle.Primary)
             .setDisabled(true);
 
         const prev = new ButtonBuilder()
             .setCustomId('pageprev')
             .setEmoji('◀️')
-            .setStyle(ButtonStyle.PRIMARY)
+            .setStyle(ButtonStyle.Primary)
             .setDisabled(true);
 
         const pageCount = new ButtonBuilder()
             .setCustomId('pagecount')
             .setLabel(`${index + 1}/${pages.length}`)
-            .setStyle(ButtonStyle.SECONDARY)
+            .setStyle(ButtonStyle.Secondary)
             .setDisabled(true);
 
         const next = new ButtonBuilder()
             .setCustomId('pagenext')
             .setEmoji('▶️')
-            .setStyle(ButtonStyle.PRIMARY);
+            .setStyle(ButtonStyle.Primary);
 
         const last = new ButtonBuilder()
             .setCustomId('pagelast')
             .setEmoji('⏩')
-            .setStyle(ButtonStyle.PRIMARY);
+            .setStyle(ButtonStyle.Primary);
 
-        const buttons = new Actionrowbuilder()
+        console.log('test')
+
+        const buttons = new ActionRowBuilder()
             .addComponents([first, prev, pageCount, next, last]);
 
         const msg = await interaction.editReply({embeds: [pages[index]], components: [buttons], fetchReply: true})
 
+        console.log(msg)
+
         const collector = await msg.createMessageComponentCollector({
             componentType: ComponentType.Button,
-            time
+            time,
         });
 
-        collector.on('collect', async i =>{
+        collector.on('collect', async i => {
             if (i.user.id !== interaction.user.id) return await i.reply({content: `Only **${interaction.user.username}** can use these buttons!`, ephemeral: true});
 
             await i.deferUpdate();
@@ -92,17 +105,20 @@ module.exports = async (interaction, pages, time = 30*1000) => {
                 last.setDisabled(false);
             }
 
+
             await msg.edit({embeds: [pages[index]], components:[buttons]}).catch(err => {});
 
             collector.resetTimer();
         });
 
-        collector.om('end', async () =>{
+        collector.on('end', async () =>{
+
+
             await msg.edit({embeds: [pages[index]], components: []}).catch(err => {})
         });
 
-        return msg;
+        return interaction;
     } catch (e) {
-        console.log(`ERROR ${error}`);
+        console.log(`ERROR2 ${e}`);
     }
 }
