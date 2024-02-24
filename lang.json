@@ -73,6 +73,68 @@
       "english": "Here you can see all our commands and the categories into which the commands are divided. If you still have question, don't bother joining our support server. :) https://discord.gg/M8mqCr4vzf",
       "german": "Hier kannst du alle Commands und ihre Kategorien einsehen. Solltest du danach immer noch fragen haben, komm gerne auf unseren Support Server. :) https://discord.gg/M8mqCr4vzf"
     },
+    "H_CLEAR_DESC": {
+      "english": "-> Deletes a specified number of messages in a channel",
+      "german": "-> Löscht eine bestimmte Anzahl von Nachrichten in einem Kanal"
+    },
+    "H_BAN_DESC": {
+      "english": "-> Bans a member from the server",
+      "german": "-> Bannt einen Member vom Server"
+    },
+    "H_TIMEOUT_DESC": {
+      "english": "-> Timeouts a member",
+      "german": "-> Timeoutet einen Member"
+    },
+    "H_KICK_DESC": {
+      "english": "-> Kicks a member",
+      "german": "-> Kickt einen Member vom Server"
+    },
+    "H_INFO_DESC": {
+      "english": "-> Shows you some info about the bot",
+      "german": "-> Zeigt dir ein paar Infos über den Bot"
+    },
+    "H_SERVERINFO_DESC": {
+      "english": "-> Shows you some info about the server",
+      "german": "-> Zeigt dir ein paar Infos über den Server"
+    },
+    "H_PING_DESC": {
+      "english": "-> Shows you the ping",
+      "german": "-> Zeigt dir den Ping"
+    },
+    "H_BOOST_DESC": {
+      "english": "-> Shows you the advantages you get when you boost the server.",
+      "german": "-> Zeigt dir die Vorteile für dich und den Server wenn du einen Server boostest."
+    },
+    "H_SUGG_DESC": {
+      "english": "-> Suggest things which the Server than can vote about",
+      "german": "-> Schlage Sachen vor über die der Server dann abstimmen kann"
+    },
+    "H_CONSUGG_DESC": {
+      "english": "-> Add/Remove a channel where the Suggestions should go to",
+      "german": "-> Adde/Entferne einen Kanal für Suggestion-Nachrichten"
+    },
+    "H_CONANN_DESC": {
+      "english": "-> Add/Remove a channel where the Bot Announcements should go to",
+      "german": "-> Adde/Entferne einen Kanal für Announcements"
+    },
+    "H_CONMOD_DESC": {
+      "english": "-> Add/Remove a channel where the Moderation Messages should go to",
+      "german": "-> Adde/Entferne einen Kanal für Moderations-Nachrichten"
+    },
+    "H_CONLANG_DESC": {
+      "english": "-> Configure the Bot language (Currently only supporting English and German)",
+      "german": "-> Konfiguriere die Bot-Sprache für deinen Server (Zurzeit werden nur Deutsch und Englisch supportet"
+    },
+    "H_BUG_DESC": {
+      "english": "-> Send a Bug Report to the Bot Devs",
+      "german": "-> Sende einen Bug Report an die Botentwickler"
+    },
+
+
+
+
+
+
     "INFO_FIELD2": {
       "english": "Number of Servers",
       "german": "Anzahl der Server"
