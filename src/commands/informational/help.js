@@ -18,7 +18,7 @@ module.exports = {
      */
     name: 'help',
     description: 'See a list of all commands',
-    //deleted: true,
+    deleted: true,
 
     callback: async (client, interaction) => {
 
