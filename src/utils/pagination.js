@@ -6,20 +6,14 @@ module.exports = async (interaction, pages, time = 30 * 1000) => {
     try {
         if (!interaction || !pages || !pages > 0) throw new Error('[Pagination] Invalid args');
 
-        console.log('test')
 
         await interaction.deferReply();
 
         if (pages.length === 1){
             return await interaction.edit({embeds: pages, components:[], fetchReply: true});
-            console.log('test')
         }
 
-        console.log('test')
-
         let index = 0;
-
-        console.log('test')
 
         const first = new ButtonBuilder()
             .setCustomId('pagefirst')
@@ -49,14 +43,11 @@ module.exports = async (interaction, pages, time = 30 * 1000) => {
             .setEmoji('⏩')
             .setStyle(ButtonStyle.Primary);
 
-        console.log('test')
-
         const buttons = new ActionRowBuilder()
             .addComponents([first, prev, pageCount, next, last]);
 
         const msg = await interaction.editReply({embeds: [pages[index]], components: [buttons], fetchReply: true})
 
-        console.log(msg)
 
         const collector = await msg.createMessageComponentCollector({
             componentType: ComponentType.Button,
