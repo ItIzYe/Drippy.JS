@@ -1,7 +1,5 @@
 # JavaScript Bot for Discord 🤖
 
-[![Discord Bots](https://top.gg/api/widget/872797574522871878.svg)(https://top.gg/bot/872797574522871878)
-
 <a href="https://top.gg/bot/872797574522871878">
   <img src="https://top.gg/api/widget/872797574522871878.svg">
 </a>
