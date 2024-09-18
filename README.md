@@ -1,7 +1,8 @@
 # JavaScript Bot for Discord 🤖
 
-<a href="https://top.gg/bot/872797574522871878">
-  <img src="https://top.gg/api/widget/872797574522871878.svg">
+<h2>Authors</h2>
+<a href="https://github.com/ItIzye/Drippy.JS/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ItIzye/Drippy.JS" />
 </a>
 
 
