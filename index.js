@@ -12,7 +12,7 @@ require('dotenv').config();
 
 
 
-const client = new Client({ intents: 3276799});
+const client = new Client({ intents: 53608447});
 
 
 eventHandler(client);
