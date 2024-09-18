@@ -4,7 +4,7 @@
 <a href="https://github.com/ItIzye/Drippy.JS/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ItIzye/Drippy.JS" />
 </a>
-
+<br><br>
 
 This Bot is a work in progress JavaScript version of our Python Bot [Drippy](https://github.com/ItIzYe/Va). The Prefix is `#`. Please remember NOT to import the `node_modules` Folder and to REPLACE the token placeholder with your token. If you want to contribute to this project, just fork it. I'll take a look at it and implement good ideas into the project. Have fun with it! See the [Drippy.JS Website](https://itizye.github.io/Drippy.JS/).
 
