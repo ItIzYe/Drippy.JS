@@ -50,7 +50,7 @@ Please remember that InteractionOptionTypes are no longer given through keywords
 
 
 ## MongoDB -> Mongoose 📊
-As we installed mongoose as our Database, please contact ItIzYe to request a login. Models have to look like this:
+As we installed mongoose as our Database, please contact @ItIzYe to request a login. Models have to look like this:
 
 ```js
 const { Schema, model } = require('mongoose');
