@@ -12,7 +12,7 @@ module.exports = {
      */
     name: 'level',
     description: "Shows your/someone's level.",
-    deleted: false,
+    deleted: true,
     devOnly: true,
     options: [
         {name: 'target-user',
