@@ -62,13 +62,16 @@ module.exports = {
             const announcement_channel = client.channels.cache.get(`${guild.systemChannelId}`);
 
             //console.log(announcement_channel)
-
-            if(guildConfiguration.announcementChannelIds && guildConfiguration.announcementChannelIds.length > 0) {
-                const messageChannel = client.channels.cache.get(guildConfiguration.announcementChannelIds[0])
-                //console.log(guildConfiguration.announcementChannelIds)
-                messageChannel.send({embeds: [embed]});
-            } else {
-                announcement_channel.send({embeds: [embed]});
+            try {
+                if (guildConfiguration.announcementChannelIds && guildConfiguration.announcementChannelIds.length > 0) {
+                    const messageChannel = client.channels.cache.get(guildConfiguration.announcementChannelIds[0])
+                    //console.log(guildConfiguration.announcementChannelIds)
+                    messageChannel.send({embeds: [embed]});
+                } else {
+                    announcement_channel.send({embeds: [embed]});
+                }
+            } catch (e) {
+                console.log(`There was an error when announcing: ${error}`);
             }
         })
 
