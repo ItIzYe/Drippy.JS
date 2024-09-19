@@ -91,7 +91,7 @@ module.exports = {
 
         ctx.font = '35px sans-serif';
         ctx.textAlign = "left";
-        ctx.fillText(targetUserObj.tag, 325, 125);
+        ctx.fillText(`${targetUserObj.user.username}`, 325, 125);
 
         ctx.font = '40px sans-serif';
         ctx.fillText("Level: ", 350, 170);
