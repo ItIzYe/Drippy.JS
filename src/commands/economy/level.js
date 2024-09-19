@@ -61,7 +61,7 @@ module.exports = {
 
         const canvas = createCanvas(1000, 333)
         const ctx = canvas.getContext("2d");
-        const background = await loadImage('pictures/neues Logo_4.jpg');
+        const background = await loadImage('https://hdqwalls.com/wallpapers/simple-subtle-abstract-dark-minimalism-4k-u9.jpg');
         ctx.fillStyle = '#A3A3A3'
         ctx.fillRect(0,0,canvas.width,canvas.height)
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
@@ -80,7 +80,7 @@ module.exports = {
 
         ctx.fillStyle = '#FFC300';
         ctx.globalAlpha = 0.6;
-        ctx.fillRect(200, 216, ((100 / (fetchedLevel.level * 2 * 250 + 250)) * fetchedLevel.xp) * 7.5, 65);
+        ctx.fillRect(200, 216, calculateLevelXp(fetchedLevel.level), 65);
         ctx.fill();
         ctx.globalAlpha = 1;
 

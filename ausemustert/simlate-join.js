@@ -15,7 +15,7 @@ module.exports = {
      */
     name: 'simulate-join',
     description: 'Simulate a member joining.',
-    deleted: true,
+    deleted: false,
     options: [{
         name: 'target-user',
         description: 'The user you want to emulate joining.',

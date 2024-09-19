@@ -2,28 +2,40 @@
 
 
 
-const {Client, Intents, Collection, MessageEmbed} = require('discord.js');
+const {
+    Client,
+    Interaction,
+    ApplicationCommandOptionType,
+    GuildMember,
+    EmbedBuilder
+} = require('discord.js');
 const fs = require('fs');
 
 module.exports = {
     name: 'quiz',
     description: 'Startet ein Quiz',
-    execute( message, args){
+    devOnly: true,
+    //testOnly: true,
+    // options: Object[],
+    // deleted: Boolean,
+    callback: async (client, interaction) => {
 
         let status = true;
         let answer1 = true;
         let runde = 1;
 
-        const qa = ['Was bedeutet der Name der russischen Raumstation `Mir` ins deutsche übersetzt? \nA) Frieden \nB) Sieg \nC) Raumstation',
-        'Wann hat Venom Aimz seinen Yoututbe Kanal gegründet? \n A) 03.03.2020 \n B) 30.02.2020 \n C) 31.06.2020',
-        'In welcher Sprache wurde ich geschrieben? \nA) Python \nB) Java \nC) Chinesisch',
-        'Von wem wurde der Song Mulberry Street geschrieben? \nA) Twenty one Pilots \nB) Imagine Dragons \nC) Pink Floyd',
-        'Welches sind die drei großen monotheistischen Weltreligionen? \nA) Judentum, Islam, Christentum \nB) Judentum, Buddismus, Christentum \nC) Islam, Hinduismus, Atheismus',
-        'Das flächenmäßig kleinste Bundesland heißt? \nA) Berlin \nB)Bremen \nC) Saarland',
-        'Was ist die “Goldene Himbeere”? \nA) Ein Preis für die schlechteste Leistung innerhalb eines Filmjahres \nB) Eine Nachspeise aus Russland \nC) Das Symbol einer Sekte',
-        'Einen Feinschmecker nennt man auch? \nA) Gourmet \nB) Gourmed \nC) Leckermäulchen',
-        'Folgt man dem Äquator um die Welt, legt man wie viele Kilometer zurück? \nA) Rund 40.070 km \nB) Rund 30.070 km \nC) Rund 80.070 km',
-        'Mit welcher Tiergruppe sind die Dinosaurier am engsten verwandt? \nA) Vögeln \nB) Eidechsen \nC) Alligatoren',
+        const qa = [{'Was bedeutet der Name der russischen Raumstation `Mir` ins deutsche übersetzt?':['A) Frieden', 'B) Sieg', 'C) Raumstation']},
+                {'Wann hat Venom Aimz seinen Yoututbe Kanal gegründet?': ['A) 03.03.2020','B) 30.02.2020','C) 31.06.2020']},
+                {'In welcher Sprache wurde ich geschrieben?': ['A) JavaScript','B) Java','C) Chinesisch']},
+                {'Von wem wurde der Song Mulberry Street geschrieben?':['A) Twenty one Pilots','B) Imagine Dragons','C) Pink Floyd']},
+            {'Welches sind die drei großen monotheistischen Weltreligionen?':['A) Judentum, Islam, Christentum','B) Judentum, Buddismus, Christentum','C) Islam, Hinduismus, Atheismus']},
+            {'Das flächenmäßig kleinste Bundesland heißt?':['A) Berlin','B)Bremen','C) Saarland']},
+            {'Was ist die “Goldene Himbeere”?':['A) Ein Preis für die schlechteste Leistung innerhalb eines Filmjahres','B) Eine Nachspeise aus Russland','C) Das Symbol einer Sekte']},
+            {'Einen Feinschmecker nennt man auch?':['A) Gourmet','B) Gourmed','C) Leckermäulchen']},
+            {'Folgt man dem Äquator um die Welt, legt man wie viele Kilometer zurück?':['A) Rund 40.070 km','B) Rund 30.070 km','C) Rund 80.070 km']},
+            {'Mit welcher Tiergruppe sind die Dinosaurier am engsten verwandt?':['A) Vögeln','B) Eidechsen','C) Alligatoren']}]
+
+/*
         'Welches Metall leitet Wärme am besten? \nA) Silber \nB) Kupfer \nC) Aluminium',
         'Wie lautet die Hauptstadt von Frankreich? \nA) Paris \nB) Amsterdam \nC) Oslo',
         'Wie lautet die Hauptstadt von Bayern? \nA) München \nB) Dortmund \nC) Stuttgart',
@@ -52,7 +64,7 @@ module.exports = {
         'Welcher ist der längste innerdeutsche Fluss? \nA) Rhein \nB) Weser \nC) Dona',
         ' Lautstärke misst man in? \nA) in Dezibel \nB) in Liter \nC) in Gramm'];
 
-        const qb = [
+        const qb = [{
         'Wer hat den Soundtrack für `Django Unchained` geschrieben? \n A) John Williams \n B) Ennio Morricone \n C) Hans Zimmer',
         'Welches ist der höchste Berg auf unserem Heimatplaneten? \nA) Himalaya \nB) Mount Everest \nC) Olympus Mons',
         'Wann fing der 1. Weltkrieg an? \nA) 1795 \nB) 1914 \nC) 1980',
@@ -137,7 +149,7 @@ module.exports = {
         'Wie viel Prozent der Erde sind circa von Wasser bedeckt? \nA) 50 Prozent \nB) 60 Prozent \nC) 70 Prozent',
         'Wie viele Farben hat die dänische Flagge? \nA) drei \nB) vier \nC) Zwei',
         'Beim Poolbillard steht welche Zahl auf der schwarzen Kugel? \nA) 0 \nB) 9 \nC) 8'];
-
+*/
         const next_round = ['Willst du weiterspielen?', 'Noch eine Runde? :)',
         'wenndunocheinerundespielenwillstschreibstdujetztja', 'Man munkelt du willst nochmal spielen?',
         'Du hast das Ende erreicht....oder doch nicht? In der ferne siehst du ein Netherportal! Machst du dich auf um es zu erunden?',
@@ -154,21 +166,21 @@ module.exports = {
         '* Gott blickt verzweifelt auf die Menscheit hinab *'];
 
         const aa = ["A", "a", "1"];
-        const bb = ["B", "b", "2"];
-        const cc = ["C", "c", "3"];
+//        const bb = ["B", "b", "2"];
+//        const cc = ["C", "c", "3"];
 
         const Ja = ['Ja', 'ja', 'j', 'Y', 'J', 'Yes', 'yes', 'y'];
         const Nein = ['Nein', 'nein', 'n', 'no'];
 
-        let filter = m => m.author.id === message.author.id
-        const collector = message.channel.createMessageCollector({
+        let filter = m => m.author.id === interaction.author.id
+        const collector = interaction.channel.createMessageCollector({
             filter,
             max: 1,
             time: 10000,
             error: 'time'
         });
-        let filter1 = m => m.author.id === message.author.id
-        const collector1 = message.channel.createMessageCollector({
+        let filter1 = m => m.author.id === interaction.author.id
+        const collector1 = interaction.channel.createMessageCollector({
             filter1,
             max: 1,
             time: 10000,
@@ -178,11 +190,13 @@ module.exports = {
         while(status && answer1) {
 
             let questa = qa[Math.floor(Math.random() * qa.length)];
-            let questb = qb[Math.floor(Math.random() * qb.length)];
-            let questc = qc[Math.floor(Math.random() * qc.length)];
+//            let questb = qb[Math.floor(Math.random() * qb.length)];
+//            let questc = qc[Math.floor(Math.random() * qc.length)];
 
-            let question2 = [questa, questb, questc];
-            let question = question2[Math.floor(Math.random() * question2.length)];
+//            let question2 = [questa, questb, questc];
+            let question2 = [questa];
+            //let question = question2[Math.floor(Math.random() * question2.length)];
+            console.log(question2)
 
             let next = next_round[Math.floor(Math.random() * next_round.length)];
 
@@ -190,13 +204,13 @@ module.exports = {
 
             let wan = wans[Math.floor(Math.random() * wans.length)];
 
-            const em = new MessageEmbed()
-            .setColor('ORANGE')
+            const em = new EmbedBuilder()
+            .setColor('#fcbe35')
             .setTitle('DRIPPY Quiz')
             .setDescription(`Runde: ${runde}`)
-            .addField('FRAGE:', question, true)
+            .setFields({name:'FRAGE:', value:question2, inline:true})
             .setTimestamp()
-            message.channel.send({embeds: [em]})
+            interaction.channel.send({embeds: [em]})
 
             let msgcontent = collector.on('collect', m => {
             });
@@ -213,13 +227,13 @@ module.exports = {
                 if(aa.includes(msgcontent)) {
                     status = true
                     runde = runde++
-                    const em1 = new MessageEmbed()
-                    .setColor('GREEN')
+                    const em1 = new EmbedBuilder()
+                    .setColor('#fcbe35')
                     .setTitle('DRIPPY Quiz')
                     .setDescription('powered by DRIPPY')
-                    .addField(comm, next, true)
+                    .setFields({name: comm, value: next, inline: true})
                     .setTimestamp()
-                    message.channel.send({embeds: [em1]})
+                    interaction.channel.send({embeds: [em1]})
 
                     collector1.on('collect', m => {
                     });
@@ -247,13 +261,13 @@ module.exports = {
                     }else{
                         answer1 = false
 
-                        const em2 = new MessageEmbed()
-                        .setColor('GREEN')
+                        const em2 = new EmbedBuilder()
+                        .setColor('#fcbe35')
                         .setTitle('DRIPPY Quiz')
                         .setDescription('powered by DRIPPY')
-                        .addField(`Wow, du bist bei Runde ${runde} ausgestiegen`, 'Hier könnte dein Highscore stehen. Dieses Modul ist noch in Bearbeitung', true)
+                        .setFields({name:`Wow, du bist bei Runde ${runde} ausgestiegen`, value:'Hier könnte dein Highscore stehen. Dieses Modul ist noch in Bearbeitung', inline: true})
                         .setTimestamp()
-                        message.channel.send({embeds: [em2]})
+                        interaction.channel.send({embeds: [em2]})
 
                     }
                 }
