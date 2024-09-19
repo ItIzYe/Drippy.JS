@@ -9,7 +9,7 @@ const {
 module.exports = {
     name: 'meme',
     description: 'Replies with the a meme!',
-    devOnly: true,
+    devOnly: false,
     //testOnly: true,
     // options: Object[],
     // deleted: Boolean,
