@@ -1,4 +1,4 @@
-const {Client , Interaction, ApplicationCommandOptionType, AttachmentBuilder} = require('discord.js');
+/* const {Client , Interaction, ApplicationCommandOptionType, AttachmentBuilder} = require('discord.js');
 const Level = require('../../models/Level.js');
 const {createCanvas, loadImage} = require('canvas');
 const calculateLevelXp = require('../../utils/calculateLevelXp.js');
@@ -9,7 +9,7 @@ module.exports = {
      * @param {Client} client
      * @param {Interaction} interaction
      *
-     */
+     *
     name: 'level',
     description: "Shows your/someone's level.",
     deleted: true,
@@ -116,3 +116,4 @@ module.exports = {
 
 
 }
+*/
