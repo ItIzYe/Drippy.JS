@@ -13,7 +13,6 @@
   "dependencies": {
     "ascii": "^1.0.0",
     "ascii-art": "^2.8.5",
-    "canvas": "^2.11.2",
     "collections": "^5.1.13",
     "discord-buttons": "^4.0.0-deprecated",
     "discord-rich-presence": "^0.0.8",
