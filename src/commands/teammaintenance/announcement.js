@@ -56,7 +56,7 @@ module.exports = {
 
 
         client.guilds.cache.forEach( guild =>{
-            console.log(guild.id)
+            //console.log(guild.id)
 
             let guildConfiguration =  GuildConfiguration.findOne({ guildId: guild.id});
             const announcement_channel = client.channels.cache.get(`${guild.systemChannelId}`);
