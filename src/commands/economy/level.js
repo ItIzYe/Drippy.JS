@@ -25,7 +25,7 @@ module.exports = {
     options: [
         {name: 'target-user',
             description: "The user whose rank you want to see",
-            type: ApplicationCommandOptionType.Mentionable}
+            type: 9}
     ],
 
 
@@ -37,22 +37,28 @@ module.exports = {
         await interaction.deferReply();
 
         const mentionedUserId = interaction.options.get('target-user')?.value;
+        console.log(mentionedUserId);
         const targetUserId = mentionedUserId || interaction.member.id;
         const targetUserObj = await interaction.guild.members.fetch(targetUserId);
+        console.log(targetUserObj.user.id);
+        console.log(interaction.guild.id);
 
         const fetchedLevel = await Level.findOne({
             userId: targetUserId,
-            guildId: interaction.guildId,
+            guildId: interaction.guild.id,
         });
+        console.log(fetchedLevel);
 
-        if(!fetchedLevel){
+        if (!fetchedLevel) {
             interaction.editReply(
-                mentionedUserId ? `${targetUserObj.user.tag} hat keine Level` : "Du hast keine Level"
+                mentionedUserId
+                    ? `${targetUserObj.user.tag} doesn't have any levels yet. Try again when they chat a little more.`
+                    : "You don't have any levels yet. Chat a little more and try again."
             );
             return;
         }
 
-        let allLevels = await Level.find({ guildId: interaction.guildId }).select('-_id userId level xp');
+        let allLevels = await Level.find({ guildId: interaction.guild.id }).select('-_id userId level xp');
         allLevels.sort((a, b)=> {
             if(a.level === b.level){
                 return b.xp - a.xp;
@@ -64,10 +70,10 @@ module.exports = {
 
         ///Create Card///
 
-
+        console.log(fetchedLevel.xp, calculateLevelXp(fetchedLevel.level))
 
         const progressBarLength = 14;
-        const filledSquares = Math.round((fetchedLevel.xp / calculateLevelXp(fetchedLevel.level) ) * progressBarLength) || 0;
+        const filledSquares = Math.round((fetchedLevel.xp / calculateLevelXp(fetchedLevel.level)) * progressBarLength) || 0;
         console.log(filledSquares)
         const emptySquares = progressBarLength - filledSquares || 0;
 
@@ -89,7 +95,7 @@ module.exports = {
                 {name: 'Rank', value: `${currentRank}`, inline: true},
                 {name: 'Level', value: `${fetchedLevel.level}`, inline:true},
                 {name: 'XP', value: `${fetchedLevel.xp}`, inline: true},
-                {name: 'XP bis zum nächsten Level', value: `${calculateLevelXp(fetchedLevel.level)}`},
+                {name: 'XP bis zum nächsten Level', value: `${calculateLevelXp(fetchedLevel.level)- fetchedLevel.xp}`},
                 {name: 'Fortschritt', value:`${progressBar}`},
             )
 

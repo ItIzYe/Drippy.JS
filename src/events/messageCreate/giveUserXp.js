@@ -20,7 +20,7 @@ module.exports = async (client, message) => {
     const xpToGive = getRandomXp(5, 15);
 
     const query = {
-        userID: message.author.id,
+        userId: message.author.id,
         guildId: message.guild.id,
     };
 
@@ -34,7 +34,7 @@ module.exports = async (client, message) => {
                 level.xp = 0;
                 level.level += 1;
 
-                message.channel.send(`${message.member} du bist zu **Level ${level.level}** aufgestiegen!`)
+                message.channel.send(`${message.member} you have leveled up to **level ${level.level}**.`);
             }
 
             await level.save().catch((e) => {
@@ -44,14 +44,14 @@ module.exports = async (client, message) => {
             cooldowns.add(message.author.id);
             setTimeout(() => {
                 cooldowns.delete(message.author.id);
-            }, 20000);
+            }, 60000);
         }
 
         // if (!level)
         else {
             // create new level
             const newLevel = new Level({
-                userID: message.author.id,
+                userId: message.author.id,
                 guildId: message.guild.id,
                 xp: xpToGive,
             });
@@ -60,7 +60,7 @@ module.exports = async (client, message) => {
             cooldowns.add(message.author.id);
             setTimeout(() => {
                 cooldowns.delete(message.author.id);
-            }, 20000);
+            }, 60000);
         }
     } catch (error) {
         console.log(`Error giving xp: ${error}`);
