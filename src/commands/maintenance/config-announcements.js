@@ -13,6 +13,7 @@ module.exports = {
      * @param {Object} param0
      */
     name: 'config-announcements',
+    deleted: true,
     description: 'Configure your Announcement Channel',
     options:
         [{
