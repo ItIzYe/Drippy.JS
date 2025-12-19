@@ -28,14 +28,12 @@ module.exports = {
 
         // Stelle sicher, dass der Spieler in der DB existiert
         let player = await Player.findOne({ userId: user.id });
-        if (!player) {
-            player = await Player.create({ userId: user.id });
-        }
+        if (!player) player = await Player.create({ userId: user.id });
 
         const mainMenuEmbed = new EmbedBuilder()
             .setTitle('Guess The Number - Hauptmenü')
             .setColor('#fcbe35')
-            .setDescription('Wähle einen Spielmodus oder schaue deinen Highscore an.');
+            .setDescription('Wähle einen Spielmodus oder schaue deinen Highscore/Leaderboard an.');
 
         const buttons = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
@@ -49,6 +47,10 @@ module.exports = {
             new ButtonBuilder()
                 .setCustomId('highscore')
                 .setLabel('Highscore')
+                .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+                .setCustomId('leaderboard')
+                .setLabel('Leaderboard')
                 .setStyle(ButtonStyle.Secondary)
         );
 
@@ -70,6 +72,30 @@ module.exports = {
                         { name: 'XP', value: `${player.xp}`, inline: true }
                     );
                 await i.editReply({ embeds: [hsEmbed], components: [buttons] });
+            }
+
+            if (i.customId === 'leaderboard') {
+                const topPlayers = await Player.find().sort({ points: -1 }).limit(10);
+                if (!topPlayers || topPlayers.length === 0) {
+                    await i.editReply({ content: 'Noch keine Spieler gefunden!', components: [buttons] });
+                    return;
+                }
+
+                let leaderboardText = '';
+                for (let idx = 0; idx < topPlayers.length; idx++) {
+                    const p = topPlayers[idx];
+                    const member = await interaction.guild.members.fetch(p.userId).catch(() => null);
+                    const name = member ? member.user.username : `User ID: ${p.userId}`;
+                    leaderboardText += `**${idx + 1}. ${name}** - Punkte: ${p.points}, Liga: ${p.league}\n`;
+                }
+
+                const lbEmbed = new EmbedBuilder()
+                    .setTitle('🌟 Guess-The-Number Leaderboard')
+                    .setDescription(leaderboardText)
+                    .setColor('#fcbe35')
+                    .setFooter({ text: 'Top Spieler weltweit' });
+
+                await i.editReply({ embeds: [lbEmbed], components: [buttons] });
             }
 
             if (i.customId === 'normal_match') {
@@ -94,7 +120,6 @@ async function startNormalMatch(channel, player, user) {
     for (let r = 1; r <= rounds; r++) {
         const num1 = Math.floor(Math.random() * 100) + 1;
         const num2 = Math.floor(Math.random() * 100) + 1;
-
         const min = Math.min(num1, num2);
         const max = Math.max(num1, num2);
 
