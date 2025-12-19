@@ -28,9 +28,10 @@ const loadLanguages = async (client) => {
 }
 
     const setLanguage = (guild, language) => {
-        //console.log(guildLanguages[guildId])
-        guildLanguages[guild.id] = language.toLowerCase();
-    }
+    const safeLanguage = (language ?? 'english').toLowerCase();
+    guildLanguages[guild.id] = safeLanguage;
+};
+
 
 module.exports = (guild, textId) => {
     if(!lang.translations[textId]) {
@@ -38,7 +39,9 @@ module.exports = (guild, textId) => {
     }
 
     //console.log(guildLanguages[guild.id])
-    const selectedLanguage = guildLanguages[guild.id].toLowerCase();
+    const selectedLanguage =
+    (guildLanguages[guild.id] ?? 'english').toLowerCase();
+
 
     return lang.translations[textId][selectedLanguage]
 }

@@ -5,6 +5,9 @@ const {TextInputStyle,ChatInputCommandInteraction,
     TextInputBuilder, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle
 } = require('discord.js')
 const formatResults = require('../../utils/formatResults');
+const language = require('../../handlers/languages')
+const { MessageFlags } = require('discord.js');
+
 
 module.exports = {
     /**
@@ -18,6 +21,7 @@ module.exports = {
     dmPermission: false,
 
     callback: async(client, interaction) => {
+        const guild = interaction.guildId
         try{
             const guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
 
@@ -27,7 +31,7 @@ module.exports = {
             }
 
             if(!guildConfiguration.suggestionChannelIds.includes(interaction.channelId)){
-                await interaction(`${language(guild, 'SUGGESTION_CHANNEL_NOT')} ${guildConfiguration.suggestionChannelIds.map((id) => `<#${id}>`).join(',')}`);
+                await interaction.reply(`${language(guild, 'SUGGESTION_CHANNEL_NOT')} ${guildConfiguration.suggestionChannelIds.map((id) => `<#${id}>`).join(',')}`);
                 return;
             }
 
@@ -57,7 +61,7 @@ module.exports = {
                 time: 1000 * 60 * 3,
             }).catch((error) => console.log(error));
 
-            await modalInteraction.deferReply({ephemeral: true});
+            await modalInteraction.deferReply({flags: MessageFlags.Ephemeral});
 
             let suggestionMessage;
 

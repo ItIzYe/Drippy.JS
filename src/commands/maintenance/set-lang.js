@@ -37,12 +37,12 @@ module.exports = {
     callback: async(client, interaction) => {
         const {guild} = interaction;
 
-        const targetLanguage = interaction.options.get('select-language').value.toLowerCase();
+        const targetLanguage = interaction.options.getString('select-language', true).toLowerCase();
         console.log(targetLanguage)
+        if (!languages.includes(targetLanguage)) {
+    return interaction.reply({ content: 'That language is not supported.', ephemeral: true });
+}
 
-        if(!languages.includes(targetLanguage)){
-            interaction.reply('That language is not supported.');
-        }
 
         setLanguage(guild, targetLanguage)
 

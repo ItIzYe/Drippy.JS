@@ -58,7 +58,7 @@ module.exports = {
         client.guilds.cache.forEach( guild =>{
             //console.log(guild.id)
 
-            let guildConfiguration =  GuildConfiguration.findOne({ guildId: guild.id});
+            let guildConfiguration = GuildConfiguration.findOne({ guildId: guild.id});
             const announcement_channel = client.channels.cache.get(`${guild.systemChannelId}`);
 
             //console.log(announcement_channel)
@@ -70,7 +70,7 @@ module.exports = {
                 } else {
                     announcement_channel.send({embeds: [embed]});
                 }
-            } catch (e) {
+            } catch (error) {
                 console.log(`There was an error when announcing: ${error}`);
             }
         })

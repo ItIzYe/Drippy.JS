@@ -3,8 +3,7 @@
 const { Buffer } = require('node:buffer');
 const { lazy, isJSONEncodable } = require('@discordjs/util');
 const { DiscordSnowflake } = require('@sapphire/snowflake');
-const { MessageFlags } = require('discord-api-types/v10');
-const ActionRowBuilder = require('./ActionRowBuilder');
+const { MessageFlags, MessageReferenceType } = require('discord-api-types/v10');
 const { DiscordjsError, DiscordjsRangeError, ErrorCodes } = require('../errors');
 const { resolveFile } = require('../util/DataResolver');
 const MessageFlagsBitField = require('../util/MessageFlagsBitField');
@@ -92,6 +91,7 @@ class MessagePayload {
    * Whether or not the target is an {@link BaseInteraction} or an {@link InteractionWebhook}
    * @type {boolean}
    * @readonly
+   * @deprecated This will no longer serve a purpose in the next major version.
    */
   get isInteraction() {
     const BaseInteraction = getBaseInteraction();
@@ -148,7 +148,7 @@ class MessagePayload {
     }
 
     const components = this.options.components?.map(component =>
-      (isJSONEncodable(component) ? component : new ActionRowBuilder(component)).toJSON(),
+      isJSONEncodable(component) ? component.toJSON() : this.target.client.options.jsonTransformer(component),
     );
 
     let username;
@@ -164,15 +164,10 @@ class MessagePayload {
 
     let flags;
     if (
-      this.options.flags !== undefined ||
-      (this.isMessage && this.options.reply === undefined) ||
-      this.isMessageManager
+      // eslint-disable-next-line eqeqeq
+      this.options.flags != null
     ) {
-      flags =
-        // eslint-disable-next-line eqeqeq
-        this.options.flags != null
-          ? new MessageFlagsBitField(this.options.flags).bitfield
-          : this.target.flags?.bitfield;
+      flags = new MessageFlagsBitField(this.options.flags).bitfield;
     }
 
     if (isInteraction && this.options.ephemeral) {
@@ -197,6 +192,22 @@ class MessagePayload {
         message_reference = {
           message_id,
           fail_if_not_exists: this.options.reply.failIfNotExists ?? this.target.client.options.failIfNotExists,
+        };
+      }
+    }
+
+    if (typeof this.options.forward === 'object') {
+      const reference = this.options.forward.message;
+      const channel_id = reference.channelId ?? this.target.client.channels.resolveId(this.options.forward.channel);
+      const guild_id = reference.guildId ?? this.target.client.guilds.resolveId(this.options.forward.guild);
+      const message_id = this.target.messages.resolveId(reference);
+      if (message_id) {
+        if (!channel_id) throw new DiscordjsError(ErrorCodes.InvalidType, 'channelId', 'TextBasedChannelResolvable');
+        message_reference = {
+          type: MessageReferenceType.Forward,
+          message_id,
+          channel_id,
+          guild_id: guild_id ?? undefined,
         };
       }
     }
@@ -237,7 +248,10 @@ class MessagePayload {
       components,
       username,
       avatar_url: avatarURL,
-      allowed_mentions: content === undefined && message_reference === undefined ? undefined : allowedMentions,
+      allowed_mentions:
+        this.isMessage && message_reference === undefined && this.target.author.id !== this.target.client.user.id
+          ? undefined
+          : allowedMentions,
       flags,
       message_reference,
       attachments: this.options.attachments,

@@ -1,6 +1,8 @@
 const {Client, Interaction, ActionRowBuilder, ButtonBuilder, ButtonStyle,} = require('discord.js');
 const Suggestion = require('../../models/Suggestion')
 const formatResults = require('../../utils/formatResults');
+const { MessageFlags } = require('discord.js');
+
 /**
  *
  * @param {Interaction} interaction
@@ -17,7 +19,7 @@ module.exports = async(client, interaction) => {
         if(!type || !suggestionId || !action) return;
         if(type !== 'suggestion') return;
 
-        await interaction.deferReply({ephemeral:true});
+        await interaction.deferReply({flags: MessageFlags.Ephemeral});
 
         const targetSuggestion = await Suggestion.findOne({suggestionId});
         const targetMessage = await interaction.channel.messages.fetch(targetSuggestion.messageId);
