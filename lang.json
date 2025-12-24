@@ -366,20 +366,28 @@
       "german": "wurde als Announcement channel entfernt"
     },
     "CONFIG_TIK_CAT": {
-      "english": "Ticket system configured.\nCategory: ${category}\nLogs: ${logChannel}",
-      "german": "Ticketsystem konfiguriert.\nKategorie: ${category}\nLogs: ${logChannel}"
+      "english": "Ticket system configured.\nCategory: ",
+      "german": "Ticketsystem konfiguriert.\nKategorie: "
+    },
+    "CONFIG_TIK_LOG": {
+      "english": "\nLogs: ",
+      "german": "\nLogs: "
     },
     "ADD_TIK_NOT":  {
       "english": "Ticket system is not set up.",
       "german": "Es ist kein Ticketsystem eingerichtet."
     },
-    "ADD_TIK_SEND": {
-      "english": "Ticket by ${interaction.user}\nReason: **${reason}**",
-      "german": "Ticket von ${interaction.user}\nGrund: **${reason}**"
+    "ADD_TIK_BY": {
+      "english": "Ticket by ",
+      "german": "Ticket von "
+    },
+    "ADD_TIK_REASON": {
+      "english": "\nReason: ",
+      "german": "Grund: "
     },
     "ADD_TIK_REP": {
-      "english": "Ticket created: ${channel}",
-      "german": "Ticket erstellt: ${channel}",
+      "english": "Ticket created: ",
+      "german": "Ticket erstellt: "
     },
     "CLO_TIK_NOT": {
       "english": "This is not an active ticket.",
