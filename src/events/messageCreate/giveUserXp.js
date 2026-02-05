@@ -1,6 +1,7 @@
 const { Client, Message } = require('discord.js');
 const calculateLevelXp = require('../../utils/calculateLevelXp');
 const Level = require('../../models/Level');
+const GuildConfiguration = require('../../models/GuildConfiguration');
 const cooldowns = new Set();
 
 function getRandomXp(min, max) {
@@ -33,9 +34,14 @@ module.exports = async (client, message) => {
             if (level.xp > calculateLevelXp(level.level)) {
                 level.xp = 0;
                 level.level += 1;
-
+                try{
+                    let guildConfiguration = await GuildConfiguration.findOne({ guildId: message.guildId});
+                    if(guildConfiguration.levelChannelIds){
+                       const messageChannel = client.channels.cache.get(guildConfiguration.levelChannelIds[0])
+		       messageChannel.send(`${message.member} you have leveled up to **level ${level.level}**.`);
+                   } else{
                 message.channel.send(`${message.member} you have leveled up to **level ${level.level}**.`);
-            }
+            }}catch(e){console.log(e)}}
 
             await level.save().catch((e) => {
                 console.log(`Error saving updated level ${e}`);
