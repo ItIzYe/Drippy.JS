@@ -396,7 +396,23 @@
     "CLO_TIK": {
       "english": "Ticket closed",
       "german": "Ticket wurde geschlossen."
-    }
+    },
+    "CONFIG_LEVEL_ALREADY": {
+      "english": "has already been added as a Level channel",
+      "german": "ist schon ein Level channel"
+    },
+    "CONFIG_LEVEL_ADDED": {
+      "english": "has been added as a Level channel",
+      "german": "wurde als Level channel geaddet"
+    },
+    "CONFIG_LEVEL_NOT": {
+      "english": "is not a Level channel",
+      "german": "ist kein Level channel"
+    },
+    "CONFIG_LEVEL_REM": {
+      "english": "has been removed as a Level channel",
+      "german": "wurde als Level channel entfernt"
+    },
   }
 }
 
