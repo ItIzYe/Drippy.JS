@@ -12,7 +12,7 @@ module.exports = {
      * @param {Interaction} interaction
      * @param {Object} param0
      */
-    name: 'config-suggestions',
+    name: 'config-levels',
     description: 'Configure your if you want Level-up messages sent into a specific channel',
     options:
         [{
@@ -53,14 +53,14 @@ module.exports = {
             const channel = interaction.options.getChannel('channel');
 
             if(guildConfiguration.levelChannelIds.includes(channel.id)){
-                await interaction.reply(`${channel} ${language(guild, 'CONFIG_SUGG_ALREADY')}`);
+                await interaction.reply(`${channel} ${language(guild, 'CONFIG_LEVEL_ALREADY')}`);
                 return;
             }
 
             guildConfiguration.levelChannelIds.push(channel.id)
             await guildConfiguration.save();
 
-            await interaction.reply(`${channel} ${language(guild, 'CONFIG_SUGG_ADDED')}`);
+            await interaction.reply(`${channel} ${language(guild, 'CONFIG_LEVEL_ADDED')}`);
             return;
         };
 
@@ -68,14 +68,14 @@ module.exports = {
             const channel = interaction.options.getChannel('channel');
 
             if(!guildConfiguration.levelChannelIds.includes(channel.id)){
-                await interaction.reply(`${channel} ${language(guild, 'CONFIG_SUGG_NOT')}`);
+                await interaction.reply(`${channel} ${language(guild, 'CONFIG_LEVEL_NOT')}`);
                 return;
             }
 
-            guildConfiguration.suggestionChannelIds = guildConfiguration.levelChannelIds.filter((id) =>id !== channel.id)
+            guildConfiguration.levelChannelIds = guildConfiguration.levelChannelIds.filter((id) =>id !== channel.id)
             await guildConfiguration.save();
 
-            await interaction.reply(`${channel} ${language(guild, 'CONFIG_SUGG_REM')}`);
+            await interaction.reply(`${channel} ${language(guild, 'CONFIG_LEVEL_REM')}`);
             return;
         }
     }

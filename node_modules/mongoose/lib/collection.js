@@ -5,7 +5,7 @@
  */
 
 const EventEmitter = require('events').EventEmitter;
-const STATES = require('./connectionstate');
+const STATES = require('./connectionState');
 const immediate = require('./helpers/immediate');
 
 /**
@@ -29,7 +29,7 @@ function Collection(name, conn, opts) {
   this.collectionName = name;
   this.conn = conn;
   this.queue = [];
-  this.buffer = true;
+  this.buffer = !conn?._hasOpened;
   this.emitter = new EventEmitter();
 
   if (STATES.connected === this.conn.readyState) {
@@ -236,8 +236,32 @@ Collection.prototype.save = function() {
  * Abstract method that drivers must implement.
  */
 
-Collection.prototype.update = function() {
-  throw new Error('Collection#update unimplemented by driver');
+Collection.prototype.updateOne = function() {
+  throw new Error('Collection#updateOne unimplemented by driver');
+};
+
+/**
+ * Abstract method that drivers must implement.
+ */
+
+Collection.prototype.updateMany = function() {
+  throw new Error('Collection#updateMany unimplemented by driver');
+};
+
+/**
+ * Abstract method that drivers must implement.
+ */
+
+Collection.prototype.deleteOne = function() {
+  throw new Error('Collection#deleteOne unimplemented by driver');
+};
+
+/**
+ * Abstract method that drivers must implement.
+ */
+
+Collection.prototype.deleteMany = function() {
+  throw new Error('Collection#deleteMany unimplemented by driver');
 };
 
 /**
@@ -246,14 +270,6 @@ Collection.prototype.update = function() {
 
 Collection.prototype.getIndexes = function() {
   throw new Error('Collection#getIndexes unimplemented by driver');
-};
-
-/**
- * Abstract method that drivers must implement.
- */
-
-Collection.prototype.mapReduce = function() {
-  throw new Error('Collection#mapReduce unimplemented by driver');
 };
 
 /**
@@ -295,13 +311,7 @@ Collection.prototype._getBufferTimeoutMS = function _getBufferTimeoutMS() {
   if (opts && opts.schemaUserProvidedOptions != null && opts.schemaUserProvidedOptions.bufferTimeoutMS != null) {
     return opts.schemaUserProvidedOptions.bufferTimeoutMS;
   }
-  if (conn.config.bufferTimeoutMS != null) {
-    return conn.config.bufferTimeoutMS;
-  }
-  if (conn.base != null && conn.base.get('bufferTimeoutMS') != null) {
-    return conn.base.get('bufferTimeoutMS');
-  }
-  return 10000;
+  return conn._getBufferTimeoutMS();
 };
 
 /*!
