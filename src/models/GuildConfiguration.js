@@ -16,6 +16,10 @@ const guildConfigurationSchema = new Schema({
     announcementChannelIds: {
         type: [String],
         default: []
+    },
+    levelChannelIds: {
+        type: [String],
+        default: []
     }
 });
 
