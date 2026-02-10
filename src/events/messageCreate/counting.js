@@ -6,36 +6,36 @@ const GuildConfiguration = require('../../models/GuildConfiguration');
  * @param {Message} message
  */
 module.exports = async (client, message) => {
-    // 1. Ignore bots immediately to save resources
+    // 1. Ignore bots
     if (message.author.bot) return;
 
-    const { guild } = message;
-    
-    // Ensure we have a configuration
-    let guildconfiguration = await GuildConfiguration.findOne({ guildId: message.guildId });
-    
-    // Check if config exists and has channel IDs
-    if (guildconfiguration && guildconfiguration.countingChannelIds && guildConfiguration.countingChannelIds.length > 0) {
+    try {
+        const { guild } = message;
         
-        // Get the specific counting channel ID for this guild
-        const targetChannelId = guildconfiguration.countingChannelIds[0];
+        // Load configuration
+        let guildConfiguration = await GuildConfiguration.findOne({ guildId: message.guildId });
 
-        // 2. Check if the message is in the correct channel
-        if (message.channel.id !== targetChannelId) return;
+        // 2. Check if config exists AND has channel IDs
+        if (guildConfiguration && guildConfiguration.countingChannelIds && guildConfiguration.countingChannelIds.length > 0) {
+            
+            // Get the ID string directly
+            const targetChannelId = guildConfiguration.countingChannelIds[0];
 
-        const currentNumber = parseInt(message.content);
+            // 3. Check if we are in the right channel
+            if (message.channel.id !== targetChannelId) return;
 
-        // 3. If it's not a number, delete it
-        if (isNaN(currentNumber)) {
-            await message.delete();
-            return;
-        }
+            const currentNumber = parseInt(message.content);
 
-        try {
-            // Fetch the last 2 messages
+            // 4. If message is not a number, delete it
+            if (isNaN(currentNumber)) {
+                await message.delete();
+                return;
+            }
+
+            // 5. Fetch history
             const messages = await message.channel.messages.fetch({ limit: 2 });
 
-            // Handle the very first number in the channel
+            // Handle start of channel (only 1 message exists)
             if (messages.size < 2) {
                 if (currentNumber !== 1) {
                     await message.delete();
@@ -45,31 +45,28 @@ module.exports = async (client, message) => {
                 return;
             }
 
-            // Get the previous message
+            // Get previous number
             const previousMessage = messages.last();
             const previousNumber = parseInt(previousMessage.content);
 
-            // If the previous message wasn't a number (rare edge case), ignore or handle
-            if (isNaN(previousNumber)) {
-                return;
-            }
+            if (isNaN(previousNumber)) return;
 
-            // 4. FIX: Corrected spelling and syntax
+            // 6. Compare (Fixed Syntax Here)
             if (currentNumber !== previousNumber + 1) {
                 await message.delete();
-                const warning = await message.channel.send(`${message.author}, incorrect Number!`);
+                const warning = await message.channel.send(`${message.author}, incorrect number! Next is **${previousNumber + 1}**.`);
                 setTimeout(() => warning.delete(), 3000);
             } else {
-                // Optional: React to correct numbers
-               // await message.react('✅');
+                // Optional: React to correct number
+                await message.react('✅');
             }
 
-        } catch (error) {
-            console.error("Error fetching messages:", error);
+        } else {
+            // This handles the "No channel specified" case
+            console.log("No counting channel configured.");
         }
-    } else {
-        // This handles the "else" for the main guildConfiguration check
-        console.log("No counting channel configured for this guild.");
-        return;
+    } catch (error) {
+        console.error("Error in counting logic:", error);
     }
 };
+
