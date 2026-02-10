@@ -20,6 +20,10 @@ const guildConfigurationSchema = new Schema({
     levelChannelIds: {
         type: [String],
         default: []
+    },
+    countingChannelIds: {
+        type: [String],
+        default: []
     }
 });
 
