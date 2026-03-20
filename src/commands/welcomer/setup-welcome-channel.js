@@ -1,4 +1,4 @@
-const {ApplicationCommandOptionType, PermissionsBitField} = require("discord.js");
+const {ApplicationCommandOptionType, PermissionsBitField, MessageFlags} = require("discord.js");
 const welcomeChannelSchema = require('../../models/WelcomeChannel')
 module.exports = {
     /**
@@ -9,7 +9,7 @@ module.exports = {
      */
     name: 'setup-welcome-message',
     description: 'Setup a channel to send welcome messages to.',
-    deleted: true,
+    deleted: false,
     options: [
         {
             name: 'target-channel',
@@ -32,7 +32,7 @@ module.exports = {
             const targetChannel = interaction.options.getChannel('target-channel');
             const customMessage = interaction.options.getString('custom-message');
 
-            await interaction.deferReply({ephemeral: true});
+            await interaction.deferReply({flags: [MessageFlags.Ephemeral]});
 
             const query = {
                 guildId: interaction.guildId,

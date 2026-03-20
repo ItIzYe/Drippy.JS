@@ -1,4 +1,4 @@
-const {Client, Interaction, PermissionsBitField} = require("discord.js");
+const {Client, Interaction, PermissionsBitField, MessageFlags} = require("discord.js");
 const welcomeChannelSchema = require('../../models/WelcomeChannel')
 module.exports = {
     /**
@@ -9,7 +9,7 @@ module.exports = {
      */
     name: 'remove-welcome-channel',
     description: 'Remove a welcome channel',
-    deleted: true,
+    deleted: false,
     options: [
         {
             name: 'target-channel',
@@ -26,7 +26,7 @@ module.exports = {
         try{
             const targetChannel = interaction.options.getChannel('target-channel');
 
-            await interaction.deferReply({ephemeral:true});
+            await interaction.deferReply({flags: [MessageFlags.Ephemeral]});
 
             const query = {
                 guildId: interaction.guildId,
