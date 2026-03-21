@@ -6,7 +6,6 @@ const {
     ChannelType,
     EmbedBuilder
 } = require('discord.js');
-// const language = require("../../handlers/languages"); // Uncomment if you use your lang handler
 
 module.exports = {
     name: 'lockdown',
@@ -57,16 +56,12 @@ module.exports = {
     callback: async (client, interaction) => {
         const { options, guild, channel } = interaction;
         const subcommand = options.getSubcommand();
-
-        // Get the target channel OR use the current channel
         const targetChannel = options.getChannel('channel') || channel;
         const reason = options.getString('reason') || 'No reason provided';
 
         await interaction.deferReply();
 
-        // --- SUBCOMMAND: LOCK ---
         if (subcommand === 'lock') {
-            // Check if already locked (optional check, but good for UX)
             const currentPerms = targetChannel.permissionsFor(guild.roles.everyone);
             if (!currentPerms.has(PermissionFlagsBits.SendMessages)) {
                 return interaction.editReply({
@@ -75,10 +70,9 @@ module.exports = {
             }
 
             try {
-                // Deny SendMessages for @everyone
                 await targetChannel.permissionOverwrites.edit(guild.roles.everyone, {
                     SendMessages: false,
-                    AddReactions: false // Optional: Stop reactions too?
+                    AddReactions: false 
                 });
 
                 const embed = new EmbedBuilder()
@@ -90,10 +84,8 @@ module.exports = {
                         { name: 'Reason', value: reason, inline: true }
                     );
 
-                // Send confirmation in the command channel
                 await interaction.editReply({ embeds: [embed] });
 
-                // Optional: Send a message inside the locked channel so people know
                 if (targetChannel.id !== channel.id) {
                     const notifyEmbed = new EmbedBuilder()
                         .setColor('Red')
@@ -110,11 +102,8 @@ module.exports = {
             }
         }
 
-        // --- SUBCOMMAND: UNLOCK ---
         if (subcommand === 'unlock') {
             try {
-                // Reset SendMessages to "null" (Inherit) or "true" (Allow)
-                // "null" is usually safer as it restores the default server state.
                 await targetChannel.permissionOverwrites.edit(guild.roles.everyone, {
                     SendMessages: null,
                     AddReactions: null
@@ -128,7 +117,7 @@ module.exports = {
 
                 await interaction.editReply({ embeds: [embed] });
                 
-                // Optional: Notify the channel itself
+
                 if (targetChannel.id !== channel.id) {
                     await targetChannel.send('🔓 **The lockdown has been lifted.**');
                 }

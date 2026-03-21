@@ -41,12 +41,12 @@ module.exports = {
     callback: async (client, interaction) => {
         const { options, channel } = interaction;
         
-        // 1. Get Options
+
         const rawTime = options.getString('duration').toLowerCase();
         const targetChannel = options.getChannel('channel') || channel;
         const reason = options.getString('reason') || 'No reason provided';
 
-        // 2. Parse the time input (e.g., "5m" -> 300 seconds)
+
         let seconds = 0;
 
         if (rawTime === 'off' || rawTime === '0') {
@@ -58,11 +58,10 @@ module.exports = {
         } else if (rawTime.endsWith('h')) {
             seconds = parseInt(rawTime) * 3600;
         } else {
-            // If they just typed a number without a letter, assume seconds
             seconds = parseInt(rawTime);
         }
 
-        // 3. Validation
+
         if (isNaN(seconds)) {
             return interaction.reply({
                 content: '❌ Invalid time format. Please use `10s`, `5m`, `2h`, or `0`.',
@@ -70,7 +69,7 @@ module.exports = {
             });
         }
 
-        // Discord Limit: Max slowmode is 6 hours (21600 seconds)
+
         if (seconds > 21600) {
             return interaction.reply({
                 content: '❌ You cannot set slowmode higher than 6 hours.',
@@ -81,11 +80,9 @@ module.exports = {
         await interaction.deferReply();
 
         try {
-            // 4. Apply the Slowmode
             await targetChannel.setRateLimitPerUser(seconds, reason);
 
-            // 5. Create Response Embed
-            const embed = new EmbedBuilder()
+             const embed = new EmbedBuilder()
                 .setColor(seconds === 0 ? 'Green' : 'Orange')
                 .setTitle(seconds === 0 ? '🐇 Slowmode Disabled' : '🐢 Slowmode Enabled')
                 .setDescription(

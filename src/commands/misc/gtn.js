@@ -26,7 +26,7 @@ module.exports = {
     callback: async (client, interaction) => {
         const { user, channel } = interaction;
 
-        // Stelle sicher, dass der Spieler in der DB existiert
+
         let player = await Player.findOne({ userId: user.id });
         if (!player) player = await Player.create({ userId: user.id });
 
@@ -111,7 +111,7 @@ module.exports = {
     },
 };
 
-// --- Spielmodi Funktionen ---
+
 async function startNormalMatch(channel, player, user) {
     let rounds = 10;
     let userPoints = 0;
@@ -183,9 +183,8 @@ async function startArcade(channel, player, user) {
     await finalizeGame(channel, player, user, points);
 }
 
-// --- Spiel beenden und Highscore aktualisieren ---
+
 async function finalizeGame(channel, player, user, points) {
-    // XP und Liga berechnen
     player.xp += points;
     player.points = Math.max(player.points, points);
 

@@ -95,9 +95,9 @@ module.exports = {
             return;
         }
 
-        const targetUserRolePosition = targetUser.roles.highest.position; // Highest role of the target user
-        const requestUserRolePosition = interaction.member.roles.highest.position; // Highest role of the user running the cmd
-        const botRolePosition = interaction.guild.members.me.roles.highest.position; // Highest role of the bot
+        const targetUserRolePosition = targetUser.roles.highest.position;
+        const requestUserRolePosition = interaction.member.roles.highest.position;
+        const botRolePosition = interaction.guild.members.me.roles.highest.position;
 
         if (targetUserRolePosition >= requestUserRolePosition) {
             const embed = new EmbedBuilder()
@@ -123,7 +123,6 @@ module.exports = {
             return;
         }
 
-        // Timeout the user
         try {
             const { default: prettyMs } = await import('pretty-ms');
 

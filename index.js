@@ -21,10 +21,9 @@ const client = new Client({ intents: 53608447});
 
 const clientId = process.env.CLIENT_ID;
 
-// Run this once to nuke all Global Commands//
+
 const rest = new REST({ version: '10' }).setToken(token);
 
-// Add this near your client.login()
 
 //client.rest.on('rateLimited', (info) => {
 //    console.log(`⚠️ RATE LIMIT HIT!`);
@@ -33,7 +32,6 @@ const rest = new REST({ version: '10' }).setToken(token);
 //    console.log(`- Route: ${info.route}`);
 //});
 
-// For Global Commands (commands that appear in every server)
 rest.put(Routes.applicationCommands(clientId), { body: [] })
 	.then(() => console.log('Successfully deleted all global application commands.'))
 	.catch(console.error);

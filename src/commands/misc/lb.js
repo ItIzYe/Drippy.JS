@@ -2,7 +2,7 @@ const {
     EmbedBuilder, 
     MessageFlags 
 } = require('discord.js');
-const Level = require('../../models/Level'); // Pfad zu deinem Level-Schema
+const Level = require('../../models/Level');
 
 module.exports = {
     name: 'leaderboard',
@@ -10,10 +10,9 @@ module.exports = {
 
     callback: async (client, interaction) => {
         try {
-            await interaction.deferReply(); // Da DB-Abfragen kurz dauern können
+            await interaction.deferReply();
 
-            // 1. Die Top 10 aus der Datenbank holen
-            // Wir sortieren erst nach Level (absteigend) und dann nach XP (absteigend)
+
             const topPlayers = await Level.find({
                 guildId: interaction.guild.id,
             })
@@ -24,19 +23,19 @@ module.exports = {
                 return await interaction.editReply('Es gibt noch keine Daten für ein Leaderboard auf diesem Server.');
             }
 
-            // 2. Das Leaderboard-Textformat aufbauen
+
             let leaderboardText = '';
 
             for (let i = 0; i < topPlayers.length; i++) {
                 const data = topPlayers[i];
                 
-                // Versuchen, den User aus dem Cache zu holen, sonst fetchen
+
                 const member = interaction.guild.members.cache.get(data.userId) || 
                                (await interaction.guild.members.fetch(data.userId).catch(() => null));
 
                 const name = member ? member.user.username : `Unbekannter User (${data.userId})`;
                 
-                // Medaillen für die ersten drei Plätze
+
                 let rankEmoji = '';
                 if (i === 0) rankEmoji = '🥇';
                 else if (i === 1) rankEmoji = '🥈';
@@ -46,7 +45,7 @@ module.exports = {
                 leaderboardText += `${rankEmoji} **${name}**\n╰─ Level: \`${data.level}\` • XP: \`${data.xp.toLocaleString()}\`\n\n`;
             }
 
-            // 3. Das Embed erstellen
+
             const lbEmbed = new EmbedBuilder()
                 .setTitle(`🏆 Level Leaderboard - ${interaction.guild.name}`)
                 .setColor('#00fdfe')

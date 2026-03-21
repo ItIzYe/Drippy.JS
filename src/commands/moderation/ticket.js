@@ -61,8 +61,7 @@ module.exports = {
     callback: async (client, interaction) => {
         const subcommand = interaction.options.getSubcommand();
 
-        /* ================= SETUP ================= */
-        if (subcommand === 'setup') {
+         if (subcommand === 'setup') {
             if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
                 return interaction.reply({
                     content: 'Administrator permissions required.',
@@ -89,7 +88,7 @@ module.exports = {
             });
         }
 
-        /* ================= CREATE ================= */
+
         if (subcommand === 'create') {
             const data = await Ticket.findOne({ Guild: interaction.guild.id });
             if (!data) {
@@ -135,7 +134,7 @@ module.exports = {
             });
         }
 
-        /* ================= CLOSE ================= */
+
         if (subcommand === 'close') {
             const data = await Ticket.findOne({ Guild: interaction.guild.id });
             if (!data) return;

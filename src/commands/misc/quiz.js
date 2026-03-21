@@ -378,8 +378,7 @@ module.exports = {
     question: 'Was ist das chemische Symbol für Silber?',
     answers: ['Au', 'Ag', 'Af'],
     correct: 'B'
-  }]; // leer lassen
-
+  }]; 
         const current = qa[0] || {
             question: 'Keine Fragen vorhanden',
             answers: ['A: -', 'B: -', 'C: -'],
@@ -420,7 +419,7 @@ module.exports = {
                 if (answer === current.correct) score++;
                 round++;
 
-                // Aktualisiere Embed
+
                 const newEmbed = EmbedBuilder.from(embed)
                     .setTitle(`Runde ${round}`)
                     .setFields(
@@ -436,7 +435,6 @@ module.exports = {
             }
 
             if (i.customId === 'leaderboard') {
-                // Highscore aus MongoDB abrufen
                 const top = await Highscore.find().sort({ score: -1 }).limit(10);
                 const leaderboardEmbed = new EmbedBuilder()
                     .setTitle('Leaderboard')

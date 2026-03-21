@@ -8,7 +8,7 @@ const {
 } = require('discord.js');
 const language = require("../../handlers/languages");
 
-// Simple function to generate a random Case ID (e.g., "A7X2")
+
 function generateCaseId() {
     return Math.random().toString(36).substring(2, 7).toUpperCase();
 }
@@ -70,9 +70,8 @@ module.exports = {
 
         await interaction.deferReply();
 
-        // --- SUBCOMMAND: ADD ---
+
         if (subcommand === 'add') {
-            // Permission Check
             if (!member.permissions.has(PermissionFlagsBits.KickMembers)) {
                 return interaction.editReply({ 
                     content: "You do not have permission to warn users." 
@@ -83,7 +82,7 @@ module.exports = {
             const reason = options.getString('reason');
             const targetMember = await guild.members.fetch(targetUser.id).catch(() => null);
 
-            // Hierarchy Check (Prevent warning admins/owners)
+  
             if (targetMember) {
                 const targetUserRolePosition = targetMember.roles.highest.position;
                 const requestUserRolePosition = member.roles.highest.position;
@@ -97,10 +96,10 @@ module.exports = {
                 }
             }
 
-            // 1. Generate unique Case ID
+
             const caseId = generateCaseId();
 
-            // 2. Create the "File" in the Database (Reference Method)
+
             const newWarn = new WarnModel({
                 guildId: guild.id,
                 userId: targetUser.id,
@@ -111,7 +110,7 @@ module.exports = {
 
             await newWarn.save();
 
-            // 3. Reply
+
             const embed = new EmbedBuilder()
                 .setColor('Red')
                 .setTitle('WARN ADDED' || `Warning Issued: Case #${caseId}`)
@@ -127,12 +126,11 @@ module.exports = {
             return interaction.editReply({ embeds: [embed] });
         }
 
-        // --- SUBCOMMAND: LIST ---
+
         if (subcommand === 'list') {
             const targetUser = options.getUser('target-user') || interaction.user;
 
-            // 1. Find all "files" that belong to this user
-            // We sort by timestamp so newest are at the bottom
+
             const warns = await WarnModel.find({ 
                 guildId: guild.id, 
                 userId: targetUser.id 
@@ -144,14 +142,14 @@ module.exports = {
                 });
             }
 
-            // 2. Format the list
+
             const embed = new EmbedBuilder()
                 .setColor('Orange')
                 .setTitle(`Warnings for ${targetUser.username}`)
                 .setDescription(`Found **${warns.length}** warning(s).`)
                 .setThumbnail(targetUser.displayAvatarURL());
 
-            // Limit to last 25 fields (Discord Embed Limit)
+
             const recentWarns = warns.slice(-25);
 
             recentWarns.forEach(warn => {
@@ -164,9 +162,8 @@ module.exports = {
             return interaction.editReply({ embeds: [embed] });
         }
 
-        // --- SUBCOMMAND: REMOVE ---
+
         if (subcommand === 'remove') {
-            // Permission Check
             if (!member.permissions.has(PermissionFlagsBits.KickMembers)) {
                 return interaction.editReply({ 
                     content: "You do not have permission to remove warnings." 
@@ -175,7 +172,6 @@ module.exports = {
 
             const caseId = options.getString('case-id');
 
-            // 1. Find and Delete the specific "file" by Case ID
             const deletedWarn = await WarnModel.findOneAndDelete({ 
                 guildId: guild.id, 
                 caseId: caseId 

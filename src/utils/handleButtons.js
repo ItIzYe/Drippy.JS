@@ -5,7 +5,7 @@ module.exports = async (interaction, heist, mic, time = 60 * 60 * 1000) => {
         const { member, user } = interaction;
         const voiceChannel = member.voice.channel;
 
-        // Falls noch nicht geschehen (Sicherheitshalber)
+
         if (!interaction.deferred && !interaction.replied) {
             await interaction.deferReply();
         }
@@ -34,21 +34,20 @@ module.exports = async (interaction, heist, mic, time = 60 * 60 * 1000) => {
 
         const row = new ActionRowBuilder().addComponents(joinButton);
 
-        // Nachricht senden/editieren
+
         const msg = await interaction.editReply({ 
             embeds: [lfgEmbed], 
             components: [row], 
             fetchReply: true 
         });
 
-        // Collector erstellen (wie in deiner Pagination)
+
         const collector = msg.createMessageComponentCollector({
             componentType: ComponentType.Button,
             time,
         });
 
         collector.on('collect', async i => {
-            // Nur der Ersteller darf NICHT klicken
             if (i.user.id === user.id) {
                 return await i.reply({ content: "Du hast die Suche gestartet!", flags :[MessageFlags.Ephemeral] });
             }

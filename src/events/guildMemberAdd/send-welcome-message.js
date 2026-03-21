@@ -1,7 +1,6 @@
 const welcomeMessageSchema = require('../../models/WelcomeChannel');
 const { EmbedBuilder, Client, GuildMember } = require('discord.js');
 
-// DIREKT die Funktion exportieren, kein { callback: ... }
 module.exports = async (client, member) => { 
     try {
         if (member.user.bot) return;
@@ -52,4 +51,4 @@ module.exports = async (client, member) => {
     } catch (error) {
         console.error(`Fehler in ${__filename}:\n`, error);
     }
-}; // Hier nur die schließende Klammer der Funktion
+}; 
