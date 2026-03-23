@@ -14,7 +14,7 @@ const fs = require('fs');
 module.exports = {
     name: 'quiz',
     description: 'Startet ein Quiz',
-    devOnly: true,
+    //devOnly: true,
     //testOnly: true,
     // options: Object[],
     // deleted: Boolean,

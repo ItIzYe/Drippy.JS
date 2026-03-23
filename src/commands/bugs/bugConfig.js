@@ -13,7 +13,7 @@ module.exports = {
      */
     name: "bug-config",
     description: "Bug Report",
-    devOnly: true,
+    //devOnly: true,
     testOnly: true,
     options: [{
         name: "set-bug",

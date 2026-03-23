@@ -22,7 +22,7 @@ module.exports = {
     name: 'level',
     description: "Shows your/someone's level.",
     deleted: false,
-    devOnly: true,
+    //devOnly: true,
     options: [
         {name: 'target-user',
             description: "The user whose rank you want to see",

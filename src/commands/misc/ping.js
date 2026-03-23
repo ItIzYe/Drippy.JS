@@ -1,7 +1,7 @@
 module.exports = {
     name: 'ping',
     description: 'Replies with the bot ping!',
-    devOnly: true,
+    //devOnly: true,
     testOnly: true,
     // options: Object[],
     // deleted: Boolean,

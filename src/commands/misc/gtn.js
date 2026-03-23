@@ -20,7 +20,7 @@ const Player = mongoose.model('Player', PlayerSchema);
 module.exports = {
     name: 'guessthenumber',
     description: 'Starte ein interaktives Guess-The-Number Spiel!',
-    devOnly: false,
+    //devOnly: false,
     testOnly: true,
     options: [],
     callback: async (client, interaction) => {
