@@ -1,4 +1,4 @@
-const lfgHandler = require('../../utils/handleButtons'); // Pfad prüfen!
+const lfgHandler = require('../../utils/handleButtons'); 
 const { ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
         { 
             name: 'players', 
             description: 'Wie viele Spieler werden insgesamt noch gesucht?', 
-            type: ApplicationCommandOptionType.Integer, // Integer für reine Zahlen
+            type: ApplicationCommandOptionType.Integer,
             required: true,
             min_value: 1,
             max_value: 3
@@ -31,13 +31,14 @@ module.exports = {
             ]
         },
     ],
+    testOnly: true,
 
     callback: async (client, interaction) => {
         const heist = interaction.options.getString('heist');
         const players = interaction.options.getInteger('players');
         const mic = interaction.options.getString('mic');
 
-        // Wir übergeben jetzt auch "players" an den Handler
+        
         await lfgHandler(interaction, heist, mic, players);
     }
 };

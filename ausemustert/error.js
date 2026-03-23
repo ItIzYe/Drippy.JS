@@ -15,7 +15,7 @@ module.exports = {
             .setTimestamp()
 
 
-        return message.reply({embeds: [errorEmbed], ephemeral: true});
+        return message.reply({embeds: [errorEmbed], flags: [MessageFlags.Ephemeral]});
 
     }
 };

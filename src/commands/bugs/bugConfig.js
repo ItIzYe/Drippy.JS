@@ -33,6 +33,7 @@ module.exports = {
         type: 3,
         required: true
     }],
+    testOnly: true,
     //deleted: Boolean,
 
     callback: async (client, interaction) => {

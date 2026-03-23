@@ -19,6 +19,7 @@ module.exports = {
      */
     name: "guessthenumber",
     description: "Spiele GuessTheNumber mit Normal Match oder Arcade!",
+    testOnly: true,
 
     callback: async (client, interaction) => {
         await interaction.deferReply();

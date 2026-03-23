@@ -25,6 +25,7 @@ module.exports = {
     ],
     dmPermission: false,
     PermissionsRequired: [PermissionsBitField.Flags.Administrator],
+    testOnly: true,
 
 
     callback: async (client, interaction) => {

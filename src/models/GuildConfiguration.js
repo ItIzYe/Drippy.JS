@@ -24,6 +24,10 @@ const guildConfigurationSchema = new Schema({
     countingChannelIds: {
         type: [String],
         default: []
+    },
+    ticketLogChannelId: {
+        type: [String],
+        default: []
     }
 });
 

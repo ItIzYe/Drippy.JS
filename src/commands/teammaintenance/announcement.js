@@ -38,6 +38,7 @@ module.exports = {
         },
 
     ],
+    testOnly: true,
 
     callback: async (client, interaction) => {
         //await interaction.deferReply();

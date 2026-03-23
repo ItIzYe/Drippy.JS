@@ -49,6 +49,6 @@ module.exports = async (client, interaction) => {
             { upsert: true }
         );
 
-        return interaction.reply({ content: `✅ FAQ \`${trigger}\` wurde gespeichert!`, ephemeral: true });
+        return interaction.reply({ content: `✅ FAQ \`${trigger}\` wurde gespeichert!`, flags: [MessageFlags.Ephemeral] });
     }
 };

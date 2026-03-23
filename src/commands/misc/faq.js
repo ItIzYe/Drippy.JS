@@ -12,6 +12,7 @@ module.exports = {
             required: true,
         },
     ],
+    testOnly: true,
 
     callback: async (client, interaction) => {
         const query = interaction.options.getString('thema').toLowerCase();

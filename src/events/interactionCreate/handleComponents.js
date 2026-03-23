@@ -1,11 +1,26 @@
 const faqAdminHandler = require('../../utils/faqAdminHandler');
-
+const ticketHandler = require('../../utils/ticketHandler');
+;
 module.exports = async (client, interaction) => {
 
-    if (interaction.isButton()) {
-        if (interaction.customId.startsWith('faq_')) {
-            return await faqAdminHandler(client, interaction);
-        }
+    if (!interaction.isButton() && !interaction.isModalSubmit() && !interaction.isStringSelectMenu()) {
+        return; 
+    }
+    console.log(`Button/Component registriert: ${interaction.customId}`);
+
+    const customId = interaction.customId;
+    
+
+    
+
+
+    if (customId.startsWith('faq_')) {
+        return await faqAdminHandler(client, interaction);
+    }
+
+
+    if (customId.startsWith('ticket_')) {
+        return await ticketHandler(client, interaction);
     }
 
 
@@ -21,4 +36,11 @@ module.exports = async (client, interaction) => {
             return await faqAdminHandler(client, interaction);
         }
     }
+
+
+
 };
+
+
+
+  

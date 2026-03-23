@@ -7,7 +7,7 @@ module.exports = (client) => {
     console.log(`✅ ${client.user.tag} is online`)
 
     client.user.setActivity({
-        name:'Die Katze im Backofen',
+        name:'☾ .* · ✵ ˚',
         type: 3,
         }
     )

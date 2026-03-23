@@ -7,6 +7,7 @@ const Level = require('../../models/Level');
 module.exports = {
     name: 'leaderboard',
     description: 'Zeigt die Top 10 Level-Rangliste des Servers',
+    testOnly: true,
 
     callback: async (client, interaction) => {
         try {

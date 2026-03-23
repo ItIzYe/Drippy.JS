@@ -28,6 +28,7 @@ module.exports = {
             description: "The user whose rank you want to see",
             type: 9}
     ],
+    testOnly: true,
 
 
     callback: async (client, interaction) => {

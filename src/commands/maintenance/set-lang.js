@@ -3,7 +3,8 @@ const {
     Interaction,
     ApplicationCommandOptionType,
     PermissionFlagsBits,
-    EmbedBuilder
+    EmbedBuilder,
+    MessageFlags
 } = require('discord.js');
 
 const { languages } = require('../../../lang.json');
@@ -33,6 +34,7 @@ module.exports = {
     ],
     permissionsRequired: [PermissionFlagsBits.BanMembers],
     botPermissions: [PermissionFlagsBits.BanMembers],
+    testOnly: true,
 
     callback: async(client, interaction) => {
         const {guild} = interaction;
@@ -40,7 +42,7 @@ module.exports = {
         const targetLanguage = interaction.options.getString('select-language', true).toLowerCase();
         console.log(targetLanguage)
         if (!languages.includes(targetLanguage)) {
-    return interaction.reply({ content: 'That language is not supported.', ephemeral: true });
+    return interaction.reply({ content: 'That language is not supported.', flags: [MessageFlags.Ephemeral] });
 }
 
 

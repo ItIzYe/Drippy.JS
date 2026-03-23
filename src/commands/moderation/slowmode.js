@@ -4,7 +4,8 @@ const {
     ApplicationCommandOptionType,
     PermissionFlagsBits,
     ChannelType,
-    EmbedBuilder
+    EmbedBuilder,
+    MessageFlags
 } = require('discord.js');
 
 module.exports = {
@@ -33,6 +34,7 @@ module.exports = {
     ],
     permissionsRequired: [PermissionFlagsBits.ManageChannels],
     botPermissions: [PermissionFlagsBits.ManageChannels],
+    testOnly: true,
 
     /**
      * @param {Client} client
@@ -65,7 +67,7 @@ module.exports = {
         if (isNaN(seconds)) {
             return interaction.reply({
                 content: '❌ Invalid time format. Please use `10s`, `5m`, `2h`, or `0`.',
-                ephemeral: true
+                flags: [MessageFlags.Ephemeral]
             });
         }
 
@@ -73,7 +75,7 @@ module.exports = {
         if (seconds > 21600) {
             return interaction.reply({
                 content: '❌ You cannot set slowmode higher than 6 hours.',
-                ephemeral: true
+                flags: [MessageFlags.Ephemeral]
             });
         }
 

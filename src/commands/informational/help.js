@@ -18,6 +18,7 @@ module.exports = {
      */
     name: 'help',
     description: 'See a list of all commands',
+    testOnly: true,
 
     callback: async (client, interaction) => {
 

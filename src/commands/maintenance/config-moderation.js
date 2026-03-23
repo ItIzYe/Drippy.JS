@@ -38,6 +38,7 @@ module.exports = {
                 }]
             }],
     permissionsRequired: [PermissionsBitField.Administrator],
+    testOnly: true,
 
     callback: async(client, interaction) => {
 

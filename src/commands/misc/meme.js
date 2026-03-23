@@ -10,7 +10,7 @@ module.exports = {
     name: 'meme',
     description: 'Replies with the a meme!',
     devOnly: false,
-    //testOnly: true,
+    testOnly: true,
     // options: Object[],
     // deleted: Boolean,
 
