@@ -19,7 +19,7 @@ module.exports = {
     name: 'suggest',
     description: 'Create a suggestion',
     dmPermission: false,
-    testOnly: true,
+    //testOnly: true,
 
     callback: async(client, interaction) => {
         const guild = interaction.guildId

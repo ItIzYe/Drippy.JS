@@ -63,7 +63,7 @@ module.exports = {
             ]
         }
     ],
-    testOnly: true,
+    //testOnly: true,
 
     callback: async (client, interaction) => {
         const { options, guild, member } = interaction;

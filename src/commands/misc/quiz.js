@@ -12,7 +12,7 @@ const Highscore = mongoose.models.Highscore || mongoose.model('Highscore', highs
 module.exports = {
     name: 'quiz',
     description: 'Startet das Quiz',
-    testOnly: true,
+    //testOnly: true,
     callback: async (interaction) => {
         let score = 0;
         let round = 1;

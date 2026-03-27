@@ -48,7 +48,7 @@ module.exports = {
     ],
     permissionsRequired: [PermissionFlagsBits.ManageChannels],
     botPermissions: [PermissionFlagsBits.ManageChannels],
-    testOnly: true,
+    //testOnly: true,
 
     /**
      * @param {Client} client

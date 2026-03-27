@@ -22,7 +22,7 @@ module.exports = {
         required: true
     }],
     permissionsRequired:[PermissionFlagsBits.MessageManager],
-    testOnly: true,
+    //testOnly: true,
 
 
     callback: async (client, interaction) => {

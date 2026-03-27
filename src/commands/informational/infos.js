@@ -9,7 +9,7 @@ module.exports = {
      */
     name: "info",
     description: "Get Infos about Drippy",
-    testOnly: true,
+    //testOnly: true,
 
 
     callback: async (client, interaction) => {

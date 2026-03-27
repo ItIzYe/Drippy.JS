@@ -34,7 +34,7 @@ module.exports = {
     ],
     permissionsRequired: [PermissionFlagsBits.BanMembers],
     botPermissions: [PermissionFlagsBits.BanMembers],
-    testOnly: true,
+    //testOnly: true,
 
     callback: async (client, interaction) => {
         const { guild } = interaction

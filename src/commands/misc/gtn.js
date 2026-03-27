@@ -21,7 +21,7 @@ module.exports = {
     name: 'guessthenumber',
     description: 'Starte ein interaktives Guess-The-Number Spiel!',
     //devOnly: false,
-    testOnly: true,
+    //testOnly: true,
     options: [],
     callback: async (client, interaction) => {
         const { user, channel } = interaction;

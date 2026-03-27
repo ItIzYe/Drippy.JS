@@ -34,7 +34,7 @@ module.exports = {
     ],
     permissionsRequired: [PermissionFlagsBits.KickMembers],
     botPermissions: [PermissionFlagsBits.KickMembers],
-    testOnly: true,
+    //testOnly: true,
 
     callback: async (client, interaction) => {
 

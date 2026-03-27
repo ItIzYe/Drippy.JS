@@ -9,7 +9,7 @@ module.exports = {
      */
     name: "boost",
     description: "Get the Serverboost advantages",
-    testOnly: true,
+    //testOnly: true,
     callback: async (client, interaction) => {
         const { guild } = interaction
 

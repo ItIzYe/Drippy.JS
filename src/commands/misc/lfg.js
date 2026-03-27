@@ -31,7 +31,7 @@ module.exports = {
             ]
         },
     ],
-    testOnly: true,
+    //testOnly: true,
 
     callback: async (client, interaction) => {
         const heist = interaction.options.getString('heist');

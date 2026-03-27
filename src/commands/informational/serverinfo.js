@@ -9,7 +9,7 @@ module.exports = {
      */
     name: "serverinfo",
     description: "Get Serverinfos",
-    testOnly: true,
+    //testOnly: true,
     callback: async (client, interaction) => {
         //console.log(message.guild);
 

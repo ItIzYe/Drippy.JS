@@ -7,7 +7,7 @@ module.exports = {
      */
     name: "userinfo",
     description: "Zeigt detaillierte Informationen über einen Benutzer an",
-    testOnly: true,
+    //testOnly: true,
     callback: async (client, interaction) => {
         const targetUser = interaction.options.getUser('target') || interaction.user;
         const member = await interaction.guild.members.fetch(targetUser.id);
