@@ -1,8 +1,16 @@
+const { MessageFlags } = require('discord.js');
 const { devs, testServer } = require('../../../config.json');
 const getLocalCommands = require('../../utils/getLocalCommands');
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
+
+    //try {
+      //  await interaction.deferReply(); 
+    //} catch (err) {
+      //  console.error("Fehler beim globalen Defer:", err);
+        //return;
+    //}
 
     const localCommands = getLocalCommands();
 

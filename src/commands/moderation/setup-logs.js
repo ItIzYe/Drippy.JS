@@ -13,7 +13,8 @@ module.exports = {
         },
     ],
     permissionsRequired: [PermissionFlagsBits.Administrator],
-    testOnly: true,
+    //testOnly: true
+    deleted: true,
 
     callback: async (client, interaction) => {
         const targetChannel = interaction.options.getChannel('channel');

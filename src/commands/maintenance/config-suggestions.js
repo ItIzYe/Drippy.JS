@@ -38,7 +38,8 @@ module.exports = {
             }]
         }],
     permissionsRequired: [PermissionsBitField.Administrator],
-    testOnly: true,
+    //testOnly: true,
+    deleted: true,
 
     callback: async(client, interaction) => {
         const { guild } = interaction

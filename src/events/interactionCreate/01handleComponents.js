@@ -1,5 +1,7 @@
 const faqAdminHandler = require('../../utils/faqAdminHandler');
 const ticketHandler = require('../../utils/ticketHandler');
+const { ChannelSelectMenuBuilder, ActionRowBuilder, ComponentType } = require('discord.js');
+const GuildConfiguration = require('../../models/GuildConfiguration');
 ;
 module.exports = async (client, interaction) => {
 
@@ -36,8 +38,6 @@ module.exports = async (client, interaction) => {
             return await faqAdminHandler(client, interaction);
         }
     }
-
-
 
 };
 

@@ -28,6 +28,9 @@ const guildConfigurationSchema = new Schema({
     ticketLogChannelId: {
         type: [String],
         default: []
+    },
+    ticketCategoryId: { 
+        type: String 
     }
 });
 

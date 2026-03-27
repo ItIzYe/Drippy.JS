@@ -32,9 +32,13 @@ const rest = new REST({ version: '10' }).setToken(token);
 //    console.log(`- Route: ${info.route}`);
 //});
 
-rest.put(Routes.applicationCommands(clientId), { body: [] })
-	.then(() => console.log('Successfully deleted all global application commands.'))
-	.catch(console.error);
+const isDev = process.env.APP_ENV === 'dev';
+
+if (isDev) {
+    rest.put(Routes.applicationCommands(clientId), { body: [] })
+        .then(() => console.log('🛠 Dev-Mode: Global commands cleared to avoid duplicates.'))
+        .catch(console.error);
+}
 console.log('[4] Loading Handlers...');
 eventHandler(client);
 
@@ -51,3 +55,12 @@ console.log('[7] Logging into Bot...');
 client.login(process.env.Discord_Bot_Token)
     .then(() => console.log('✅ Bot Logged In!'))
     .catch(err => console.error('❌ Bot Login Failed:', err));
+
+
+    
+client.on('interactionCreate', (interaction) => {
+    console.log('--- GLOBALER INTERAKTIONSTEST ---');
+    console.log('ID:', interaction.customId || 'Keine CustomID (Slash Command)');
+    console.log('Typ:', interaction.type);
+    console.log('IsSelectMenu:', interaction.isAnySelectMenu());
+});
