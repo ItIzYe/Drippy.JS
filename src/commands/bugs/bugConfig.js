@@ -14,7 +14,7 @@ module.exports = {
     name: "bug-config",
     description: "Bug Report",
     //devOnly: true,
-    testOnly: true,
+    //testOnly: true,
     options: [{
         name: "set-bug",
         description: "Please set the importance of the bug",
