@@ -83,13 +83,13 @@ module.exports = {
 
 
         try {
-            if (bugReport.toString === "") {
-                interaction.editReply({embeds: [msg_no_reason]});
+            if (!bugReport) {
+                await interaction.editReply({embeds: [msg_no_reason]});
             } else {
-                interaction.editReply({embeds: [bug_reported]});
+                await interaction.editReply({embeds: [bug_reported]});
             }
         } catch (error) {
-            return interaction.editReply({embeds: [msg_no_reason]});
+            return await interaction.editReply({embeds: [msg_no_reason]});
         }
 
 

@@ -42,6 +42,7 @@ module.exports = {
         const new_status = interaction.options.get('set-status').value
         const new_importance = interaction.options.get('set-importance').value
         const getBugID = interaction.options.get('set-bug').value
+        console.log(getBugID)
         const bugconfig = await BugConfig.findOne({bugID: getBugID})
         const bug_report_channel = client.channels.cache.get("899379299256250438");
 
@@ -49,16 +50,16 @@ module.exports = {
 
             if (interaction.options.get('set-status') && !interaction.options.get('set-importance')) {
                 const new_status = interaction.options.get('set-status').value
-                const newCustomId = BugConfig.updateMany({status: new_status, importance: "pending"});
+                const newCustomId = await BugConfig.findOneAndUpdate({bugID: getBugID},{status: new_status, importance: "pending"},{new:true});
             }
             if (!interaction.options.get('set-status') && interaction.options.get('set-importance')) {
                 const new_importance = interaction.options.get('set-importance').value
-                const newImportance = BugConfig.updateMany({status: "pending", importance: new_importance});
+                const newImportance = await BugConfig.findOneAndUpdate({bugID: getBugID},{status: "pending", importance: new_importance},{new:true});
             }
             if (interaction.options.get('set-status') && interaction.options.get('set-importance')) {
                 const new_status = interaction.options.get('set-status').value
                 const new_importance = interaction.options.get('set-importance').value
-                const newCustomId = BugConfig.updateMany({status: new_status, importance: new_importance})
+                const newCustomId = await BugConfig.findOneAndUpdate({bugID: getBugID},{status: new_status, importance: new_importance},{new:true})
             }
 
 
@@ -159,7 +160,8 @@ module.exports = {
 
         } catch (error){
             const embed = new EmbedBuilder()
-                .setTitle(`${error}`)
+                .setTitle(`${error}`);
+            await interaction.editReply({ embeds: [embed] });
         }
     }
 
