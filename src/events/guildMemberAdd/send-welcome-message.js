@@ -31,7 +31,7 @@ module.exports = async (client, member) => {
                 .replace('{member-count}', String(member.guild.memberCount));
 
             const welcomeEmbed = new EmbedBuilder()
-                .setColor("#00fdfe")
+                .setColor("#2f3136")
                 .setTitle("Willkommen auf dem Server! 🎉")
                 .setDescription(finalDescription)
                 .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 256 }))
@@ -39,7 +39,7 @@ module.exports = async (client, member) => {
                     { name: "👤 User:", value: `${member.user.tag}`, inline: true },
                     { name: "🔢 Mitglied Nr.:", value: `#${member.guild.memberCount}`, inline: true }
                 )
-                .setImage('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJtZnd6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3ZpZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0MYC0LajbaPoEADu/giphy.gif')
+                //.setImage('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJtZnd6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3ZpZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0MYC0LajbaPoEADu/giphy.gif')
                 .setTimestamp()
                 .setFooter({ text: `User-ID: ${member.id}` });
 
