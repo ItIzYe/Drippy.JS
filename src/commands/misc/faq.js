@@ -5,16 +5,26 @@ module.exports = {
     name: 'faq',
     description: 'Zeigt FAQ-Antworten an.',
     options: [
-        {
+                {
             name: 'thema',
             description: 'Welches Thema möchtest du aufrufen? (Oder "list" für alle)',
             type: ApplicationCommandOptionType.String,
             required: true,
         },
+        {
+            name: 'target-user',
+            description: 'The user you want to ban.',
+            type: ApplicationCommandOptionType.Mentionable,
+            required: false,
+        },
     ],
     //testOnly: true,
 
     callback: async (client, interaction) => {
+        //await interaction.deferReply();
+        const targetUser = interaction.options.getUser('target-user') || interaction.user;
+        //const targetUser = await interaction.guild.members.fetch(targetUserId.id);
+        const member = await interaction.guild.members.fetch(targetUser.id);
         const query = interaction.options.getString('thema').toLowerCase();
         const guildId = interaction.guild.id;
 
@@ -27,7 +37,7 @@ module.exports = {
                 .setTitle('📚 Verfügbare FAQ-Themen')
                 .setDescription(faqs.map(f => `\`${f.trigger}\``).join(', '));
             
-            return interaction.reply({ embeds: [listEmbed] });
+            return interaction.reply(`${targetUser}`,{ embeds: [listEmbed] });
         }
 
 
@@ -45,7 +55,10 @@ module.exports = {
             .setTitle(faq.question)
             .setDescription(faq.answer)
             .setFooter({ text: `Abgerufen von ${interaction.user.username}` });
-
-        await interaction.reply({ embeds: [embed] });
+        if(targetUser === interaction.user){
+            await interaction.reply({ embeds: [embed] });
+        } else {
+            await interaction.reply({content: `${targetUser}`, embeds: [embed] });
+        }
     }
 };

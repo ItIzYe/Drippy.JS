@@ -1,4 +1,4 @@
-const { EmbedBuilder, Client, Interaction } = require('discord.js');
+const { EmbedBuilder,ApplicationCommandOptionType, Client, Interaction } = require('discord.js');
 
 module.exports = {
     /**
@@ -7,9 +7,19 @@ module.exports = {
      */
     name: "userinfo",
     description: "Zeigt detaillierte Informationen über einen Benutzer an",
+    options: [
+        {
+            name: 'target-user',
+            description: 'The user you want to ban.',
+            type: ApplicationCommandOptionType.Mentionable,
+            required: false,
+        }
+    ],
     //testOnly: true,
     callback: async (client, interaction) => {
-        const targetUser = interaction.options.getUser('target') || interaction.user;
+        await interaction.deferReply();
+        const targetUser = interaction.options.getUser('target-user') || interaction.user;
+        //const targetUser = await interaction.guild.members.fetch(targetUserId.id);
         const member = await interaction.guild.members.fetch(targetUser.id);
 
         const roles = member.roles.cache
@@ -32,6 +42,6 @@ module.exports = {
             .setFooter({ text: `Abgefragt von ${interaction.user.username}` })
             .setTimestamp();
 
-        await interaction.reply({ embeds: [userInfoEmbed] });
+        await interaction.editReply({ embeds: [userInfoEmbed] });
     }
 };

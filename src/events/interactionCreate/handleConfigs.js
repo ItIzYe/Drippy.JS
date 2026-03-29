@@ -9,18 +9,16 @@ module.exports = async (client, interaction) => {
 
     const { customId } = interaction;
 
-    // --- BUTTON LOGIK (Wenn man im Dashboard auf einen Button klickt) ---
     if (customId.startsWith('cfg_')) {
         const category = customId.split('_')[1];
         if (category === 'close') return interaction.message.delete();
 
-        // Mapping für die Datenbank-Felder
         const fieldMap = {
             'tickets': 'ticketLogChannelId',
-            'suggestions': 'suggestionChannelIds',
-            'moderation': 'moderationChannelIds',
-            'levels': 'levelChannelIds',
-            'announcements': 'announcementChannelIds'
+            'suggestions': 'suggestionChannelId',
+            'moderation': 'moderationChannelId',
+            'levels': 'levelChannelId',
+            'announcements': 'announcementChannelId'
         };
 
         const dbField = fieldMap[category];
@@ -32,7 +30,6 @@ module.exports = async (client, interaction) => {
 
         const row = new ActionRowBuilder().addComponents(selectMenu);
 
-        // Wir antworten ephemeral (privat), damit der Kanal-Picker den Chat nicht flutet
         return await interaction.reply({ 
             content: `Wähle einen Kanal für **${category}**:`, 
             components: [row], 
@@ -40,9 +37,7 @@ module.exports = async (client, interaction) => {
         });
     }
 
-    // --- SELECT MENU LOGIK (Wenn man einen Kanal ausgewählt hat) ---
     if (customId.startsWith('setchan_')) {
-        // SOFORT deferReply, damit Discord nicht "fehlgeschlagen" sagt
         await interaction.deferReply({ ephemeral: true });
 
         try {
