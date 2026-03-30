@@ -119,7 +119,7 @@ module.exports = {
                 .addFields(
                     { name: 'User', value: `${targetUser}`, inline: true },
                     { name: 'Moderator', value: `${member}`, inline: true },
-                    { name: 'Reason', value: reason, inline: false },
+                    { name: `${language(guild, 'BAN_EMBED_BANNED_REASON')}`, value: reason, inline: false },
                     { name: 'Case ID', value: `\`${caseId}\``, inline: true } 
                 )
                 .setFooter({ text: "Use /warn remove [case-id] to delete this." });
@@ -156,7 +156,7 @@ module.exports = {
             recentWarns.forEach(warn => {
                 embed.addFields({
                     name: `Case ID: ${warn.caseId} | <t:${Math.floor(warn.timestamp / 1000)}:d>`,
-                    value: `**Mod:** <@${warn.moderatorId}>\n**Reason:** ${warn.reason}`
+                    value: `**Mod:** <@${warn.moderatorId}>\n**${language(guild, 'BAN_EMBED_BANNED_REASON')}:** ${warn.reason}`
                 });
             });
 
