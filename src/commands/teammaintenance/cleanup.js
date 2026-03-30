@@ -1,4 +1,4 @@
-const { PermissionFlagsBits } = require('discord.js');
+const { PermissionFlagsBits, MessageFlags } = require('discord.js');
 const GuildConfiguration = require('../../models/GuildConfiguration');
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
     permissionsRequired: [PermissionFlagsBits.Administrator],
 
     callback: async (client, interaction) => {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ Flags: MessageFlags.Ephemeral });
 
         try {
             // 1. Alle Guild-IDs aus der Datenbank abrufen
