@@ -52,7 +52,7 @@ module.exports = async (client, interaction) => {
             );
 
             await ticketChannel.send({ content: `🔔 Support-Anfrage von ${user}`, embeds: [embed], components: [row] });
-            await interaction.editReply(`✅ Dein Ticket wurde erstellt: ${ticketChannel}`);
+            await interaction.editReply({content: `✅ Dein Ticket wurde erstellt: ${ticketChannel}`, Flags: [MessageFlags.Ephemeral]});
 
         } catch (error) {
             console.error(error);
