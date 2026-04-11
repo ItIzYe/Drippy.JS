@@ -428,7 +428,44 @@
     "CONFIG_COUNT_REM": {
       "english": "has been removed as a Counting channel",
       "german": "wurde als Counting channel entfernt"
+    },
+    "RULES_MODAL_TITLE": {
+      "english": "Edit Rules",
+      "german": "Regelwerk bearbeiten"
+    },
+    "RULES_INPUT_TITLE_LABEL": {
+      "german" : "Überschrift (z.B. §1 Respekt)",
+      "english": "Title"
+    },
+    "RULES_INPUT_DESC_LABEL": {
+      "german" :"Regel-Beschreibung",
+      "english":"Rule description"
+    },
+    "RULES_ADDED_SUCCESS": {
+      "german":"Regel erfolgreich hinzugefügt!",
+      "english": "Successfullly added Rule"
+    },
+    "RULES_ERROR_NOT_FOUND": {
+      "german": "Dieser Paragraph existiert nicht.",
+      "english": "This paragraph doesn't exist"
+    },
+    "RULES_REMOVED_TITLE": {
+      "german": "Regel gelöscht",
+      "english": "Rule removed"
+    },
+    "RULES_REMOVED_DESC": {
+      "german":"wurde aus dem Regelwerk entfernt.",
+      "english": "has been removed from the Ruleset"
+    },
+    "RULES_LIST_TITLE": {
+      "german":"Regelwerk von",
+      "english": "Rulset from"
+    },
+    "RULES_LIST_EMPTY": {
+      "german":"Es wurden noch keine Regeln für diesen Server festgelegt.",
+      "english": "A ruleset for this server hasn't been configured yet."
     }
+
   }
 }
 
