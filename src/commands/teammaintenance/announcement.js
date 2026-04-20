@@ -10,36 +10,37 @@ const {
 
 module.exports = {
     name: 'announcement',
-    description: 'Öffnet ein Fenster für eine Bot-Ankündigung',
-    devOnly: true,
+    description: 'Öffnet ein Fenster für eine globale Bot-Ankündigung',
+    devOnly: true, // Nur für dich als Developer
+    testOnly: true,
 
     callback: async (client, interaction) => {
-        // Modal erstellen
+        // Das Modal erstellen
         const modal = new ModalBuilder()
-            .setCustomId(`announcement_modal_${interaction.user.id}`)
-            .setTitle('Neue Bot-Ankündigung');
+            .setCustomId(`announcement_modal`)
+            .setTitle('Globale Bot-Ankündigung');
 
-        // Eingabefeld für den Titel/Typ
+        // Feld für den Typ (Kurztext)
         const typeInput = new TextInputBuilder()
             .setCustomId('announcement_type')
-            .setLabel("Was für eine Art von Ankündigung?")
-            .setPlaceholder("z.B. Wartungsarbeiten, Update, Info...")
+            .setLabel("Betreff / Typ")
+            .setPlaceholder("z.B. Wartungsarbeiten oder System-Update")
             .setStyle(TextInputStyle.Short)
             .setRequired(true);
 
-        // Eingabefeld für die Nachricht
+        // Feld für die Nachricht (Langer Text)
         const messageInput = new TextInputBuilder()
             .setCustomId('announcement_message')
-            .setLabel("Deine Nachricht")
-            .setPlaceholder("Schreibe hier den Inhalt der Ankündigung...")
+            .setLabel("Inhalt der Ankündigung")
+            .setPlaceholder("Beschreibe hier im Detail, worum es geht...")
             .setStyle(TextInputStyle.Paragraph)
             .setRequired(true);
 
-        // Zeilen zum Modal hinzufügen
-        const firstActionRow = new ActionRowBuilder().addComponents(typeInput);
-        const secondActionRow = new ActionRowBuilder().addComponents(messageInput);
+        // Komponenten in Reihen hinzufügen
+        const firstRow = new ActionRowBuilder().addComponents(typeInput);
+        const secondRow = new ActionRowBuilder().addComponents(messageInput);
 
-        modal.addComponents(firstActionRow, secondActionRow);
+        modal.addComponents(firstRow, secondRow);
 
         // Modal anzeigen
         await interaction.showModal(modal);
