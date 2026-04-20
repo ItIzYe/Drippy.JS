@@ -125,88 +125,55 @@ module.exports = {
         }
 
         try {
-            const { default: prettyMs } = await import('pretty-ms');
+    const { default: prettyMs } = await import('pretty-ms');
 
-            if (targetUser.isCommunicationDisabled()) {
-                let guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
-                console.log(guildConfiguration.moderationChannelIds[0])
-                if(guildConfiguration.moderationChannelIds){
-                    const messageChannel= client.channels.cache.get(guildConfiguration.moderationChannelIds[0])
+    // 1. Konfiguration laden
+    const guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId });
 
-                    await targetUser.timeout(msDuration, reason);
-                    const embed = new EmbedBuilder()
-                        .setColor('Red')
-                        .setTitle('TIMEOUT')
-                        .setDescription(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CHANGED')}`)
-                        .setFields(
-                            {name: 'Member', value: `${targetUser}`, inline: true},
-                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_DURATION')}`, value:prettyMs(msDuration, {verbose:true}), inline:true},
-                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_REASON')}`, value: `${reason}`, inline: true},
-                        )
-                    await messageChannel.send({embeds: [embed]});
+    // 2. Timeout ausführen
+    await targetUser.timeout(msDuration, reason);
 
-                    const answerEmbed = new EmbedBuilder()
-                        .setTitle(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CHANGED')}`)
+    // 3. Embed vorbereiten (für beide Fälle gleich)
+    const isAlreadyTimedOut = targetUser.isCommunicationDisabled();
+    const statusText = isAlreadyTimedOut 
+        ? language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CHANGED') 
+        : language(guild, 'TIMEOUT_EMBED_TIMEOUTED');
 
-                    await interaction.editReply({embeds: [answerEmbed]});
+    const embed = new EmbedBuilder()
+        .setColor('Red')
+        .setTitle('TIMEOUT')
+        .setDescription(statusText)
+        .addFields(
+            { name: 'Member', value: `${targetUser}`, inline: true },
+            { name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_DURATION')}`, value: prettyMs(msDuration, { verbose: true }), inline: true },
+            { name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_REASON')}`, value: `${reason}`, inline: true },
+        );
 
-                } else if(!guildConfiguration.moderationChannelIds) {
-                    await targetUser.timeout(msDuration, reason);
-                    const embed = new EmbedBuilder()
-                        .setColor('Red')
-                        .setTitle('TIMEOUT')
-                        .setDescription(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CHANGED')}`)
-                        .setFields(
-                            {name: 'Member', value: `${targetUser}`, inline: true},
-                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_DURATION')}`, value:prettyMs(msDuration, {verbose:true}), inline:true},
-                            {name:`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_REASON')}` , value: `${reason}`, inline: true},
-                        )
-                    await interaction.editReply({embeds: [embed]});
+    // 4. Logik für den Log-Kanal
+    // Prüfen: Existiert die Config UND gibt es IDs im Array?
+    const logChannelId = guildConfiguration?.moderationChannelIds?.[0];
+    const logChannel = logChannelId ? client.channels.cache.get(logChannelId) : null;
 
-                }
-            } else {
-                let guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
-                console.log(guildConfiguration.moderationChannelIds[0])
-                if(guildConfiguration){
-                    const messageChannel= client.channels.cache.get(guildConfiguration.moderationChannelIds[0])
+    if (logChannel) {
+        // In den Log-Kanal senden
+        await logChannel.send({ embeds: [embed] });
+        
+        // Kurze Bestätigung für den Moderator
+        const answerEmbed = new EmbedBuilder()
+            .setTitle(isAlreadyTimedOut 
+                ? language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CHANGED') 
+                : language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CREATED')
+            );
+        await interaction.editReply({ embeds: [answerEmbed] });
+    } else {
+        // Kein Log-Kanal gefunden -> Embed direkt als Antwort schicken
+        await interaction.editReply({ embeds: [embed] });
+    }
 
-                    await targetUser.timeout(msDuration, reason);
-                    const embed = new EmbedBuilder()
-                        .setColor('Red')
-                        .setTitle('TIMEOUT')
-                        .setDescription(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED')}`)
-                        .setFields(
-                            {name: 'Member', value: `${targetUser}`, inline: true},
-                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_DURATION')}`, value: prettyMs(msDuration), inline:true},
-                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_REASON')}`, value: `${reason}`, inline: true}
-                        )
-                    await messageChannel.send({embeds: [embed]});
-
-                    const answerEmbed = new EmbedBuilder()
-                        .setTitle(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CREATED')}`)
-
-                    await interaction.editReply({embeds: [answerEmbed]});
-
-
-                } else if(!guildConfiguration.moderationChannelIds) {
-                    await targetUser.timeout(msDuration, reason);
-                    const embed = new EmbedBuilder()
-                        .setColor('Red')
-                        .setTitle('TIMEOUT')
-                        .setDescription(`${language(guild, 'TIMEOUT_EMBED_TIMEOUTED')}`)
-                        .setFields(
-                            {name: 'Member', value: `${targetUser}`, inline: true},
-                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_DURATION')}`, value: prettyMs(msDuration), inline:true},
-                            {name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_REASON')}`, value: `${reason}`, inline: true}
-                        )
-                    await interaction.editReply({embeds: [embed]});
-
-                }
-            }
-
-        } catch (error) {
-            console.log(`There was an error when timing out: ${error}`);
-        }
+} catch (error) {
+    console.log(`There was an error when timing out: ${error}`);
+    await interaction.editReply("An error occurred while trying to timeout the user.");
+}
     },
 
 };
