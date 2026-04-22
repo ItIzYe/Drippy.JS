@@ -49,13 +49,12 @@ module.exports = {
             .setTitle("Help - Moderation")
             .setTimestamp()
             .addFields(
-                {name: `clear [Amount]`, value: `${language(guild, 'H_CLEAR_DESC')}`, inline: true},
-                {name: `ban [Member] [Reason]`, value: `${language(guild, 'H_BAN_DESC')}`, inline: true},
-                {name: `timeout [Member] [Reason] [Time]`, value: `${language(guild, 'H_TIMEOUT_DESC')}`, inline: true},
-                {name: `kick [Member] [Reason]`, value: `${language(guild, 'H_KICK_DESC')}`, inline: true},
-                {name: `lockdown`, value: `${language(guild, 'H_LCKDDWN_DESC')}`, inline: true},
-                {name: `slowmode`, value: `${language(guild, 'H_SLWMODE_DESC')}`, inline: true},
+                {name: `clear`, value: `${language(guild, 'H_CLEAR_DESC')}`, inline: true},
+                {name: `ban`, value: `${language(guild, 'H_BAN_DESC')}`, inline: true},
                 {name: `timeout`, value: `${language(guild, 'H_TIMEOUT_DESC')}`, inline: true},
+                {name: `kick`, value: `${language(guild, 'H_KICK_DESC')}`, inline: true},
+                {name: `lockdown`, value: `${language(guild, 'H_LCKDWN_DESC')}`, inline: true},
+                {name: `slowmode`, value: `${language(guild, 'H_SLWMODE_DESC')}`, inline: true},
             );
 
         //language en
@@ -65,11 +64,11 @@ module.exports = {
             .setTitle("Help - Informational")
             .setTimestamp()
             .addFields(
-                {name: `info`, value: `${language(guild, 'H_INFO_DESC')}`},
-                {name: `serverinfo`, value: `${language(guild, 'H_SERVERINFO_DESC')}`},
-                {name: `userinfo`, value: `${language(guild, 'H_USR_DESC')}`},
-                {name: `ping`, value: `${language(guild, 'H_PING_DESC')}`},
-                {name: `boost`, value: `${language(guild, 'H_BOOST_DESC')}`},
+                {name: `info`, value: `${language(guild, 'H_INFO_DESC')}`, inline: true},
+                {name: `serverinfo`, value: `${language(guild, 'H_SERVERINFO_DESC')}`, inline: true},
+                {name: `userinfo`, value: `${language(guild, 'H_USR_DESC')}`, inline: true},
+                {name: `ping`, value: `${language(guild, 'H_PING_DESC')}`, inline: true},
+                {name: `boost`, value: `${language(guild, 'H_BOOST_DESC')}`, inline: true},
                 
             );
 
@@ -79,7 +78,7 @@ module.exports = {
             .setTitle("Help - Suggestions")
             .setTimestamp()
             .addFields(
-                {name: `suggest`, value:`${language(guild, 'H_SUGG_DESC')}`},
+                {name: `suggest`, value:`${language(guild, 'H_SUGG_DESC')}`, inline: true},
             );
 
         const helpEmbed4 = new EmbedBuilder()
@@ -88,11 +87,11 @@ module.exports = {
             .setTitle("Help - Maintenance")
             .setTimestamp()
             .addFields(
-                {name: `config-view`, value: `${language(guild, 'H_CONVIEW_DESC')}`},
-                {name: `setup-welcome-message`, value: `${language(guild, 'H_CONLANG_DESC')}`},
-                {name: `faq-admin`, value: `${language(guild, 'H_FAQA_DESC')}`},
-                {name: `rules`, value: `${language(guild, 'H_RULES_DESC')}`},
-                {name: `setup-logs`, value: `${language(guild, 'H_RULES_DESC')}`},
+                {name: `config-view`, value: `${language(guild, 'H_CONVIEW_DESC')}`, inline: true},
+                {name: `setup-welcome-message`, value: `${language(guild, 'H_CONLANG_DESC')}`, inline: true},
+                {name: `faq-admin`, value: `${language(guild, 'H_FAQA_DESC')}`, inline: true},
+                {name: `rules`, value: `${language(guild, 'H_RULES_DESC')}`, inline: true},
+                {name: `setup-logs`, value: `${language(guild, 'H_RULES_DESC')}`, inline: true},
             );
 
         const helpEmbed5 = new EmbedBuilder()
@@ -101,7 +100,7 @@ module.exports = {
             .setTitle("Help - Bugs")
             .setTimestamp()
             .addFields(
-                {name: `bug [bug-report]`, value: `${language(guild, 'H_BUG_DESC')}`},
+                {name: `bug`, value: `${language(guild, 'H_BUG_DESC')}`, inline: true},
             );
 
         const helpEmbed6 = new EmbedBuilder()
@@ -110,8 +109,8 @@ module.exports = {
             .setTitle("Help - Level")
             .setTimestamp()
             .addFields(
-                {name: `level`, value: `${language(guild, 'H_LVL_DESC')}`},
-                {name: `leaderboard`, value: `${language(guild, 'H_LB_DESC')}`},
+                {name: `level`, value: `${language(guild, 'H_LVL_DESC')}`, inline: true},
+                {name: `leaderboard`, value: `${language(guild, 'H_LB_DESC')}`, inline: true},
             );
 
         const helpEmbed7 = new EmbedBuilder()
@@ -120,8 +119,8 @@ module.exports = {
             .setTitle("Help - Miscellaneous")
             .setTimestamp()
             .addFields(
-                {name: `faq`, value: `${language(guild, 'H_FAQ_DESC')}`},
-                {name: `lfg`, value: `${language(guild, 'H_LFG_DESC')}`},
+                {name: `faq`, value: `${language(guild, 'H_FAQ_DESC')}`, inline: true},
+                {name: `lfg`, value: `${language(guild, 'H_LFG_DESC')}`, inline: true},
             );
 
         const helpEmbed8 = new EmbedBuilder()
@@ -130,9 +129,9 @@ module.exports = {
             .setTitle("Help - Miscellaneous")
             .setTimestamp()
             .addFields(
-                {name: `gtn`, value: `${language(guild, 'H_GTN_DESC')}`},
-                {name: `quiz`, value: `${language(guild, 'H_QUIZ_DESC')}`},
-                {name: `meme`, value: `${language(guild, 'H_MEME_DESC')}`},
+                {name: `gtn`, value: `${language(guild, 'H_GTN_DESC')}`, inline: true},
+                {name: `quiz`, value: `${language(guild, 'H_QUIZ_DESC')}`, inline: true},
+                {name: `meme`, value: `${language(guild, 'H_MEME_DESC')}`, inline: true},
             );
 
 
