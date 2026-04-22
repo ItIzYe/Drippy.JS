@@ -68,6 +68,10 @@ module.exports = async (client, message) => {
                 cooldowns.delete(message.author.id);
             }, 60000);
         }
+
+        /*if(level === 5){
+            
+        }*/
     } catch (error) {
         console.log(`Error giving xp: ${error}`);
     }

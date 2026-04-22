@@ -464,6 +464,66 @@
     "RULES_LIST_EMPTY": {
       "german":"Es wurden noch keine Regeln für diesen Server festgelegt.",
       "english": "A ruleset for this server hasn't been configured yet."
+    },
+    "H_USR_DESC": {
+      "german":"Schaue dir Infos zu bestimmten Mitgliedern des Servers an.",
+      "english": "Get some infos about Users on your Server."
+    },
+    "H_CONVIEW_DESC": {
+      "german":"Ändere die Kanäle, in die versch. Meldungen zu Tickets, Announcements, Vorschlägen, Moderation und Levels geschickt werden.",
+      "english": "Edit, where different Botmessages relating to Tickets, Announcements, Suggestions, Moderation and Leveling are being sent."
+    },
+    "H_LVL_DESC": {
+      "german":"Schaue deinen Levelfortschritt an.",
+      "english": "See your Level."
+    },
+    "H_LB_DESC": {
+      "german":"Schau dir die Top 10 Mitglieder mit den höchsten Leveln auf deinem Server an.",
+      "english": "See the 10 persons with the highest Level on yor Server."
+    },
+    "H_FAQ_DESC": {
+      "german":"Schau dir die Topics an oder antworte auf Fragen mit den FAQs.",
+      "english": "See the list of Topics or answer to Questions with the FAQs."
+    },
+    "H_LFQ_DESC": {
+      "german":"Erstelle LFGs wenn du auf der Suche nach Mitspielern bist. Wenn du Support für Spiele neben GTA haben möchtest, erstelle einen Bugreport.",
+      "english": "Create LFGs if you're looking for teammates. If you need support for games other than GTA, submit a bug report."
+    },
+    "H_GTN_DESC": {
+      "german":"Spiele eine Runde `Errate die Zahl`.",
+      "english": "Play a round of `Guess the Number`."
+    },
+    "H_QUIZ_DESC": {
+      "german":"Spiele unser Quiz.",
+      "english": "Play our Quiz."
+    },
+    "H_MEME_DESC": {
+      "german":"Lasse dir ein Meme anzeigen.",
+      "english": "Get a meme."
+    },
+    "H_FAQA_DESC": {
+      "german":"Erstelle FAQs.",
+      "english": "Create FAQs."
+    },
+    "H_LCKDWN_DESC": {
+      "german":"Sperre einen Kanal für alle User.",
+      "english": "Block a channel for all users."
+    },
+    "H_RULES_DESC": {
+      "german":"Erstelle ein Regelwerk und lass es dir anzeigen.",
+      "english": "Create a set of rules and view them."
+    },
+    "H_LOGS_DESC": {
+      "german":"Lege fest, wo Transkripte für Tickets gesendet werden.",
+      "english": "Specify where transcripts for tickets will be sent."
+    },
+    "H_SLWMODE_DESC": {
+      "german":"Erstelle einen Timer für Nachrichten unter Usern.",
+      "english": "Create a timer for messages between users."
+    },
+    "H_TIMEOUT_DESC": {
+      "german":"Mute einen User.",
+      "english": "Mute a User."
     }
 
   }
