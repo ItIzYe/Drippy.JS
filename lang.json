@@ -548,7 +548,32 @@
     "RQST": {
       "german":"Abgefragt von",
       "english": "Requested by"
+    },
+    "LB_NOT": {
+      "german":"Es gibt noch keine Daten für ein Leaderboard auf diesem Server.",
+      "english": "There is no leaderboard data available on this server yet."
+    },
+    "USR_UNKNOWN": {
+      "german":"Unbekannter User",
+      "english": "Unknown user"
+    },
+    "LOAD_ERROR": {
+      "german":"Beim Laden des Leaderboards ist ein Fehler aufgetreten.",
+      "english": "An error occurred while loading the leaderboard."
+    },
+    "XP": {
+      "german":"XP bis zum nächsten Level",
+      "english": "XP to the next level"
+    },
+    "PRGS": {
+      "german":"Fortschritt",
+      "english": "Progress"
+    },
+    "FAQ_NOT": {
+      "german":"Es sind noch keine FAQs hinterlegt.",
+      "english": "There are no FAQs yet."
     }
+    
 
   }
 }

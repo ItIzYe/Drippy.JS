@@ -30,7 +30,7 @@ module.exports = {
 
         if (query === 'list') {
             const faqs = await Faq.find({ guildId });
-            if (faqs.length === 0) return interaction.reply('Es sind noch keine FAQs hinterlegt.');
+            if (faqs.length === 0) return interaction.reply(`${language(guild, 'FAQ_NOT')}`);
 
             const listEmbed = new EmbedBuilder()
                 .setColor('Blue')
@@ -54,7 +54,7 @@ module.exports = {
             .setColor('Green')
             .setTitle(faq.question)
             .setDescription(faq.answer)
-            .setFooter({ text: `Abgerufen von ${interaction.user.username}` });
+            .setFooter({ text: `${language(guild, 'RQST')} ${interaction.user.username}` });
         if(targetUser === interaction.user){
             await interaction.reply({ embeds: [embed] });
         } else {

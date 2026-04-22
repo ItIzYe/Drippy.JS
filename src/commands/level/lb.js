@@ -3,6 +3,7 @@ const {
     MessageFlags 
 } = require('discord.js');
 const Level = require('../../models/Level');
+const language = require("../../handlers/languages");
 
 module.exports = {
     name: 'leaderboard',
@@ -10,6 +11,8 @@ module.exports = {
     //testOnly: true,
 
     callback: async (client, interaction) => {
+        const { guild } = interaction
+
         try {
             await interaction.deferReply();
 
@@ -21,7 +24,7 @@ module.exports = {
             .limit(10);
 
             if (!topPlayers.length) {
-                return await interaction.editReply('Es gibt noch keine Daten für ein Leaderboard auf diesem Server.');
+                return await interaction.editReply(`${language(guild, 'LB_NOT')}`);
             }
 
 
@@ -34,7 +37,7 @@ module.exports = {
                 const member = interaction.guild.members.cache.get(data.userId) || 
                                (await interaction.guild.members.fetch(data.userId).catch(() => null));
 
-                const name = member ? member.user.username : `Unbekannter User (${data.userId})`;
+                const name = member ? member.user.username : `${language(guild, 'USR_UNKNOWN')} (${data.userId})`;
                 
 
                 let rankEmoji = '';
@@ -54,7 +57,7 @@ module.exports = {
                 .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
                 .setTimestamp()
                 .setFooter({ 
-                    text: `Abgefragt von ${interaction.user.username}`, 
+                    text: `${language(guild, 'RQST')} ${interaction.user.username}`, 
                     iconURL: interaction.user.displayAvatarURL() 
                 });
 
@@ -63,9 +66,9 @@ module.exports = {
         } catch (error) {
             console.error(`Fehler im Leaderboard-Command:`, error);
             if (interaction.deferred) {
-                await interaction.editReply('Beim Laden des Leaderboards ist ein Fehler aufgetreten.');
+                await interaction.editReply(`${language(guild, 'LOAD_ERROR')}`);
             } else {
-                await interaction.reply({ content: 'Ein Fehler ist aufgetreten.', flags: [MessageFlags.Ephemeral] });
+                await interaction.reply({ content: `${language(guild, 'BAN_EMBED_ERROR_TITLE')}`, flags: [MessageFlags.Ephemeral] });
             }
         }
     }

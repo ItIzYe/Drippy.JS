@@ -97,8 +97,8 @@ module.exports = {
                 {name: 'Rank', value: `${currentRank}`, inline: true},
                 {name: 'Level', value: `${fetchedLevel.level}`, inline:true},
                 {name: 'XP', value: `${fetchedLevel.xp}`, inline: true},
-                {name: 'XP bis zum nächsten Level', value: `${calculateLevelXp(fetchedLevel.level)- fetchedLevel.xp}`},
-                {name: 'Fortschritt', value:`${progressBar}`},
+                {name: `${language(guild, 'XP')}`, value: `${calculateLevelXp(fetchedLevel.level)- fetchedLevel.xp}`},
+                {name: `${language(guild, 'PRGRS')}`, value:`${progressBar}`},
             )
 
         interaction.editReply({embeds: [embed]})
