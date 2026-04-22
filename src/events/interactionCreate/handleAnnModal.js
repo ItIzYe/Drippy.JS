@@ -4,7 +4,10 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = async (client, interaction) => {
     // Prüfen, ob es ein Modal-Submit ist und ob die ID passt
     if (!interaction.isModalSubmit()) return;
-    if (!interaction.customId.startsWith('announcement_modal_')) return;
+
+    console.log(`Modal erhalten! ID: ${interaction.customId}`);
+
+    if (interaction.customId !== 'announcement_modal') return;
 
     await interaction.deferReply({ ephemeral: true });
 
