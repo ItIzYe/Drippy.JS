@@ -44,5 +44,10 @@ module.exports = {
 
         // Modal anzeigen
         await interaction.showModal(modal);
+
+        console.log("Ankündigung wurde verschickt");
     },
+
+    
+    
 };
