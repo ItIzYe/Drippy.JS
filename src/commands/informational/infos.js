@@ -19,12 +19,12 @@ module.exports = {
         const infoEmbed = new EmbedBuilder()
             .setColor("#1f8a4c")
             .setTitle("Info")
-            .setDescription("Hier ein paar Bot-Infos")
+            .setDescription(`${language(guild, 'BOT_DESC')}`)
             .addFields(
                 {name: "Name", value: "Drippy#5683", inline: false},
                 {name: `${language(guild, 'INFO_FIELD2')}`, value: "Count: " + client.guilds.cache.size, inline: false},
                 {name: "Developer: ", value: "itizye,\nr.m.stitanic,\ncanadianagent", inline: false},
-                {name: "Version: ", value: "1.2.0 Beta", inline: false},
+                {name: "Version: ", value: "1.8.0 Beta", inline: false},
                 {name: `${language(guild, 'INFO_FIELD5')}`, value: "22.02.2024", inline: false},
                 {name: `${language(guild, 'INFO_FIELD6')}`, value: `${language(guild, 'INFO_FIELD6_VALUE')}`, inline: false}
             )

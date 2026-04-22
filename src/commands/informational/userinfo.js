@@ -1,4 +1,5 @@
 const { EmbedBuilder,ApplicationCommandOptionType, Client, Interaction } = require('discord.js');
+const languages = require('../../handlers/languages');
 
 module.exports = {
     /**
@@ -17,6 +18,7 @@ module.exports = {
     ],
     //testOnly: true,
     callback: async (client, interaction) => {
+        const { guild } = interaction
         await interaction.deferReply();
         const targetUser = interaction.options.getUser('target-user') || interaction.user;
         //const targetUser = await interaction.guild.members.fetch(targetUserId.id);
@@ -29,17 +31,17 @@ module.exports = {
 
         const userInfoEmbed = new EmbedBuilder()
             .setColor("#00fdfe")
-            .setTitle(`Informationen über ${targetUser.username}`)
+            .setTitle(`${languages(guild, 'USR_DESC')} ${targetUser.username}`)
             .setThumbnail(targetUser.displayAvatarURL({ dynamic: true }))
             .addFields(
                 { name: "👤 Account Name: ", value: targetUser.tag, inline: true },
                 { name: "🆔 User ID: ", value: targetUser.id, inline: true },
-                { name: "📅 Account erstellt: ", value: `<t:${Math.floor(targetUser.createdTimestamp / 1000)}:R>`, inline: false },
-                { name: "📥 Server beigetreten: ", value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`, inline: false },
-                { name: "🎭 Alle Rollen: ", value: roles, inline: false },
+                { name: `${languages(guild, 'CREATED')}`, value: `<t:${Math.floor(targetUser.createdTimestamp / 1000)}:R>`, inline: false },
+                { name: `${languages(guild, 'JOINED')}`, value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`, inline: false },
+                { name: `${languages(guild, 'ROLES')}`, value: roles, inline: false },
                 { name: "🤖 Bot: ", value: targetUser.bot ? "Ja" : "Nein", inline: true }
             )
-            .setFooter({ text: `Abgefragt von ${interaction.user.username}` })
+            .setFooter({ text: `${languages(guild, 'RQST')} ${interaction.user.username}` })
             .setTimestamp();
 
         await interaction.editReply({ embeds: [userInfoEmbed] });

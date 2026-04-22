@@ -524,6 +524,30 @@
     "H_TIMEOUT_DESC": {
       "german":"Mute einen User.",
       "english": "Mute a User."
+    },
+    "BOT_DESC": {
+      "german":"Hier ein paar Bot-Infos.",
+      "english": "Some infos about the Bot."
+    },
+    "USR_DESC": {
+      "german":"Informationen über ",
+      "english": "Informations about "
+    },
+    "JOINED": {
+      "german":"📥 Server beigetreten: ",
+      "english": "📥 Joined Server: "
+    },
+    "CREATED": {
+      "german":"📅 Account erstellt: ",
+      "english": "📅 Account created: "
+    },
+    "ROLES": {
+      "german":"🎭 Alle Rollen: ",
+      "english": "🎭 All Roles: "
+    },
+    "RQST": {
+      "german":"Abgefragt von",
+      "english": "Requested by"
     }
 
   }
