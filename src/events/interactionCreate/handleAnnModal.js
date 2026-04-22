@@ -1,5 +1,5 @@
 const GuildConfiguration = require('../../models/GuildConfiguration');
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, MessageFlags } = require('discord.js');
 
 module.exports = async (client, interaction) => {
     // Prüfen, ob es ein Modal-Submit ist und ob die ID passt
@@ -9,7 +9,7 @@ module.exports = async (client, interaction) => {
 
     if (interaction.customId !== 'announcement_modal') return;
 
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
     const announcement_type = interaction.fields.getTextInputValue('announcement_type');
     const announcement_message = interaction.fields.getTextInputValue('announcement_message');
