@@ -2,7 +2,7 @@ const {Client , Interaction, ApplicationCommandOptionType, EmbedBuilder} = requi
 const Level = require('../../models/Level.js');
 const calculateLevelXp = require('../../utils/calculateLevelXp.js');
 const GuildConfiguration = require('../../models/GuildConfiguration.js');
-//const language = require("../../handlers/languages");
+const language = require("../../handlers/languages");
 const pb = {
     le: '<:_le:1194078627353083945>',
     me: '<:_me:1194078620545712168>',
@@ -32,6 +32,9 @@ module.exports = {
 
 
     callback: async (client, interaction) => {
+
+        const { guild } = interaction
+
         if(!interaction.inGuild()){
             interaction.reply("Du kannst den Command nur in einem Server benutzen")
         }
