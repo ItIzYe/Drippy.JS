@@ -13,6 +13,7 @@ module.exports = {
     description: 'Öffnet ein Fenster für eine globale Bot-Ankündigung',
     devOnly: true, // Nur für dich als Developer
     testOnly: true,
+    deleted: true,
 
     callback: async (client, interaction) => {
         // Das Modal erstellen
