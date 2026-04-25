@@ -1,49 +1,38 @@
-console.log('[1] Startin script...');
-const Discord = require('discord.js');
-const {REST, Routes }= require('discord.js');
-const {IntentsBitField, Client} = require('discord.js');
-const { MessageActionRow, MessageButton, MessageEmbed, Permissions } = require('discord.js');
-const fs = require('fs');
-const sleep = require('sleep-promise');
-const eventHandler = require('./src/handlers/eventHandler');
+console.log('[1] Starting script...');
+
+const { Client, GatewayIntentBits, REST, Routes } = require('discord.js');
 const mongoose = require('mongoose');
-
-
+const fs = require('fs');
+const eventHandler = require('./src/handlers/eventHandler');
 require('dotenv').config();
 
 console.log('[2] Libraries loaded.');
 
+// Konfiguration & Umgebungsvariablen
 const token = process.env.Discord_Bot_Token;
 const mongoURL = process.env.MONGODB_URL;
-console.log(`[3] Mongo URL Status: ${mongoURL ? 'FOUND': 'UNDEFINED (missing from .env)'}`); 
-
-const client = new Client({ intents: 53608447});
-
 const clientId = process.env.CLIENT_ID;
+const isProd = process.env.APP_ENV === 'prod';
+const forceRegister = process.argv.includes('--reg');
 
+console.log(`[3] Mongo URL Status: ${mongoURL ? 'FOUND' : 'UNDEFINED (missing from .env)'}`);
 
-const rest = new REST({ version: '10' }).setToken(token);
+// Client Initialisierung mit expliziten Intents (Sauberer als die Bit-Zahl)
+const client = new Client({ 
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMembers
+    ] 
+});
 
-
-//client.rest.on('rateLimited', (info) => {
-//    console.log(`⚠️ RATE LIMIT HIT!`);
-//    console.log(`- Time to wait: ${info.timeToReset}ms`);
-//    console.log(`- Global Limit? ${info.global ? 'YES' : 'No'}`);
-//    console.log(`- Route: ${info.route}`);
-//});
-
-const isDev = process.env.APP_ENV === 'dev';
-
-if (isDev) {
-    rest.put(Routes.applicationCommands(clientId), { body: [] })
-        .then(() => console.log('🛠 Dev-Mode: Global commands cleared to avoid duplicates.'))
-        .catch(console.error);
-}
+// --- EVENT HANDLER LADEN ---
 console.log('[4] Loading Handlers...');
 eventHandler(client);
 
+// --- MONGOOSE CONNECTION ---
 console.log('[5] Attempting Mongoose Connection...');
-
 mongoose.connect(mongoURL || '', { serverSelectionTimeoutMS: 5000 })
     .then(() => {
         console.log('[6] ✅ Mongoose Connected Successfully!');
@@ -51,16 +40,38 @@ mongoose.connect(mongoURL || '', { serverSelectionTimeoutMS: 5000 })
     .catch((err) => {
         console.log('[6] ❌ Mongoose Failed:', err.message);
     });
-console.log('[7] Logging into Bot...');
-client.login(process.env.Discord_Bot_Token)
-    .then(() => console.log('✅ Bot Logged In!'))
-    .catch(err => console.error('❌ Bot Login Failed:', err));
 
+// --- READY EVENT & COMMAND REGISTRATION ---
+client.once('ready', async (c) => {
+    console.log(`[7] ✅ Bot Logged In as ${c.user.tag}!`);
 
-    
+    // Registrierung nur in Prod oder bei manuellem --reg Flag
+    if (isProd || forceRegister) {
+        console.log('[8] 🔄 Synchronizing Commands with Discord (Prod/Force mode)...');
+        try {
+            const registerCommands = require('./src/handlers/registerCommands');
+            await registerCommands(c);
+            console.log('[9] ✅ Command Synchronization Complete.');
+        } catch (error) {
+            console.error('[9] ❌ Command Synchronization Failed:', error);
+        }
+    } else {
+        console.log('[8] ⏩ Skipping Command Registration (Dev mode). Use --reg to force update.');
+    }
+});
+
+// --- GLOBAL INTERACTION LOGGER (DEBUG) ---
 client.on('interactionCreate', (interaction) => {
-    console.log('--- GLOBALER INTERAKTIONSTEST ---');
-    console.log('ID:', interaction.customId || 'Keine CustomID (Slash Command)');
-    console.log('Typ:', interaction.type);
-    console.log('IsSelectMenu:', interaction.isAnySelectMenu());
+    if (interaction.isChatInputCommand()) {
+        console.log(`[CMD] ${interaction.user.tag} nutzt /${interaction.commandName}`);
+    }
+    if (interaction.isModalSubmit()) {
+        console.log(`[MODAL] ${interaction.user.tag} hat Modal gesendet: ${interaction.customId}`);
+    }
+});
+
+// --- BOT LOGIN ---
+console.log('[10] Logging into Bot...');
+client.login(token).catch(err => {
+    console.error('❌ Bot Login Failed:', err);
 });

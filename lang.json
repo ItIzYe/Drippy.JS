@@ -572,6 +572,14 @@
     "FAQ_NOT": {
       "german":"Es sind noch keine FAQs hinterlegt.",
       "english": "There are no FAQs yet."
+    },
+    "AUTOMOD_DASHBOARD_TITLE": {
+      "german": "Automod Dashboard",
+      "english": "Automod Dashboard"
+    },
+    "AUTOMOD_DASHBOARD_DESC": {
+      "german": "Hier können Wörter hinzugefügt oder entfernt und Kanäle ausgeschlossen werden.",
+      "english": "Add or remove words and exclude channels here."
     }
     
 
