@@ -12,7 +12,7 @@ module.exports = async (client, message) => {
         let settings = await AutoModConfig.findOne({ guildId: message.guild.id });
         
         // Wenn kein AutoMod für diesen Server konfiguriert oder deaktiviert ist -> Abbruch
-        if (settings && settings.enabled === false) return;
+        if (!settings || settings.enabled === false) return;
 
         // 3. Admin-Check: Moderatoren und Admins werden ignoriert
         if (message.member?.permissions.has(PermissionsBitField.Flags.ManageMessages)) return;
