@@ -1,5 +1,7 @@
 const { ApplicationCommandOptionType, EmbedBuilder, MessageFlags } = require('discord.js');
 const Faq = require('../../models/Faq');
+const language = require("../../handlers/languages");
+
 
 module.exports = {
     name: 'faq',
