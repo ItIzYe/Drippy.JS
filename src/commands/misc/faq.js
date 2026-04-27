@@ -29,6 +29,7 @@ module.exports = {
         const member = await interaction.guild.members.fetch(targetUser.id);
         const query = interaction.options.getString('thema').toLowerCase();
         const guildId = interaction.guild.id;
+        const { guild } = interaction;
 
         if (query === 'list') {
             const faqs = await Faq.find({ guildId });
