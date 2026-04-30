@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, MessageFlags } = require('discord.js');
 const AutomodConfig = require('../../models/Automod');
 
 module.exports = async (client, interaction) => {
@@ -12,7 +12,7 @@ module.exports = async (client, interaction) => {
         
         // 1. Sofort "Denken"-Status senden (Verhindert "Etwas ist schiefgelaufen")
         // Das gibt uns 15 Minuten Zeit statt 3 Sekunden
-        await it.deferReply({ ephemeral: true });
+        await it.deferReply({ Flags: [MessageFlags.Ephemeral] });
 
         const word = it.fields.getTextInputValue('word_input')?.trim().toLowerCase();
         

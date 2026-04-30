@@ -6,7 +6,8 @@ const {
     ModalBuilder,
     TextInputBuilder,
     TextInputStyle,
-    ActionRowBuilder
+    ActionRowBuilder,
+    MessageFlags
 } = require('discord.js');
 
 module.exports = {
@@ -129,7 +130,7 @@ module.exports = {
                 }
 
                 await ruleData.save();
-                await submitted.reply({ content: '✅ Regelwerk erfolgreich aktualisiert!', ephemeral: true });
+                await submitted.reply({ content: '✅ Regelwerk erfolgreich aktualisiert!', Flags: [MessageFlags.Ephemeral] });
             } catch (err) { return; }
             return;
         }

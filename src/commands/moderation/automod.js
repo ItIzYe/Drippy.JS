@@ -4,7 +4,8 @@ const {
     EmbedBuilder,
     ActionRowBuilder,
     ButtonBuilder,
-    ButtonStyle
+    ButtonStyle,
+    MessageFlags
 } = require('discord.js');
 const AutomodConfig = require('../../models/Automod');
 const language = require("../../handlers/languages");
@@ -17,7 +18,7 @@ module.exports = {
 
     callback: async (client, interaction) => {
         const { guild } = interaction;
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ Flags: [MessageFlags.Ephemeral] });
 
         try {
             let config = await AutomodConfig.findOne({ guildId: guild.id });

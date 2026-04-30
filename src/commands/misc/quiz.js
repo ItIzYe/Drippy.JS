@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
+const { MessageFlags ,EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
 const mongoose = require('mongoose');
 
 // Highscore Schema
@@ -412,7 +412,7 @@ module.exports = {
 
         collector.on('collect', async i => {
             if (i.user.id !== interaction.user.id) {
-                return i.reply({ content: "Das ist nicht dein Quiz!", ephemeral: true });
+                return i.reply({ content: "Das ist nicht dein Quiz!", Flags: [MessageFlags.Ephemeral] });
             }
 
             if (i.customId.startsWith('answer_')) {
@@ -441,7 +441,7 @@ module.exports = {
                     .setTitle('Leaderboard')
                     .setDescription(top.map((u, idx) => `${idx + 1}. ${u.username}: ${u.score}`).join('\n') || 'Noch keine Einträge')
                     .setColor('#00ff00');
-                await i.reply({ embeds: [leaderboardEmbed], ephemeral: true });
+                await i.reply({ embeds: [leaderboardEmbed], Flags: [MessageFlags.Ephemeral] });
             }
         });
 

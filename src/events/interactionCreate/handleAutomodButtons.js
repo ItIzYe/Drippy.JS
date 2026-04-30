@@ -7,7 +7,8 @@ const {
     ChannelType, 
     ModalBuilder, 
     TextInputBuilder, 
-    TextInputStyle 
+    TextInputStyle ,
+    MessageFlags
 } = require('discord.js');
 const AutomodConfig = require('../../models/Automod');
 const language = require("../../handlers/languages");
@@ -110,7 +111,7 @@ module.exports = async (client, interaction) => {
             return await interaction.reply({
                 content: 'Wähle den Kanal aus, den du anpassen möchtest:',
                 components: [new ActionRowBuilder().addComponents(channelSelect)],
-                ephemeral: true
+                Flags: [MessageFlags.Ephemeral]
             });
         }
 

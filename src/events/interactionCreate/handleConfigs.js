@@ -1,4 +1,4 @@
-const { ChannelSelectMenuBuilder, ActionRowBuilder, ComponentType } = require('discord.js');
+const { ChannelSelectMenuBuilder, ActionRowBuilder, ComponentType, MessageFlags } = require('discord.js');
 const GuildConfiguration = require('../../models/GuildConfiguration');
 // Wir importieren die Dashboard-Funktion, um das Embed live zu aktualisieren
 const { createConfigDashboard } = require('../../commands/moderation/config-view');
@@ -33,12 +33,12 @@ module.exports = async (client, interaction) => {
         return await interaction.reply({ 
             content: `Wähle einen Kanal für **${category}**:`, 
             components: [row], 
-            ephemeral: true 
+            Flags: [MessageFlags.Ephemeral] 
         });
     }
 
     if (customId.startsWith('setchan_')) {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ Flags: [MessageFlags.Ephemeral] });
 
         try {
             const [_, category, dbField] = customId.split('_');
