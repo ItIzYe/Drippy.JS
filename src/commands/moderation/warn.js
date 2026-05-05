@@ -124,6 +124,18 @@ module.exports = {
                 )
                 .setFooter({ text: "Use /warn remove [case-id] to delete this." });
 
+            const embed_user = new EmbedBuilder()
+                .setColor('Red')
+                .setTitle('WARN ADDED' || `Warning Issued: Case #${caseId}`)
+                .setThumbnail(targetUser.displayAvatarURL())
+                .addFields(
+                    { name: 'User', value: `${targetUser}`, inline: true },
+                    { name: `${language(guild, 'BAN_EMBED_BANNED_REASON')}`, value: reason, inline: false },
+                    { name: 'Case ID', value: `\`${caseId}\``, inline: true }
+                )
+
+
+            await targetMember.send({ embeds: [embed_user] });
             return interaction.editReply({ embeds: [embed] });
         }
 
