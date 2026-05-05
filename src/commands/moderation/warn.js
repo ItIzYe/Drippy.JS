@@ -135,7 +135,11 @@ module.exports = {
                 )
 
 
-            await targetMember.send({ embeds: [embed_user] });
+            try {
+                await targetMember.send({ embeds: [embed_user] });
+            } catch (error) {
+                console.log(`Konnte DM an ${targetUser.tag} nicht senden (DMs geschlossen).`);
+            }
             return interaction.editReply({ embeds: [embed] });
         }
 
