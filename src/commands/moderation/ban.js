@@ -68,6 +68,8 @@ module.exports = {
             return;
         }
 
+    
+
         const targetUserRolePosition = targetUser.roles.highest.position; // Highest role of the target user
         const requestUserRolePosition = interaction.member.roles.highest.position; // Highest role of the user running the cmd
         const botRolePosition = interaction.guild.members.me.roles.highest.position; // Highest role of the bot
@@ -117,9 +119,26 @@ module.exports = {
                         {name: `${language(guild, 'BAN_EMBED_BANNED_REASON')}`, value: `${reason}`, inline: true}
                     )
 
+                const embed_user = new EmbedBuilder()
+                    .setColor('Red')
+                    .setTitle(`${language(guild, 'BAN_EMBED_TITLE')}`)
+                    .setThumbnail(targetUser.displayAvatarURL())
+                    .addFields(
+                        { name: 'Member', value: `${targetUser}`, inline: true },
+                        {name: '---------', value: '      ', inline:true},
+                        {name: `${language(guild, 'BAN_EMBED_BANNED_REASON')}`, value: `${reason}`, inline: true}
+                    )
+                
+                
+                try {
+                    await targetUser.send({ embeds: [embed_user] });
+                } catch (error) {
+                    console.log(`Konnte DM an ${targetUser.tag} nicht senden (DMs geschlossen).`);
+                }
+
                 await targetUser.ban({ reason });
                 const message = await messageChannel.send({embeds : [embed]});
-                console.log(message.embeds[0].image)
+                //console.log(message.embeds[0].image)
 
                 const answerEmbed = new EmbedBuilder()
                     .setTitle(`${language(guild, 'BAN_EMBED_BANNED')}`)
@@ -136,6 +155,23 @@ module.exports = {
                         {name: '---------', value: '      ', inline:true},
                         {name: `${language(guild, 'BAN_EMBED_BANNED_REASON')}`, value: `${reason}`, inline: true}
                     )
+
+                const embed_user = new EmbedBuilder()
+                    .setColor('Red')
+                    .setTitle(`${language(guild, 'BAN_EMBED_TITLE')}`)
+                    .setThumbnail(targetUser.displayAvatarURL())
+                    .addFields(
+                        { name: 'Member', value: `${targetUser}`, inline: true },
+                        {name: '---------', value: '      ', inline:true},
+                        {name: `${language(guild, 'BAN_EMBED_BANNED_REASON')}`, value: `${reason}`, inline: true}
+                    )
+                
+                
+                try {
+                    await targetUser.send({ embeds: [embed_user] });
+                } catch (error) {
+                    console.log(`Konnte DM an ${targetUser.tag} nicht senden (DMs geschlossen).`);
+                }
 
                 await targetUser.ban({ reason });
                 await interaction.editReply({embeds : [embed]});
