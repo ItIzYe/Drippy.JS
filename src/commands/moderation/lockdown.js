@@ -73,7 +73,11 @@ module.exports = {
             try {
                 await targetChannel.permissionOverwrites.edit(guild.roles.everyone, {
                     SendMessages: false,
-                    AddReactions: false 
+                    AddReactions: false,
+                    CreatePublicThreads: false,
+                    CreatePrivateThreads: false,
+                    SendMessagesInThreads: false
+
                 });
 
                 const embed = new EmbedBuilder()
@@ -107,7 +111,11 @@ module.exports = {
             try {
                 await targetChannel.permissionOverwrites.edit(guild.roles.everyone, {
                     SendMessages: null,
-                    AddReactions: null
+                    AddReactions: null,
+                    CreatePublicThreads: null,
+                    CreatePrivateThreads: null,
+                    SendMessagesInThreads: null
+
                 });
 
                 const embed = new EmbedBuilder()
