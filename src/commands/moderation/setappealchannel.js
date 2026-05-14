@@ -15,7 +15,6 @@ module.exports = {
     permissionsRequired: [PermissionFlagsBits.Administrator],
 
     callback: async (client, interaction) => {
-        // 1. SOFORT den Defer aufrufen, um die 3-Sekunden-Falle zu umgehen
         try {
             await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
         } catch (err) {
@@ -26,14 +25,12 @@ module.exports = {
         const targetChannel = interaction.options.getChannel('channel');
 
         try {
-            // 2. Datenbank-Operation (kann manchmal dauern)
             await GuildConfig.findOneAndUpdate(
                 { guildId: interaction.guild.id },
-                { appealChannelId: [targetChannel.id] }, // WICHTIG: In appeal.js nutzt du .appealChannelIds[0], also hier als Array speichern!
+                { appealChannelId: [targetChannel.id] },
                 { upsert: true, new: true }
             );
 
-            // 3. Finale Antwort (jetzt mit editReply, da wir deferReply genutzt haben)
             await interaction.editReply({ 
                 content: `✅ Einspruch-Anfragen werden ab jetzt in ${targetChannel} gesendet.`, 
             });

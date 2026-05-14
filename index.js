@@ -71,7 +71,7 @@ client.once(Events.ClientReady, async (c) => {
         console.log(`[MODAL] ${interaction.user.tag} hat Modal gesendet: ${interaction.customId}`);
     }
     if (interaction.isChatInputCommand() || interaction.isAutocomplete()) {
-        const handleCommands = require('./src/events/interactionCreate/handleCommands'); // Pfad ggf. anpassen
+        const handleCommands = require('./src/events/interactionCreate/handleCommands');
         handleCommands(client, interaction);
     }
 }); */
