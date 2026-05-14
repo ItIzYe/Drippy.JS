@@ -17,7 +17,6 @@ module.exports = {
 
     callback: async (client, interaction) => {
         await interaction.deferReply();
-        // 1. SOFORT antworten, um den 3-Sekunden-Timer von Discord zu stoppen
         try {
             //await interaction.deferReply();
             console.log('Config-View wird ausgegeben')
@@ -27,7 +26,6 @@ module.exports = {
         }
 
         try {
-            // 2. Daten laden und Dashboard erstellen
             const { embed, row1, row2 } = await createConfigDashboard(interaction.guild);
 
             await interaction.editReply({ 
@@ -43,12 +41,8 @@ module.exports = {
     }
 };
 
-/**
- * Hilfsfunktion zur Erstellung des Dashboards.
- * Diese wird auch vom Button-Handler aufgerufen, um das Embed zu aktualisieren.
- */
+
 async function createConfigDashboard(guild) {
-    // Datenbankabfragen parallel ausführen für bessere Performance
     const [config, langData] = await Promise.all([
         GuildConfiguration.findOne({ guildId: guild.id }),
         Language.findOne({ guildId: guild.id })
@@ -56,14 +50,11 @@ async function createConfigDashboard(guild) {
 
     const rawLang = langData ? langData.language : 'german'; 
 
-// Wir prüfen explizit auf deine DB-Werte
 const isEnglish = rawLang.toLowerCase() === 'english';
 
-// Anzeige-Texte festlegen
 const displayLang = isEnglish ? 'English' : 'Deutsch';
 const langEmoji = isEnglish ? '🇺🇸' : '🇩🇪';
 
-    // Hilfsfunktion für die Anzeige der Channel-Erwähnung
     const formatChan = (ids) => (ids && ids.length > 0) ? `<#${ids[0]}>` : '❌ *Nicht gesetzt*';
 
     const embed = new EmbedBuilder()
@@ -83,14 +74,12 @@ const langEmoji = isEnglish ? '🇺🇸' : '🇩🇪';
         .setFooter({ text: 'Drippy Config System', iconURL: guild.client.user.displayAvatarURL() })
         .setTimestamp();
 
-    // Erste Reihe Buttons (Hauptfunktionen)
     const row1 = new ActionRowBuilder().addComponents(
         new ButtonBuilder().setCustomId('cfg_tickets').setLabel('Tickets').setStyle(ButtonStyle.Secondary).setEmoji('🎫'),
         new ButtonBuilder().setCustomId('cfg_suggestions').setLabel('Suggestions').setStyle(ButtonStyle.Secondary).setEmoji('💡'),
         new ButtonBuilder().setCustomId('cfg_moderation').setLabel('Moderation').setStyle(ButtonStyle.Secondary).setEmoji('🛡️')
     );
 
-    // Zweite Reihe Buttons (Zusatz & Schließen)
     const row2 = new ActionRowBuilder().addComponents(
         new ButtonBuilder().setCustomId('cfg_levels').setLabel('Leveling').setStyle(ButtonStyle.Secondary).setEmoji('📈'),
         new ButtonBuilder().setCustomId('cfg_announcements').setLabel('Announce').setStyle(ButtonStyle.Secondary).setEmoji('📢'),
@@ -100,5 +89,4 @@ const langEmoji = isEnglish ? '🇺🇸' : '🇩🇪';
     return { embed, row1, row2 };
 }
 
-// Exportieren der Hilfsfunktion für den handleComponents.js
 module.exports.createConfigDashboard = createConfigDashboard;

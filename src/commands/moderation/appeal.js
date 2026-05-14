@@ -22,31 +22,23 @@ module.exports = {
             name: 'server-id',
             description: 'Wähle den Server aus.',
             type: ApplicationCommandOptionType.String,
-            required: true, // Muss true sein, damit man absenden kann
+            required: true,
             autocomplete: true,
         },
     ],
 
-    /**
-     * Diese Funktion wird von deinem handleCommands.js aufgerufen, 
-     * wenn der User im Feld "server-id" tippt.
-     */
     autocomplete: async (client, interaction) => {
         try {
-            // Holen der Eingabe des Users
             const focusedOption = interaction.options.getFocused(true);
             
-            // Sicherstellen, dass wir nur auf das richtige Feld reagieren
             if (focusedOption.name !== 'server-id') return;
 
             const focusedValue = focusedOption.value.toLowerCase();
             
-            // Schnell-Check: Wenn der Bot noch gar keine Guilds im Cache hat
             if (!client.guilds.cache.size) {
                 return await interaction.respond([]);
             }
 
-            // Map & Filter so effizient wie möglich
             const guilds = client.guilds.cache
                 .filter(guild => guild.name.toLowerCase().includes(focusedValue))
                 .map(guild => ({
@@ -57,14 +49,12 @@ module.exports = {
 
             await interaction.respond(guilds);
         } catch (error) {
-            // Ignoriere 10062 Fehler im Log, da sie oft durch Client-Lags entstehen
             if (error.code === 10062) return;
             console.error(`Autocomplete Fehler: ${error}`);
         }
     },
 
     callback: async (client, interaction) => {
-        // Prüfen, ob der Command in einer DM ausgeführt wurde
         if (interaction.guildId) {
             return interaction.reply({ 
                 content: "Bitte nutze diesen Command direkt in meinen DMs!", 
@@ -76,13 +66,11 @@ module.exports = {
         const reason = interaction.options.get('reason').value;
         const user = interaction.user;
 
-        // Config für diesen Server laden
         const config = await GuildConfiguration.findOne({ guildId: guildId });
         if (!config || !config.appealChannelId?.length) {
             return interaction.reply("Dieser Server hat das Einspruch-System nicht konfiguriert.");
         }
 
-        // Guild fetchen, falls nicht im Cache (wichtig in DMs!)
         const targetGuild = await client.guilds.fetch(guildId).catch(() => null);
         if (!targetGuild) return interaction.reply("Ich konnte den Server nicht finden.");
 
