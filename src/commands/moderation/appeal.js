@@ -32,23 +32,34 @@ module.exports = {
      * wenn der User im Feld "server-id" tippt.
      */
     autocomplete: async (client, interaction) => {
-        const focusedValue = interaction.options.getFocused().toLowerCase();
-        
-        // Wir holen alle Guilds aus dem Cache
-        const guilds = client.guilds.cache.map(guild => ({
-            name: guild.name,
-            value: guild.id
-        }));
-
-        // Filtern nach dem, was der User bereits getippt hat
-        const filtered = guilds.filter(guild => 
-            guild.name.toLowerCase().includes(focusedValue)
-        ).slice(0, 25);
-
         try {
-            await interaction.respond(filtered);
+            // Holen der Eingabe des Users
+            const focusedOption = interaction.options.getFocused(true);
+            
+            // Sicherstellen, dass wir nur auf das richtige Feld reagieren
+            if (focusedOption.name !== 'server-id') return;
+
+            const focusedValue = focusedOption.value.toLowerCase();
+            
+            // Schnell-Check: Wenn der Bot noch gar keine Guilds im Cache hat
+            if (!client.guilds.cache.size) {
+                return await interaction.respond([]);
+            }
+
+            // Map & Filter so effizient wie möglich
+            const guilds = client.guilds.cache
+                .filter(guild => guild.name.toLowerCase().includes(focusedValue))
+                .map(guild => ({
+                    name: guild.name,
+                    value: guild.id
+                }))
+                .slice(0, 25);
+
+            await interaction.respond(guilds);
         } catch (error) {
-            console.error(`Fehler beim Autocomplete in appeal.js: ${error}`);
+            // Ignoriere 10062 Fehler im Log, da sie oft durch Client-Lags entstehen
+            if (error.code === 10062) return;
+            console.error(`Autocomplete Fehler: ${error}`);
         }
     },
 
@@ -67,7 +78,7 @@ module.exports = {
 
         // Config für diesen Server laden
         const config = await GuildConfiguration.findOne({ guildId: guildId });
-        if (!config || !config.appealChannelIds?.length) {
+        if (!config || !config.appealChannelId?.length) {
             return interaction.reply("Dieser Server hat das Einspruch-System nicht konfiguriert.");
         }
 
@@ -75,7 +86,7 @@ module.exports = {
         const targetGuild = await client.guilds.fetch(guildId).catch(() => null);
         if (!targetGuild) return interaction.reply("Ich konnte den Server nicht finden.");
 
-        const logChannel = targetGuild.channels.cache.get(config.appealChannelIds[0]);
+        const logChannel = targetGuild.channels.cache.get(config.appealChannelId[0]);
         if (!logChannel) return interaction.reply("Support-Kanal nicht gefunden.");
 
         const caseId = Math.random().toString(36).substring(2, 8).toUpperCase();

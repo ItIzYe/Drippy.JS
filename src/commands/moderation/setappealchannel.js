@@ -1,30 +1,21 @@
-const GuildConfiguration = require('../../models/GuildConfiguration');
-const {
-    Client,
-    Interaction,
-    ApplicationCommandOptionType,
-    PermissionFlagsBits,
-    EmbedBuilder,
-    MessageFlags // WICHTIG für die Flags
-} = require('discord.js');
+const { ApplicationCommandOptionType, PermissionFlagsBits, MessageFlags } = require('discord.js');
+const GuildConfig = require('../../models/GuildConfiguration');
 
 module.exports = {
     name: 'setappealchannel',
-    description: 'Legt den Kanal für Entbannungs-Anträge (Appeals) fest.',
+    description: 'Legt den Kanal für Appeals fest.',
     options: [
         {
             name: 'channel',
-            description: 'Der Kanal, in dem die Appeals erscheinen sollen.',
+            description: 'Der Kanal, in den die Appeals gesendet werden sollen.',
             type: ApplicationCommandOptionType.Channel,
             required: true,
         },
     ],
     permissionsRequired: [PermissionFlagsBits.Administrator],
-    botPermissions: [PermissionFlagsBits.SendMessages],
 
     callback: async (client, interaction) => {
-        // SOFORT auf die Interaction reagieren, um "Unknown Interaction" zu vermeiden
-        // Und die neue Flag-Schreibweise nutzen
+        // 1. SOFORT den Defer aufrufen, um die 3-Sekunden-Falle zu umgehen
         try {
             await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
         } catch (err) {
@@ -32,37 +23,25 @@ module.exports = {
             return;
         }
 
-        const { guild } = interaction;
-        const targetChannelId = interaction.options.get('channel').value;
+        const targetChannel = interaction.options.getChannel('channel');
 
         try {
-            let guildConfiguration = await GuildConfiguration.findOne({ guildId: guild.id });
+            // 2. Datenbank-Operation (kann manchmal dauern)
+            await GuildConfig.findOneAndUpdate(
+                { guildId: interaction.guild.id },
+                { appealChannelId: [targetChannel.id] }, // WICHTIG: In appeal.js nutzt du .appealChannelIds[0], also hier als Array speichern!
+                { upsert: true, new: true }
+            );
 
-            if (!guildConfiguration) {
-                guildConfiguration = new GuildConfiguration({
-                    guildId: guild.id,
-                    appealChannelIds: [targetChannelId],
-                });
-            } else {
-                guildConfiguration.appealChannelIds = [targetChannelId];
-            }
-
-            await guildConfiguration.save();
-
-            const embed = new EmbedBuilder()
-                .setColor('Green')
-                .setTitle('Konfiguration Aktualisiert')
-                .setDescription(`Einsprüche werden ab sofort in <#${targetChannelId}> geloggt.`)
-                .setTimestamp();
-
-            await interaction.editReply({ embeds: [embed] });
-
+            // 3. Finale Antwort (jetzt mit editReply, da wir deferReply genutzt haben)
+            await interaction.editReply({ 
+                content: `✅ Einspruch-Anfragen werden ab jetzt in ${targetChannel} gesendet.`, 
+            });
         } catch (error) {
-            console.log(`Fehler in setappealchannel: ${error}`);
-            // Prüfen, ob die Interaction noch valide ist, bevor wir editieren
-            if (interaction.deferred) {
-                await interaction.editReply('Es gab einen Fehler beim Speichern der Konfiguration.');
-            }
+            console.error("Fehler beim Speichern der Config:", error);
+            await interaction.editReply({ 
+                content: "❌ Es gab einen Fehler beim Speichern der Konfiguration.", 
+            });
         }
-    },
+    }
 };
