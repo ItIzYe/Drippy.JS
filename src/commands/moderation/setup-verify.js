@@ -53,7 +53,6 @@ module.exports = {
 
         await interaction.channel.send({ embeds: [embed], components: [row] });
 
-        // Nutze das neue Flag-System
         await interaction.reply({ 
             content: `Verifizierung eingerichtet! Ziel-Rolle: **${targetRole.name}**`, 
             flags: [MessageFlags.Ephemeral] 

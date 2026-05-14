@@ -24,7 +24,6 @@ module.exports = {
     callback: async (client, interaction) => {
         await interaction.deferReply();
 
-        // Buttons für Spielmodi
         const buttons = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId("normal")
@@ -51,7 +50,6 @@ module.exports = {
         collector.on("collect", async i => {
             await i.deferUpdate();
 
-            // Userdaten aus DB holen oder neu erstellen
             let userData = await User.findOne({ userId: i.user.id });
             if (!userData) userData = await User.create({ userId: i.user.id });
 
@@ -80,7 +78,6 @@ module.exports = {
     }
 };
 
-// Arcade-Spiel
 async function arcadeGame(interaction, userData) {
     let lives = 3;
     let points = 0;
@@ -124,7 +121,6 @@ async function arcadeGame(interaction, userData) {
     await updateUserData(userData, points, interaction, `Arcade beendet! Du hast ${points} Punkte gesammelt.`);
 }
 
-// Normal Match
 async function normalGame(interaction, userData) {
     let rounds = 10;
     let userPoints = 0;
@@ -168,7 +164,6 @@ async function normalGame(interaction, userData) {
     await updateUserData(userData, userPoints, interaction, result);
 }
 
-// Userdaten aktualisieren
 async function updateUserData(userData, pointsGained, interaction, resultText = "") {
     userData.points += pointsGained;
     userData.xp += Math.floor(pointsGained / 2);

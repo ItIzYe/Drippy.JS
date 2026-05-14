@@ -16,12 +16,10 @@ module.exports = {
     //deleted: true,
 
     callback: async (client, interaction) => {
-        // Das Modal erstellen
         const modal = new ModalBuilder()
             .setCustomId(`announcement_modal`)
             .setTitle('Globale Bot-Ankündigung');
 
-        // Feld für den Typ (Kurztext)
         const typeInput = new TextInputBuilder()
             .setCustomId('announcement_type')
             .setLabel("Betreff / Typ")
@@ -29,7 +27,6 @@ module.exports = {
             .setStyle(TextInputStyle.Short)
             .setRequired(true);
 
-        // Feld für die Nachricht (Langer Text)
         const messageInput = new TextInputBuilder()
             .setCustomId('announcement_message')
             .setLabel("Inhalt der Ankündigung")
@@ -37,13 +34,11 @@ module.exports = {
             .setStyle(TextInputStyle.Paragraph)
             .setRequired(true);
 
-        // Komponenten in Reihen hinzufügen
         const firstRow = new ActionRowBuilder().addComponents(typeInput);
         const secondRow = new ActionRowBuilder().addComponents(messageInput);
 
         modal.addComponents(firstRow, secondRow);
 
-        // Modal anzeigen
         await interaction.showModal(modal);
 
         console.log("Ankündigung wurde verschickt");

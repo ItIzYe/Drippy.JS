@@ -127,13 +127,10 @@ module.exports = {
         try {
     const { default: prettyMs } = await import('pretty-ms');
 
-    // 1. Konfiguration laden
     const guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId });
 
-    // 2. Timeout ausführen
     await targetUser.timeout(msDuration, reason);
 
-    // 3. Embed vorbereiten (für beide Fälle gleich)
     const isAlreadyTimedOut = targetUser.isCommunicationDisabled();
     const statusText = isAlreadyTimedOut 
         ? language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CHANGED') 
@@ -149,16 +146,12 @@ module.exports = {
             { name: `${language(guild, 'TIMEOUT_EMBED_TIMEOUTED_REASON')}`, value: `${reason}`, inline: true },
         );
 
-    // 4. Logik für den Log-Kanal
-    // Prüfen: Existiert die Config UND gibt es IDs im Array?
     const logChannelId = guildConfiguration?.moderationChannelIds?.[0];
     const logChannel = logChannelId ? client.channels.cache.get(logChannelId) : null;
 
     if (logChannel) {
-        // In den Log-Kanal senden
         await logChannel.send({ embeds: [embed] });
         
-        // Kurze Bestätigung für den Moderator
         const answerEmbed = new EmbedBuilder()
             .setTitle(isAlreadyTimedOut 
                 ? language(guild, 'TIMEOUT_EMBED_TIMEOUTED_CHANGED') 
@@ -166,7 +159,6 @@ module.exports = {
             );
         await interaction.editReply({ embeds: [answerEmbed] });
     } else {
-        // Kein Log-Kanal gefunden -> Embed direkt als Antwort schicken
         await interaction.editReply({ embeds: [embed] });
     }
 

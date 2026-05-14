@@ -30,7 +30,7 @@ module.exports = {
                     description: 'Hinter welcher Regel soll dieser Punkt erscheinen? (Leer lassen für ganz unten)',
                     type: ApplicationCommandOptionType.String,
                     required: false,
-                    autocomplete: true, // Nutzt die Liste der Regeln
+                    autocomplete: true,
                 }
             ]
         },
@@ -57,14 +57,12 @@ module.exports = {
     permissionsRequired: [PermissionFlagsBits.Administrator],
     botPermissions: [PermissionFlagsBits.EmbedLinks],
 
-    // DER AUTOCOMPLETE HANDLER (wird von add und remove genutzt)
     autocomplete: async (client, interaction) => {
         const ruleData = await Rule.findOne({ guildId: interaction.guildId });
         if (!ruleData || !ruleData.rules.length) return interaction.respond([]);
 
         const focusedValue = interaction.options.getFocused();
         
-        // Wir erstellen eine Liste aller Regeln mit ihrer Bezeichnung
         let mainPara = 0;
         let subPara = 0;
 
@@ -74,7 +72,7 @@ module.exports = {
             
             return {
                 name: `${label} ${rule.title}`,
-                value: index.toString(), // Wir schicken den Index als "Value" an den Callback
+                value: index.toString(),
             };
         });
 
@@ -91,7 +89,7 @@ module.exports = {
 
         if (subcommand === 'add') {
             const isSub = options.getBoolean('unterpunkt');
-            const afterIndex = options.getString('einfügen_nach'); // Das ist der Index der gewählten Regel
+            const afterIndex = options.getString('einfügen_nach');
 
             const modal = new ModalBuilder()
                 .setCustomId(`rule_modal_${interaction.user.id}_${isSub}_${afterIndex || 'end'}`)
@@ -123,7 +121,6 @@ module.exports = {
                 const newRule = { title, description, isSubParagraph: isSub };
 
                 if (afterIndex !== null && !isNaN(parseInt(afterIndex))) {
-                    // Wir fügen es EINE Position hinter der gewählten Regel ein (+1)
                     ruleData.rules.splice(parseInt(afterIndex) + 1, 0, newRule);
                 } else {
                     ruleData.rules.push(newRule);
