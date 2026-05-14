@@ -72,4 +72,34 @@ module.exports = async (client, interaction) => {
         console.log(error)
         console.log(`There was an error running this command: ${error}`);
     }
+
+    if (interaction.isAutocomplete()) {
+    // 1. Debug: Welcher Command wird angefragt?
+    console.log(`Autocomplete-Anfrage für: ${interaction.commandName}`);
+
+    // 2. Commands laden (hier musst du den Pfad zu deinem Command-Reader anpassen!)
+    const getLocalCommands = require('../../utils/getLocalCommands'); // Pfad prüfen!
+    const localCommands = getLocalCommands();
+
+    const commandObject = localCommands.find(
+        (cmd) => cmd.name === interaction.commandName
+    );
+
+    if (!commandObject) {
+        console.log(`Kein Command-Objekt für ${interaction.commandName} gefunden.`);
+        return;
+    }
+
+    if (!commandObject.autocomplete) {
+        console.log(`Der Command ${interaction.commandName} hat keine autocomplete-Funktion.`);
+        return;
+    }
+
+    try {
+        console.log(`Führe Autocomplete für ${interaction.commandName} aus...`);
+        await commandObject.autocomplete(client, interaction);
+    } catch (error) {
+        console.error(`Fehler beim Ausführen von Autocomplete:`, error);
+    }
+}
 };

@@ -1,6 +1,6 @@
 console.log('[1] Starting script...');
 
-const { Client, GatewayIntentBits, REST, Routes } = require('discord.js');
+const { Events ,Client, GatewayIntentBits, REST, Routes } = require('discord.js');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const eventHandler = require('./src/handlers/eventHandler');
@@ -22,6 +22,7 @@ const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.DirectMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMembers
     ] 
@@ -42,7 +43,7 @@ mongoose.connect(mongoURL || '', { serverSelectionTimeoutMS: 5000 })
     });
 
 // --- READY EVENT & COMMAND REGISTRATION ---
-client.once('ready', async (c) => {
+client.once(Events.ClientReady, async (c) => {
     console.log(`[7] ✅ Bot Logged In as ${c.user.tag}!`);
 
     // Registrierung nur in Prod oder bei manuellem --reg Flag

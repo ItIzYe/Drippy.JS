@@ -31,6 +31,10 @@ const guildConfigurationSchema = new Schema({
     },
     ticketCategoryId: { 
         type: String 
+    },
+    appealChannelId: { 
+        type: [String], 
+        default: [] 
     }
 });
 
