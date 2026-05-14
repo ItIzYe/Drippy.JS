@@ -62,14 +62,19 @@ client.once(Events.ClientReady, async (c) => {
 });
 
 // --- GLOBAL INTERACTION LOGGER (DEBUG) ---
-client.on('interactionCreate', (interaction) => {
+/* client.on('interactionCreate', (interaction) => {
+    console.time(`Command-Timer-${interaction.id}`);
     if (interaction.isChatInputCommand()) {
         console.log(`[CMD] ${interaction.user.tag} nutzt /${interaction.commandName}`);
     }
     if (interaction.isModalSubmit()) {
         console.log(`[MODAL] ${interaction.user.tag} hat Modal gesendet: ${interaction.customId}`);
     }
-});
+    if (interaction.isChatInputCommand() || interaction.isAutocomplete()) {
+        const handleCommands = require('./src/events/interactionCreate/handleCommands'); // Pfad ggf. anpassen
+        handleCommands(client, interaction);
+    }
+}); */
 
 // --- BOT LOGIN ---
 console.log('[10] Logging into Bot...');
