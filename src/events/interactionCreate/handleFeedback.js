@@ -8,7 +8,8 @@ const {
     EmbedBuilder,
     UserSelectMenuBuilder,
     StringSelectMenuBuilder,
-    StringSelectMenuOptionBuilder
+    StringSelectMenuOptionBuilder,
+    MessageFlags
 } = require('discord.js');
 const Feedback = require('../../models/Feedback');
 
@@ -49,7 +50,7 @@ module.exports = async (client, interaction) => {
         const ausgewaehlteMods = TEAM_LISTE[target];
 
         if (!ausgewaehlteMods || ausgewaehlteMods.length === 0) {
-            return await interaction.reply({ content: "Keine Moderatoren für diese Kategorie gefunden.", ephemeral: true });
+            return await interaction.reply({ content: "Keine Moderatoren für diese Kategorie gefunden.", flags: [MessageFlags.Ephemeral] });
         }
 
         const stringSelect = new StringSelectMenuBuilder()
@@ -73,7 +74,7 @@ module.exports = async (client, interaction) => {
         return await interaction.reply({
             content: `Du hast **${target === 'streammods' ? 'Stream-Mods' : 'Discord-Mods'}** gewählt. Wer soll das Feedback erhalten?`,
             components: [row1, row2],
-            ephemeral: true
+            flags: [MessageFlags.Ephemeral]
         });
     }
 
@@ -84,7 +85,6 @@ module.exports = async (client, interaction) => {
     const isAllButton = interaction.isButton() && interaction.customId.startsWith('feedback_user_all_');
 
     if (isModSelect || isAllButton) {
-        // Wichtig gegen "Interaktion fehlgeschlagen"
         await interaction.deferUpdate(); 
 
         const target = interaction.customId.split('_')[3];
@@ -141,7 +141,6 @@ module.exports = async (client, interaction) => {
 
         await interaction.showModal(modal);
         
-        // Buttons nach Modal-Öffnung aufräumen
         return await interaction.editReply({
             content: `Das Feedback-Fenster ist nun offen.`,
             components: []
@@ -158,10 +157,9 @@ module.exports = async (client, interaction) => {
         const isAnonym = anonymText === 'ja' || anonymText === 'j';
         
         const { guild, user } = interaction;
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
 
         try {
-            // MongoDB: findOneAndUpdate mit $push in das Ratings-Array
             await Feedback.findOneAndUpdate(
                 { guildId: guild.id, targetType: target, targetUser: modId },
                 { 
@@ -183,7 +181,7 @@ module.exports = async (client, interaction) => {
             const targetField = modId === "all" ? "Gesamtes Team" : `<@${modId}>`;
 
             const logEmbed = new EmbedBuilder()
-                .setColor(target === 'streammods' ? 0x3498db : 0x9b59b6) // Sicherere Hex-Zahlen für Discord v14
+                .setColor(target === 'streammods' ? 0x3498db : 0x9b59b6)
                 .setTitle(`Neues Feedback: ${target === 'streammods' ? '📺 Stream-Team' : '🛡️ Discord-Team'}`)
                 .addFields(
                     { name: "Eingereicht von", value: userField, inline: true },
@@ -195,7 +193,6 @@ module.exports = async (client, interaction) => {
 
             const targetChannelId = target === 'streammods' ? KANAL_STREAM_MODS : KANAL_DISCORD_MODS;
             
-            // 🔥 FIX: Zuerst im Cache suchen, wenn nicht da, per API abrufen (fetch)
             let logChannel = guild.channels.cache.get(targetChannelId);
             if (!logChannel) {
                 try {
@@ -208,7 +205,6 @@ module.exports = async (client, interaction) => {
             if (logChannel) {
                 const pingContent = (modId !== "all") ? `⚠️ **Direktes Feedback für:** <@${modId}>` : null;
                 
-                // Hier senden wir das Embed ab
                 await logChannel.send({ content: pingContent, embeds: [logEmbed] });
                 console.log(`✅ Embed erfolgreich in Kanal ${logChannel.name} gesendet.`);
             } else {

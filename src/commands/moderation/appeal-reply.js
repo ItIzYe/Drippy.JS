@@ -4,7 +4,8 @@ const {
     Interaction,
     ApplicationCommandOptionType,
     PermissionFlagsBits,
-    EmbedBuilder
+    EmbedBuilder,
+    MessageFlags
 } = require('discord.js');
 
 module.exports = {
@@ -40,7 +41,7 @@ module.exports = {
         const appeal = await Appeal.findOne({ caseId: caseId, status: 'open' });
 
         if (!appeal) {
-            return interaction.reply({ content: "Kein offener Case mit dieser ID gefunden.", ephemeral: true });
+            return interaction.reply({ content: "Kein offener Case mit dieser ID gefunden.", flags: [MessageFlags.Ephemeral] });
         }
 
         try {
@@ -59,9 +60,9 @@ module.exports = {
                 await appeal.save();
             }
 
-            await interaction.reply({ content: `Antwort an **${targetUser.tag}** gesendet!`, ephemeral: true });
+            await interaction.reply({ content: `Antwort an **${targetUser.tag}** gesendet!`, flags: [MessageFlags.Ephemeral] });
         } catch (err) {
-            await interaction.reply({ content: "DM konnte nicht gesendet werden.", ephemeral: true });
+            await interaction.reply({ content: "DM konnte nicht gesendet werden.", flags: [MessageFlags.Ephemeral] });
         }
     },
 };

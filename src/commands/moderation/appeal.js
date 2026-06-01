@@ -4,7 +4,8 @@ const {
     Client,
     Interaction,
     ApplicationCommandOptionType,
-    EmbedBuilder
+    EmbedBuilder,
+    MessageFlags
 } = require('discord.js');
 const language = require("../../handlers/languages");
 
@@ -59,7 +60,7 @@ module.exports = {
         if (interaction.guildId) {
             return interaction.reply({ 
                 content: "Bitte nutze diesen Command direkt in meinen DMs!", 
-                ephemeral: true 
+                flags: [MessageFlags.Ephemeral] 
             });
         }
 

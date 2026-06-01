@@ -27,14 +27,14 @@ module.exports = {
         if (guild.id !== TARGET_GUILD_ID) {
             return await interaction.reply({ 
                 content: "Dieser Command kann auf diesem Server nicht genutzt werden.", 
-                ephemeral: true 
+                flags: [MessageFlags.Ephemeral]
             });
         }
 
         if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
             return await interaction.reply({ 
                 content: "Dazu hast du keine Rechte.", 
-                ephemeral: true 
+                flags: [MessageFlags.Ephemeral]
             });
         }
 
