@@ -27,6 +27,7 @@ const TEAM_LISTE = {
         { label: "reverse [Verified Bot]", value: "802184421674844210" },
         { label: "pascaldaa", value: "425729507736158228" },
         { label: "Canadian Agent | Jury", value: "675723273937354775" },
+        { label: "tt_justin", value: "735977580213043241" },
     ],
     discordmods: [
         { label: "itizye", value: "716394389211185213" },
