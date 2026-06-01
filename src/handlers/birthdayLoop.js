@@ -2,7 +2,7 @@ const cron = require('node-cron');
 const { EmbedBuilder } = require('discord.js');
 const Birthday = require('../models/Birthday');
 
-const BIRTHDAY_CHANNEL_ID = "DEINE_KANAL_ID"; 
+const BIRTHDAY_CHANNEL_ID = "718448336105111584"; 
 
 module.exports = (client) => {
     cron.schedule('0 9 * * *', async () => {
