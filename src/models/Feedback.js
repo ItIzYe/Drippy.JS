@@ -15,4 +15,8 @@ const feedbackSchema = new mongoose.Schema({
     ]
 });
 
-module.exports = mongoose.model('Feedback', feedbackSchema);
+// ALT:
+// module.exports = mongoose.model('Feedback', feedbackSchema);
+
+// NEU: Wir hängen ein '_v2' an. Das zwingt MongoDB, eine komplett neue, saubere Collection zu erstellen!
+module.exports = mongoose.model('Feedback', feedbackSchema, 'feedbacks_v2');
