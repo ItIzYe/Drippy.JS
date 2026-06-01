@@ -24,7 +24,7 @@ const TEAM_LISTE = {
         { label: "xxharald", value: "781434723037741056" },
         { label: "r.m.stitanic", value: "690582774641328168" },
         { label: "reverse [Verified Bot]", value: "802184421674844210" },
-        { label: "pascaldaa", value: "425729507736158228" }
+        { label: "pascaldaa", value: "425729507736158228" },
         { label: "Canadian Agent | Jury", value: "675723273937354775" },
     ],
     discordmods: [
@@ -41,37 +41,27 @@ const TEAM_LISTE = {
 
 module.exports = async (client, interaction) => {
     
-    // ==========================================
-    // 1. SCHRITT: KATEGORIE GEWÄHLT (Aus dem permanenten Embed)
-    // ==========================================
+    /**
+     * 1. SCHRITT: KATEGORIE GEWÄHLT (Aus dem permanenten Embed)
+     */
     if (interaction.isStringSelectMenu() && interaction.customId === 'feedback_target_select') {
-        const target = interaction.values[0]; // 'streammods' oder 'discordmods'
-
-        // Hole die passende Liste basierend auf der Auswahl
+        const target = interaction.values[0]; 
         const ausgewaehlteMods = TEAM_LISTE[target];
 
         if (!ausgewaehlteMods || ausgewaehlteMods.length === 0) {
-            return await interaction.reply({
-                content: "Für diese Kategorie sind aktuell keine Moderatoren eingetragen.",
-                ephemeral: true
-            });
+            return await interaction.reply({ content: "Keine Moderatoren für diese Kategorie gefunden.", ephemeral: true });
         }
 
-        // Erstelle das manuelle Text-Dropdown
         const stringSelect = new StringSelectMenuBuilder()
             .setCustomId(`feedback_user_select_${target}`)
             .setPlaceholder('Wähle den Moderator aus...');
 
-        // Füge die Mods aus deiner Liste als Optionen hinzu
         ausgewaehlteMods.forEach(mod => {
             stringSelect.addOptions(
-                new StringSelectMenuOptionBuilder()
-                    .setLabel(mod.label)
-                    .setValue(mod.value) // Hier wird die Discord-ID im Hintergrund übergeben
+                new StringSelectMenuOptionBuilder().setLabel(mod.label).setValue(mod.value)
             );
         });
 
-        // Button für das gesamte Team
         const allButton = new ButtonBuilder()
             .setCustomId(`feedback_user_all_${target}`)
             .setLabel('Gilt dem gesamten Team')
@@ -81,160 +71,142 @@ module.exports = async (client, interaction) => {
         const row2 = new ActionRowBuilder().addComponents(allButton);
 
         return await interaction.reply({
-            content: `Du hast **${target === 'streammods' ? 'Stream-Mods' : 'Discord-Mods'}** gewählt. Für wen genau ist das Feedback?`,
+            content: `Du hast **${target === 'streammods' ? 'Stream-Mods' : 'Discord-Mods'}** gewählt. Wer soll das Feedback erhalten?`,
             components: [row1, row2],
             ephemeral: true
         });
     }
 
-// ==========================================
-// 2. SCHRITT: MODERATOR WURDE GEWÄHLT (Aus der Liste oder "Alle")
-// ==========================================
+    /**
+     * 2. SCHRITT: MODERATOR ODER "ALLE" GEWÄHLT
+     */
+    const isModSelect = interaction.isStringSelectMenu() && interaction.customId.startsWith('feedback_user_select_');
+    const isAllButton = interaction.isButton() && interaction.customId.startsWith('feedback_user_all_');
 
-const isModSelect = interaction.isStringSelectMenu() && interaction.customId.startsWith('feedback_user_select_');
-const isAllButton = interaction.isButton() && interaction.customId.startsWith('feedback_user_all_');
+    if (isModSelect || isAllButton) {
+        // Wichtig gegen "Interaktion fehlgeschlagen"
+        await interaction.deferUpdate(); 
 
-if (isModSelect || isAllButton) {
-    // Da wir editReply nutzen, müssen wir Discord sofort signalisieren, dass wir arbeiten
-    await interaction.deferUpdate(); 
+        const target = interaction.customId.split('_')[3];
+        const modId = isModSelect ? interaction.values[0] : "all";
 
-    let target, modId;
+        const row = new ActionRowBuilder();
+        for (let i = 1; i <= 5; i++) {
+            row.addComponents(
+                new ButtonBuilder()
+                    .setCustomId(`feedback_stars_${target}_${modId}_${i}`)
+                    .setLabel(`${i} ⭐`)
+                    .setStyle(ButtonStyle.Success)
+            );
+        }
 
-    if (isModSelect) {
-        target = interaction.customId.split('_')[3]; // streammods oder discordmods
-        modId = interaction.values[0]; // Die Discord-ID des ausgewählten Mods
-    } else {
-        target = interaction.customId.split('_')[3];
-        modId = "all";
-    }
-
-    // 1-5 Sterne-Buttons generieren
-    const row = new ActionRowBuilder();
-    for (let i = 1; i <= 5; i++) {
-        row.addComponents(
-            new ButtonBuilder()
-                .setCustomId(`feedback_stars_${target}_${modId}_${i}`)
-                .setLabel(`${i} ⭐`)
-                .setStyle(ButtonStyle.Success)
-        );
-    }
-
-    const targetName = modId === "all" ? "das gesamte Team" : `<@${modId}>`;
-    
-    // GEÄNDERT: .editReply statt .update verwenden!
-    return await interaction.editReply({
-        content: `Feedback für: ${targetName}\nWie viele Sterne möchtest du geben?`,
-        components: [row]
-    }).catch(err => console.error("Fehler beim Editieren der Mod-Auswahl:", err));
-}
-
-    // ==========================================
-    // 3. SCHRITT: STERNE GEKLICKT -> MODAL ÖFFNEN
-    // ==========================================
-    if (interaction.isButton() && interaction.customId.startsWith('feedback_stars_')) {
-    const [,, target, modId, stars] = interaction.customId.split('_');
-
-    const modal = new ModalBuilder()
-        .setCustomId(`feedback_modal_${target}_${modId}_${stars}`)
-        .setTitle('Feedback schreiben');
-
-    const textInput = new TextInputBuilder()
-        .setCustomId('feedback_text')
-        .setLabel('Dein Feedback:')
-        .setStyle(TextInputStyle.Paragraph)
-        .setPlaceholder('Schreibe hier deine Nachricht (optional)...')
-        .setRequired(false)
-        .setMaxLength(1000);
-
-    const anonymInput = new TextInputBuilder()
-        .setCustomId('feedback_anonym')
-        .setLabel('Anonym einsenden? (Schreibe "ja")')
-        .setStyle(TextInputStyle.Short)
-        .setPlaceholder('ja / nein')
-        .setRequired(false)
-        .setMaxLength(4);
-
-    const row1 = new ActionRowBuilder().addComponents(textInput);
-    const row2 = new ActionRowBuilder().addComponents(anonymInput);
-    modal.addComponents(row1, row2);
-
-    await interaction.showModal(modal);
-
-    return await interaction.editReply({
-        content: `Das Feedback-Fenster wurde geöffnet!`,
-        components: []
-    }).catch(() => null);
-}
-
-    // ==========================================
-    // 4. SCHRITT: MODAL ABSENDEN & LOGGEN
-    // ==========================================
-    if (interaction.isModalSubmit() && interaction.customId.startsWith('feedback_modal_')) {
-        const [,, target, modId, stars] = interaction.customId.split('_');
+        const targetName = modId === "all" ? "das gesamte Team" : `<@${modId}>`;
         
-        const feedbackText = interaction.fields.getTextInputValue('feedback_text').trim() || "*Kein Text-Feedback abgegeben.*";
-        const anonymText = interaction.fields.getTextInputValue('feedback_anonym').toLowerCase().trim();
-        
-        const isAnonym = anonymText === 'ja' || anonymText === 'j';
-        const { guild, user } = interaction;
-
-        await interaction.deferReply({ ephemeral: true });
-
-        try {
-    const starEmojis = "⭐".repeat(parseInt(stars));
-    const userField = isAnonym ? "🕵️ Anonymes Mitglied" : `${user.tag} (${user.id})`;
-    const targetField = modId === "all" ? "Gesamtes Team" : `<@${modId}>`;
-
-    // NEU: Wir pushen die Bewertung direkt in das Array des Moderators
-    await Feedback.findOneAndUpdate(
-        { guildId: guild.id, targetType: target, targetUser: modId },
-        { 
-            $push: { 
-                ratings: {
-                    userId: user.id,
-                    stars: parseInt(stars),
-                    text: feedbackText !== "*Kein Text-Feedback abgegeben.*" ? feedbackText : "",
-                    isAnonym: isAnonym,
-                    timestamp: new Date()
-                }
-            }
-        },
-        { upsert: true, new: true }
-    );
-
-    // Embed für das Team bauen
-    const logEmbed = new EmbedBuilder()
-        .setColor(target === 'streammods' ? "#3498db" : "#9b59b6")
-        .setTitle(`Neues Feedback: ${target === 'streammods' ? '📺 Stream-Team' : '🛡️ Discord-Team'}`)
-        .addFields(
-            { name: "Eingereicht von", value: userField, inline: true },
-            { name: "Bewertung", value: `${starEmojis} (${stars}/5)`, inline: true },
-            { name: "Gilt für", value: targetField, inline: false },
-            { name: "Nachricht", value: feedbackText }
-        )
-        .setTimestamp()
-        .setFooter({ text: `Drippy Feedback System`, iconURL: client.user.displayAvatarURL() });
-
-    const targetChannelId = target === 'streammods' ? KANAL_STREAM_MODS : KANAL_DISCORD_MODS;
-    const logChannel = guild.channels.cache.get(targetChannelId);
-
-    if (logChannel) {
-        const pingMessage = modId !== "all" ? `⚠️ **Direktes Feedback für:** <@${modId}>` : null;
-        await logChannel.send({ 
-            content: pingMessage, 
-            embeds: [logEmbed] 
+        return await interaction.editReply({
+            content: `Feedback für: ${targetName}\nWie viele Sterne möchtest du geben?`,
+            components: [row]
         });
     }
 
-    return await interaction.editReply({
-        content: `Vielen Dank! Dein Feedback wurde im Profil des Moderators gespeichert.`
-    });
+    /**
+     * 3. SCHRITT: STERNE GEKLICKT -> MODAL ÖFFNEN
+     */
+    if (interaction.isButton() && interaction.customId.startsWith('feedback_stars_')) {
+        const [,, target, modId, stars] = interaction.customId.split('_');
 
-} catch (error) {
-    console.error("Fehler beim Speichern des Feedbacks:", error);
-    return await interaction.editReply({
-        content: "Es gab einen Fehler beim Speichern. Bitte versuche es noch einmal."
-    });
-}
+        const modal = new ModalBuilder()
+            .setCustomId(`feedback_modal_${target}_${modId}_${stars}`)
+            .setTitle('Feedback schreiben');
+
+        const textInput = new TextInputBuilder()
+            .setCustomId('feedback_text')
+            .setLabel('Dein Feedback (optional):')
+            .setStyle(TextInputStyle.Paragraph)
+            .setPlaceholder('Schreibe hier deine Nachricht...')
+            .setRequired(false)
+            .setMaxLength(1000);
+
+        const anonymInput = new TextInputBuilder()
+            .setCustomId('feedback_anonym')
+            .setLabel('Anonym absenden? (Schreibe "ja")')
+            .setStyle(TextInputStyle.Short)
+            .setPlaceholder('ja / nein')
+            .setRequired(false)
+            .setMaxLength(4);
+
+        modal.addComponents(
+            new ActionRowBuilder().addComponents(textInput),
+            new ActionRowBuilder().addComponents(anonymInput)
+        );
+
+        await interaction.showModal(modal);
+        
+        // Buttons nach Modal-Öffnung aufräumen
+        return await interaction.editReply({
+            content: `Das Feedback-Fenster ist nun offen.`,
+            components: []
+        }).catch(() => null);
+    }
+
+    /**
+     * 4. SCHRITT: MODAL ABSENDEN (Speichern & Loggen)
+     */
+    if (interaction.isModalSubmit() && interaction.customId.startsWith('feedback_modal_')) {
+        const [,, target, modId, stars] = interaction.customId.split('_');
+        const feedbackText = interaction.fields.getTextInputValue('feedback_text').trim() || "*Kein Text-Feedback abgegeben.*";
+        const anonymText = interaction.fields.getTextInputValue('feedback_anonym').toLowerCase().trim();
+        const isAnonym = anonymText === 'ja' || anonymText === 'j';
+        
+        const { guild, user } = interaction;
+        await interaction.deferReply({ ephemeral: true });
+
+        try {
+            // MongoDB: findOneAndUpdate mit $push in das Ratings-Array
+            await Feedback.findOneAndUpdate(
+                { guildId: guild.id, targetType: target, targetUser: modId },
+                { 
+                    $push: { 
+                        ratings: {
+                            userId: user.id,
+                            stars: parseInt(stars),
+                            text: feedbackText !== "*Kein Text-Feedback abgegeben.*" ? feedbackText : "",
+                            isAnonym: isAnonym,
+                            timestamp: new Date()
+                        }
+                    }
+                },
+                { upsert: true, new: true }
+            );
+
+            const starEmojis = "⭐".repeat(parseInt(stars));
+            const userField = isAnonym ? "🕵️ Anonymes Mitglied" : `${user.tag} (${user.id})`;
+            const targetField = modId === "all" ? "Gesamtes Team" : `<@${modId}>`;
+
+            const logEmbed = new EmbedBuilder()
+                .setColor(target === 'streammods' ? "#3498db" : "#9b59b6")
+                .setTitle(`Neues Feedback: ${target === 'streammods' ? '📺 Stream-Team' : '🛡️ Discord-Team'}`)
+                .addFields(
+                    { name: "Eingereicht von", value: userField, inline: true },
+                    { name: "Bewertung", value: `${starEmojis} (${stars}/5)`, inline: true },
+                    { name: "Gilt für", value: targetField, inline: false },
+                    { name: "Nachricht", value: feedbackText }
+                )
+                .setTimestamp();
+
+            const targetChannelId = target === 'streammods' ? KANAL_STREAM_MODS : KANAL_DISCORD_MODS;
+            const logChannel = guild.channels.cache.get(targetChannelId);
+
+            if (logChannel) {
+                // Nur Pingen, wenn es ein echter User ist
+                const pingContent = (modId !== "all") ? `⚠️ **Direktes Feedback für:** <@${modId}>` : null;
+                await logChannel.send({ content: pingContent, embeds: [logEmbed] });
+            }
+
+            return await interaction.editReply({ content: `✅ Vielen Dank! Dein Feedback (${stars} ⭐) wurde erfolgreich gespeichert.` });
+
+        } catch (error) {
+            console.error("Feedback Fehler:", error);
+            return await interaction.editReply({ content: "❌ Fehler beim Speichern in der Datenbank." });
+        }
     }
 };
