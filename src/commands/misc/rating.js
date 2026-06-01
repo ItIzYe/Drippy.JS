@@ -40,7 +40,14 @@ module.exports = {
         const inputMod = interaction.options.getUser('moderator');
         const guildId = interaction.guild.id;
 
-        const targetUserId = inputMod.replace(/[<@!>]/g, '');
+        if (!targetUser) {
+            return await interaction.reply({
+                content: "❌ Bitte gib einen gültigen Moderator über das Auswahlmenü an.",
+                ephemeral: true
+            });
+        }
+
+        const targetUserId = targetUser.id;
 
         let targetUser;
         try {
