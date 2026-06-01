@@ -22,14 +22,14 @@ module.exports = {
     callback: async (client, interaction) => {
         const { guild, channel } = interaction;
 
-        //const TARGET_GUILD_ID = "DEINE_LIVE_SERVER_ID"; 
+        const TARGET_GUILD_ID = "714829455826354228"; 
 
-        /**if (guild.id !== TARGET_GUILD_ID) {
+        if (guild.id !== TARGET_GUILD_ID) {
             return await interaction.reply({ 
                 content: "Dieser Command kann auf diesem Server nicht genutzt werden.", 
                 ephemeral: true 
             });
-        }**/
+        }
 
         if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
             return await interaction.reply({ 
