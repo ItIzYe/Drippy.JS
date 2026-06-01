@@ -11,6 +11,7 @@ const language = require("../../handlers/languages");
 module.exports = {
     name: 'appeal',
     description: 'Fechte eine Bestrafung an (Nur in DMs nutzen!)',
+    testOnly: false,
     options: [
         {
             name: 'reason',
