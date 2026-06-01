@@ -31,7 +31,7 @@ module.exports = {
         {
             name: 'moderator',
             description: 'Wähle den Moderator aus (Erwähnung oder ID), dessen Statistik du sehen willst.',
-            type: ApplicationCommandOptionType.String,
+            type: ApplicationCommandOptionType.User,
             required: true,
         }
     ],
