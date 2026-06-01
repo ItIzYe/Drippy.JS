@@ -12,8 +12,8 @@ const {
 } = require('discord.js');
 const Feedback = require('../../models/Feedback');
 
-const KANAL_STREAM_MODS = "888499697608699954"; 
-const KANAL_DISCORD_MODS = "888499697608699954"; 
+const KANAL_STREAM_MODS = "1510991246221643826"; 
+const KANAL_DISCORD_MODS = "1510991246221643826"; 
 
 // ==========================================
 // DIE TEAM-LISTE (Hier trägst du die Mods ein)
