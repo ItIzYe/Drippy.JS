@@ -1,7 +1,12 @@
 const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
-const Feedback = require('../../models/Feedback'); // Pfad zu feedbacks_v2 anpassen
+const Feedback = require('../../models/Feedback'); // Pfad zu deinem Model (feedbacks_v2) anpassen
 
-// --- TEAM-LISTE ---
+/**
+ * ==========================================
+ * TEAM-KONFIGURATION
+ * (Muss mit deinem Feedback-Handler übereinstimmen!)
+ * ==========================================
+ */
 const TEAM_LISTE = {
     streammods: [
         { label: "leongamer015", value: "774766550825697280" }, // { Name, Discord-ID }
@@ -23,58 +28,46 @@ const TEAM_LISTE = {
 };
 
 module.exports = {
-    isGuildCommand: true,
+    isGuildCommand: true, // Erscheint nur auf deinem Hauptserver
     name: 'rating',
     description: 'Zeigt die detaillierten Feedback-Statistiken eines Moderators an.',
     testOnly: false,
     options: [
         {
             name: 'moderator',
-            description: 'Wähle den Moderator aus (Erwähnung oder ID), dessen Statistik du sehen willst.',
-            type: ApplicationCommandOptionType.User,
+            description: 'Wähle den Moderator aus, dessen Statistik du sehen willst.',
+            type: ApplicationCommandOptionType.User, // Sicherster Typ für Pings & IDs
             required: true,
         }
     ],
 
     callback: async (client, interaction) => {
+        // Direkter Zugriff auf das User-Objekt (verhindert .replace() Fehler)
         const targetUser = interaction.options.getUser('moderator');
         const guildId = interaction.guild.id;
 
-        if (!targetUser) {
-            return await interaction.reply({
-                content: "❌ Bitte gib einen gültigen Moderator über das Auswahlmenü an.",
-                ephemeral: true
-            });
-        }
-
-        const targetUserId = targetUser.id;
-
-        let targetUser;
-        try {
-            targetUser = await client.users.fetch(targetUserId);
-        } catch (err) {
-            return await interaction.reply({
-                content: "❌ Die angegebene Moderator-ID oder Erwähnung ist ungültig.",
-                ephemeral: true
-            });
-        }
-
+        // 1. SCHRITT: Team-Zugehörigkeit prüfen
         const istInStreamTeam = TEAM_LISTE.streammods.some(mod => mod.value === targetUser.id);
         const istInDiscordTeam = TEAM_LISTE.discordmods.some(mod => mod.value === targetUser.id);
 
         if (!istInStreamTeam && !istInDiscordTeam) {
             return await interaction.reply({
-                content: `❌ **${targetUser.tag}** ist in der Feedback-Teamliste nicht eingetragen. Statistiken können nur für registrierte Moderatoren abgerufen werden.`,
+                content: `❌ **${targetUser.tag}** ist nicht in der Teamliste registriert.`,
                 ephemeral: true
             });
         }
 
+        // Defer, da MongoDB-Abfragen bei großen Arrays Zeit brauchen
         await interaction.deferReply();
 
         try {
-            const suchKriterien = [];
-
-            suchKriterien.push({ guildId, targetUser: targetUser.id });
+            /**
+             * 2. SCHRITT: MongoDB Abfrage-Logik
+             * Wir suchen:
+             * - Feedback direkt für diesen User
+             * - Feedback für "all" in den Kategorien, in denen er Mod ist
+             */
+            const suchKriterien = [{ guildId, targetUser: targetUser.id }];
 
             if (istInStreamTeam) {
                 suchKriterien.push({ guildId, targetType: 'streammods', targetUser: 'all' });
@@ -90,66 +83,67 @@ module.exports = {
             let sterneVerteilung = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
             let textFeedbacks = [];
 
+            // Daten aggregieren
             datensaetze.forEach(doc => {
-                doc.ratings.forEach(rating => {
-                    gesamtSterne += rating.stars;
-                    anzahlBewertungen++;
-                    
-                    if (sterneVerteilung[rating.stars] !== undefined) {
-                        sterneVerteilung[rating.stars]++;
-                    }
+                if (doc.ratings && Array.isArray(doc.ratings)) {
+                    doc.ratings.forEach(rating => {
+                        gesamtSterne += rating.stars;
+                        anzahlBewertungen++;
+                        if (sterneVerteilung[rating.stars] !== undefined) sterneVerteilung[rating.stars]++;
 
-                    if (rating.text && rating.text !== "" && rating.text !== "*Kein Text-Feedback abgegeben.*") {
-                        const absender = rating.isAnonym ? "🕵️ Anonym" : `<@${rating.userId}>`;
-                        textFeedbacks.push(`• **${rating.stars} ⭐** von ${absender}: *"${rating.text}"*`);
-                    }
-                });
+                        // Text-Feedbacks sammeln (Anonymität beachten)
+                        if (rating.text && rating.text.trim().length > 0) {
+                            const absender = rating.isAnonym ? "🕵️ Anonym" : `<@${rating.userId}>`;
+                            textFeedbacks.push(`• **${rating.stars} ⭐** von ${absender}: *"${rating.text}"*`);
+                        }
+                    });
+                }
             });
 
             if (anzahlBewertungen === 0) {
                 return await interaction.editReply({
-                    content: `📊 **${targetUser.username}** hat bisher noch kein Feedback oder Team-Feedback erhalten.`
+                    content: `📊 **${targetUser.username}** hat bisher noch keine Bewertungen erhalten.`
                 });
             }
 
             const durchschnitt = (gesamtSterne / anzahlBewertungen).toFixed(2);
 
+            // 3. SCHRITT: Visuelle Statistik (Balkendiagramm)
             let verteilungsText = "";
             for (let i = 5; i >= 1; i--) {
                 const anzahl = sterneVerteilung[i];
-                const prozent = anzahlBewertungen > 0 ? (anzahl / anzahlBewertungen) * 10 : 0;
+                const prozent = (anzahl / anzahlBewertungen) * 10;
                 const balken = "🟩".repeat(Math.round(prozent)) + "⬛".repeat(10 - Math.round(prozent));
                 verteilungsText += `**${i} ⭐** ${balken} (${anzahl})\n`;
             }
 
-            let rollenText = [];
+            const rollenText = [];
             if (istInStreamTeam) rollenText.push("📺 Stream-Mod");
             if (istInDiscordTeam) rollenText.push("🛡️ Discord-Mod");
 
-            // Das Info-Embed bauen
             const statsEmbed = new EmbedBuilder()
                 .setColor("#deff9a")
-                .setTitle(`Feedback-Profil: ${targetUser.username}`)
-                .setDescription(`Rolle(n): **${rollenText.join(" & ")}**\nHier ist die Auswertung aller direkten Bewertungen sowie der anteiligen Team-Feedbacks.`)
+                .setTitle(`Rating: ${targetUser.username}`)
                 .setThumbnail(targetUser.displayAvatarURL({ dynamic: true }))
+                .setDescription(`Rolle: **${rollenText.join(" & ")}**\nStatistik inkl. Team-Bewertungen.`)
                 .addFields(
-                    { name: "Gesamtdurchschnitt", value: `🏆 **${durchschnitt} / 5.00 ⭐**`, inline: true },
-                    { name: "Bewertungen insgesamt", value: `📈 **${anzahlBewertungen} Mal** bewertet`, inline: true },
-                    { name: "Sterne-Verteilung", value: verteilungsText, inline: false }
+                    { name: "Durchschnitt", value: `🏆 **${durchschnitt} / 5.00**`, inline: true },
+                    { name: "Gesamt", value: `📈 **${anzahlBewertungen}** Feedbacks`, inline: true },
+                    { name: "Verteilung", value: verteilungsText, inline: false }
                 )
                 .setTimestamp()
-                .setFooter({ text: `Drippy Analytics System`, iconURL: client.user.displayAvatarURL() });
+                .setFooter({ text: `Drippy Stats`, iconURL: client.user.displayAvatarURL() });
 
             if (textFeedbacks.length > 0) {
-                const neuesteFeedbacks = textFeedbacks.reverse().slice(0, 3); 
-                statsEmbed.addFields({ name: "Letzte schriftliche Feedbacks", value: neuesteFeedbacks.join("\n"), inline: false });
+                const neueste = textFeedbacks.reverse().slice(0, 3);
+                statsEmbed.addFields({ name: "Letzte Kommentare", value: neueste.join("\n") });
             }
 
             return await interaction.editReply({ embeds: [statsEmbed] });
 
         } catch (error) {
-            console.error("Fehler beim Berechnen des Ratings:", error);
-            return await interaction.editReply({ content: "❌ Es gab einen Datenbankfehler beim Abrufen der Statistiken." });
+            console.error("Rating Error:", error);
+            return await interaction.editReply({ content: "❌ Fehler beim Abrufen der Daten." });
         }
     }
 };
