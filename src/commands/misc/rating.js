@@ -37,7 +37,7 @@ module.exports = {
     ],
 
     callback: async (client, interaction) => {
-        const inputMod = interaction.options.getString('moderator');
+        const inputMod = interaction.options.getUser('moderator');
         const guildId = interaction.guild.id;
 
         const targetUserId = inputMod.replace(/[<@!>]/g, '');
