@@ -23,7 +23,7 @@ const TEAM_LISTE = {
 };
 
 module.exports = {
-    isGuildCommand: false,
+    isGuildCommand: true,
     name: 'rating',
     description: 'Zeigt die detaillierten Feedback-Statistiken eines Moderators an.',
     testOnly: false,
