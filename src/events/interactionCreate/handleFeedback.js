@@ -13,7 +13,7 @@ const {
 } = require('discord.js');
 const Feedback = require('../../models/Feedback');
 
-const KANAL_STREAM_MODS = "1510991200209997946"; 
+const KANAL_STREAM_MODS = "1511107715404140626"; 
 const KANAL_DISCORD_MODS = "1510991200209997946"; 
 
 // ==========================================
