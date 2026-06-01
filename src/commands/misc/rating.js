@@ -16,6 +16,9 @@ const TEAM_LISTE = {
         { label: "pascaldaa", value: "425729507736158228" },
         { label: "Canadian Agent | Jury", value: "675723273937354775" },
         { label: "tt_justin", value: "735977580213043241" },
+        { label: "Snake", value: "917857500328497172" },
+        { label: "Marc_RKTSARMY", value: "795044613052301343" },
+        { label: "hase282", value: "234693886579179522" },
     ],
     discordmods: [
         { label: "itizye", value: "716394389211185213" },
