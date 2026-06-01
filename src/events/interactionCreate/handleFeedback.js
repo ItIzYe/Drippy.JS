@@ -183,7 +183,7 @@ module.exports = async (client, interaction) => {
             const targetField = modId === "all" ? "Gesamtes Team" : `<@${modId}>`;
 
             const logEmbed = new EmbedBuilder()
-                .setColor(target === 'streammods' ? "#3498db" : "#9b59b6")
+                .setColor(target === 'streammods' ? 0x3498db : 0x9b59b6) // Sicherere Hex-Zahlen für Discord v14
                 .setTitle(`Neues Feedback: ${target === 'streammods' ? '📺 Stream-Team' : '🛡️ Discord-Team'}`)
                 .addFields(
                     { name: "Eingereicht von", value: userField, inline: true },
@@ -194,19 +194,33 @@ module.exports = async (client, interaction) => {
                 .setTimestamp();
 
             const targetChannelId = target === 'streammods' ? KANAL_STREAM_MODS : KANAL_DISCORD_MODS;
-            const logChannel = guild.channels.cache.get(targetChannelId);
+            
+            // 🔥 FIX: Zuerst im Cache suchen, wenn nicht da, per API abrufen (fetch)
+            let logChannel = guild.channels.cache.get(targetChannelId);
+            if (!logChannel) {
+                try {
+                    logChannel = await guild.channels.fetch(targetChannelId);
+                } catch (fError) {
+                    console.error(`[Feedback-Fehler] Kanal mit ID ${targetChannelId} konnte nicht von Discord abgerufen werden:`, fError);
+                }
+            }
 
             if (logChannel) {
-                // Nur Pingen, wenn es ein echter User ist
                 const pingContent = (modId !== "all") ? `⚠️ **Direktes Feedback für:** <@${modId}>` : null;
+                
+                // Hier senden wir das Embed ab
                 await logChannel.send({ content: pingContent, embeds: [logEmbed] });
+                console.log(`✅ Embed erfolgreich in Kanal ${logChannel.name} gesendet.`);
+            } else {
+                console.error(`❌ FEHLER: Kanal ID ${targetChannelId} existiert nicht auf diesem Server oder der Bot hat keine Rechte!`);
+                return await interaction.editReply({ content: "❌ Das Feedback wurde gespeichert, aber der Log-Kanal wurde nicht gefunden." });
             }
 
             return await interaction.editReply({ content: `✅ Vielen Dank! Dein Feedback (${stars} ⭐) wurde erfolgreich gespeichert.` });
 
         } catch (error) {
             console.error("Feedback Fehler:", error);
-            return await interaction.editReply({ content: "❌ Fehler beim Speichern in der Datenbank." });
+            return await interaction.editReply({ content: "❌ Fehler beim Verarbeiten des Feedbacks." });
         }
     }
 };
