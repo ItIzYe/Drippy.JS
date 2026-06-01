@@ -37,7 +37,7 @@ module.exports = {
     ],
 
     callback: async (client, interaction) => {
-        const inputMod = interaction.options.getUser('moderator');
+        const targetUser = interaction.options.getUser('moderator');
         const guildId = interaction.guild.id;
 
         if (!targetUser) {
