@@ -77,7 +77,6 @@ module.exports = async (client, interaction) => {
             return interaction.editReply('❌ Es wurde noch kein Log-Kanal mit `/setup-logs` festgelegt!');
         }
 
-        // KORREKTUR: Wir holen den Kanal und PRÜFEN ihn sofort
         const logChannel = interaction.guild.channels.cache.get(config.ticketLogChannelId) 
                    || await interaction.guild.channels.fetch(config.ticketLogChannelId).catch(() => null);
         
@@ -86,7 +85,6 @@ module.exports = async (client, interaction) => {
 }
 
         try {
-            // Transkript generieren
             const file = await discordTranscripts.createTranscript(interaction.channel, {
                 limit: -1,
                 fileName: `transcript-${interaction.channel.name}.html`,
@@ -96,13 +94,13 @@ module.exports = async (client, interaction) => {
             const embed = new EmbedBuilder()
                 .setTitle('📜 Ticket Transkript')
                 .addFields(
-                    { name: 'Ticket', value: interaction.channel.name, inline: true },
-                    { name: 'User', value: user.tag, inline: true }
+                    { name: 'Ticket', value: String(interaction.channel.name), inline: true },
+                    { name: 'Generiert von', value: `${user.username} (${user.id})`, inline: true }
                 )
                 .setColor(0x3498db)
                 .setTimestamp();
 
-            // Hier knallte es vorher (Zeile 98) – jetzt ist logChannel sicher definiert
+            // Senden an den Log-Kanal
             await logChannel.send({ embeds: [embed], files: [file] });
             await interaction.editReply('✅ Transkript wurde an den Log-Kanal gesendet!');
             
