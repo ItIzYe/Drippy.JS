@@ -84,9 +84,11 @@ module.exports = {
         await Appeal.create({
             caseId: caseId,
             userId: user.id,
-            userName: user.tag,
+            //userName: user.tag,
             guildId: guildId
         });
+
+        const userTag = user.tag;
 
         const adminEmbed = new EmbedBuilder()
             .setTitle(`🆕 Neuer Einspruch | Case #${caseId}`)
