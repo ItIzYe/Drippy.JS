@@ -17,7 +17,7 @@ const KANAL_STREAM_MODS = "1511107715404140626";
 const KANAL_DISCORD_MODS = "1510991200209997946"; 
 
 // ==========================================
-// DIE TEAM-LISTE (Hier trägst du die Mods ein)
+//TEAM-LISTE
 // ==========================================
 const TEAM_LISTE = {
     streammods: [
@@ -46,10 +46,6 @@ const TEAM_LISTE = {
 
 
 module.exports = async (client, interaction) => {
-    
-    /**
-     * 1. SCHRITT: KATEGORIE GEWÄHLT (Aus dem permanenten Embed)
-     */
     if (interaction.isStringSelectMenu() && interaction.customId === 'feedback_target_select') {
         const target = interaction.values[0]; 
         const ausgewaehlteMods = TEAM_LISTE[target];
@@ -83,9 +79,6 @@ module.exports = async (client, interaction) => {
         });
     }
 
-    /**
-     * 2. SCHRITT: MODERATOR ODER "ALLE" GEWÄHLT
-     */
     const isModSelect = interaction.isStringSelectMenu() && interaction.customId.startsWith('feedback_user_select_');
     const isAllButton = interaction.isButton() && interaction.customId.startsWith('feedback_user_all_');
 
@@ -113,9 +106,6 @@ module.exports = async (client, interaction) => {
         });
     }
 
-    /**
-     * 3. SCHRITT: STERNE GEKLICKT -> MODAL ÖFFNEN
-     */
     if (interaction.isButton() && interaction.customId.startsWith('feedback_stars_')) {
         const [,, target, modId, stars] = interaction.customId.split('_');
 
@@ -152,9 +142,6 @@ module.exports = async (client, interaction) => {
         }).catch(() => null);
     }
 
-    /**
-     * 4. SCHRITT: MODAL ABSENDEN (Speichern & Loggen)
-     */
     if (interaction.isModalSubmit() && interaction.customId.startsWith('feedback_modal_')) {
         const [,, target, modId, stars] = interaction.customId.split('_');
         const feedbackText = interaction.fields.getTextInputValue('feedback_text').trim() || "*Kein Text-Feedback abgegeben.*";
