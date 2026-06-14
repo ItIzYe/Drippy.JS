@@ -31,6 +31,7 @@ const TEAM_LISTE = {
         { label: "Snake", value: "917857500328497172" },
         { label: "Marc_RKTSARMY", value: "795044613052301343" },
         { label: "hase282", value: "234693886579179522" },
+        { label: "GAMERZUG", value: "734615395536863245" },
     ],
     discordmods: [
         { label: "itizye", value: "716394389211185213" },
