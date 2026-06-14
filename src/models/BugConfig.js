@@ -5,11 +5,11 @@ const BugConfigSchema = new Schema({
         type: String,
         default: "pending"
     },
-    userTag: {
+    /**userTag: {
         type: String,
         //"pending", "approved","denied"
         default: "pending"
-    },
+    },**/
     userID: {
         type: String,
         //"pending", "approved","denied"

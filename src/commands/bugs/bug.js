@@ -99,7 +99,7 @@ module.exports = {
         console.log(messageId1)
         const newBugContent = new BugConfig({
             guildID: guildId,
-            userTag: userTag,
+            //userTag: userTag,
             userID: userId,
             region: region,
             memberCount: memberCount,
