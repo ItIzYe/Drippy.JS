@@ -15,6 +15,7 @@ module.exports = {
     description: 'Öffnet das AutoMod Dashboard.',
     permissionsRequired: [PermissionFlagsBits.ManageGuild],
     botPermissions: [PermissionFlagsBits.ManageMessages],
+    deleted: true,
 
     callback: async (client, interaction) => {
         const { guild } = interaction;
