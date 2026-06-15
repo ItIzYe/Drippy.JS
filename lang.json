@@ -70,8 +70,8 @@
       "german": "Hilfe"
     },
     "HELP_DESCRIPTION": {
-      "english": "Here you can see all our commands and the categories into which the commands are divided. If you still have question, don't bother joining our support server. :) https://discord.gg/M8mqCr4vzf",
-      "german": "Hier kannst du alle Commands und ihre Kategorien einsehen. Solltest du danach immer noch fragen haben, komm gerne auf unseren Support Server. :) https://discord.gg/M8mqCr4vzf"
+      "english": "Here you can see all our commands and the categories into which the commands are divided. If you still have question, don't bother joining our support server. :) https://discord.gg/mkabpRqVEX",
+      "german": "Hier kannst du alle Commands und ihre Kategorien einsehen. Solltest du danach immer noch fragen haben, komm gerne auf unseren Support Server. :) https://discord.gg/mkabpRqVEX"
     },
     "H_CLEAR_DESC": {
       "english": "Deletes a specified number of messages in a channel",
@@ -580,6 +580,22 @@
     "AUTOMOD_DASHBOARD_DESC": {
       "german": "Hier können Wörter hinzugefügt oder entfernt und Kanäle ausgeschlossen werden.",
       "english": "Add or remove words and exclude channels here."
+    },
+    "H_F_1": {
+      "german": "**Update:** Um die Befehlsliste übersichtlicher zu machen, findest du ab sofort alle **30+ Befehle** (inklusive Moderation, Level-System, Setups und Minispiele) auf unserer interaktiven Hilfeseite. Dort kannst du die Befehle auch blitzschnell durchsuchen und filtern!",
+      "english": "**Update:** To make the command list easier to navigate, you can now find all **30+ commands** (including moderation, leveling systems, setup options, and mini-games) on our interactive help page. You can also search and filter the commands there in a flash!"
+    },
+    "H_F_2": {
+      "german": "Klicke einfach auf den Button unten, um die vollständige Dokumentation im modernen Dark Mode zu öffnen.",
+      "english": "Simply click the button below to open the full documentation in modern dark mode."
+    },
+    "H_F_2_T": {
+      "german": "Interaktive Befehlsliste",
+      "english": "Interactive command list"
+    },
+    "H_F_2_B": {
+      "german": "Befehlsliste öffnen",
+      "english": "Open command list"
     }
     
 
