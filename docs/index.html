@@ -1,66 +1,355 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="de">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="with=device-width, initial-scale=1.0">
-    <meta name="mobile-web-app-capable" content="yes">
-     <link rel="icon" sizes="192x192" href="/icon.png">
-	<title>DRIPPY</title>
-	<link rel="stylesheet" href="style.css">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;600;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drippy.JS — Befehlsliste</title>
+    <style>
+        :root {
+            --bg-color: #0f1115;
+            --card-bg: #181c24;
+            --accent-color: #8BBEEF;
+            --accent-hover: #29b363;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #262d3b;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        header h1 span {
+            color: var(--accent-color);
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-box:focus {
+            border-color: var(--accent-color);
+        }
+
+        .category-section {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .command-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.2rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .command-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+        }
+
+        .command-name {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            background: #1E4273;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+        }
+
+        .command-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
 <body>
-	<section class="header" id="home">
-		<nav>
-			<a href="index.html"><img src="images/BWD.png"></a>
-			<div class="nav-links" id="navLinks">
-				<ul>
-					<li><a href="index.html">HOME</a></li>
-					<li><a href="#about">ABOUT</a></li>
-					<li><a href="invite.html">INVITE</a></li>
-          <li><a href="donate.html">DONATE</a></li>
-          <li><a href="premium.html">PREMIUM</a></li>
-					<li><a href="#contact">CONTACT</a></li>
-					<li><a href="dashboard.html">DASHBOARD</a></li>
-				</ul>
-			</div>
-		</nav>
-<div class="text-box">
-	<h1>DRIPPY</h1>
-	<p>Always online, to improve your Discord experience!</p>
+
+<div class="container">
+    <header>
+        <h1><span>Drippy.JS</span> Befehlsliste</h1>
+        <p>Alle verfügbaren Slash-Commands für deinen Discord-Server</p>
+    </header>
+
+    <input type="text" id="search" class="search-box" placeholder="Nach Befehlen suchen (z.B. ban, setup)...">
+
+    <div class="category-section">
+        <h2 class="category-title">🛡️ Moderation</h2>
+        <div class="grid">
+            <div class="command-card" data-name="ban">
+                <div class="command-name">/ban</div>
+                <div class="command-desc">Sperrt ein Mitglied dauerhaft vom Discord-Server.</div>
+            </div>
+            <div class="command-card" data-name="kick">
+                <div class="command-name">/kick</div>
+                <div class="command-desc">Wirft ein Mitglied vom aktuellen Discord-Server.</div>
+            </div>
+            <div class="command-card" data-name="timeout">
+                <div class="command-name">/timeout</div>
+                <div class="command-desc">Versetzt ein Mitglied für eine bestimmte Zeit in den Timeout (Stummschaltung).</div>
+            </div>
+            <div class="command-card" data-name="warn">
+                <div class="command-name">/warn</div>
+                <div class="command-desc">Erteilt einem Nutzer eine Verwarnung und loggt diese im System.</div>
+            </div>
+            <div class="command-card" data-name="clear">
+                <div class="command-name">/clear</div>
+                <div class="command-desc">Löscht eine festgelegte Anzahl von Nachrichten in einem Textkanal.</div>
+            </div>
+            <div class="command-card" data-name="lockdown">
+                <div class="command-name">/lockdown</div>
+                <div class="command-desc">Sperrt den aktuellen Kanal schnell ab, um Nachrichten-Spam zu verhindern.</div>
+            </div>
+            <div class="command-card" data-name="slowmode">
+                <div class="command-name">/slowmode</div>
+                <div class="command-desc">Aktiviert oder ändert die Nachrichten-Abklingzeit eines Kanals.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">⚙️ Administration & Setup</h2>
+        <div class="grid">
+            <div class="command-card" data-name="config-view">
+                <div class="command-name">/config-view</div>
+                <div class="command-desc">Zeigt die aktuell konfigurierten Bot-Einstellungen des Servers an.</div>
+            </div>
+            <div class="command-card" data-name="set-lang">
+                <div class="command-name">/set-lang</div>
+                <div class="command-desc">Ändert die Standardsprache von Drippy auf diesem Server.</div>
+            </div>
+            <div class="command-card" data-name="setup-verify">
+                <div class="command-name">/setup-verify</div>
+                <div class="command-desc">Richtet ein Verifizierungssystem (z.B. per Button) für neue Mitglieder ein.</div>
+            </div>
+            <div class="command-card" data-name="setup-welcome-message">
+                <div class="command-name">/setup-welcome-message</div>
+                <div class="command-desc">Richtet die automatische Begrüßungsnachricht für neue User ein.</div>
+            </div>
+            <div class="command-card" data-name="remove-welcome-channel">
+                <div class="command-name">/remove-welcome-channel</div>
+                <div class="command-desc">Entfernt den konfigurierten Willkommenskanal des Bots.</div>
+            </div>
+            <div class="command-card" data-name="ticket-setup">
+                <div class="command-name">/ticket-setup</div>
+                <div class="command-desc">Konfiguriert das Ticket-Support-System mit Buttons oder Dropdowns.</div>
+            </div>
+            <div class="command-card" data-name="appeal-reply">
+                <div class="command-name">/appeal-reply</div>
+                <div class="command-desc">Antwortet offiziell auf den Entbannungsantrag (Appeal) eines Nutzers.</div>
+            </div>
+            <div class="command-card" data-name="setappealchannel">
+                <div class="command-name">/setappealchannel</div>
+                <div class="command-desc">Legt den Kanal fest, in dem eingehende Entbannungsanträge gelistet werden.</div>
+            </div>
+            <div class="command-card" data-name="faq-admin">
+                <div class="command-name">/faq-admin</div>
+                <div class="command-desc">Ermöglicht Administratoren das Hinzufügen oder Bearbeiten von FAQ-Einträgen.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">ℹ️ Utility & Info</h2>
+        <div class="grid">
+            <div class="command-card" data-name="info">
+                <div class="command-name">/info</div>
+                <div class="command-desc">Zeigt technische Details, Uptime, Entwickler und Statistiken von Drippy an.</div>
+            </div>
+            <div class="command-card" data-name="help">
+                <div class="command-name">/help</div>
+                <div class="command-desc">Zeigt eine kompakte Hilfe-Übersicht und den Link zu dieser Dokumentation.</div>
+            </div>
+            <div class="command-card" data-name="serverinfo">
+                <div class="command-name">/serverinfo</div>
+                <div class="command-desc">Liefert umfassende Statistiken und Details über den aktuellen Server.</div>
+            </div>
+            <div class="command-card" data-name="userinfo">
+                <div class="command-name">/userinfo</div>
+                <div class="command-desc">Zeigt Informationen über ein bestimmtes Mitglied (Rollen, Beitrittsdatum etc.).</div>
+            </div>
+            <div class="command-card" data-name="rules">
+                <div class="command-name">/rules</div>
+                <div class="command-desc">Gibt das Regelwerk des Servers aus (sofern eingerichtet).</div>
+            </div>
+            <div class="command-card" data-name="faq">
+                <div class="command-name">/faq</div>
+                <div class="command-desc">Ruft die vom Server-Team vordefinierten häufig gestellten Fragen ab.</div>
+            </div>
+            <div class="command-card" data-name="appeal">
+                <div class="command-name">/appeal</div>
+                <div class="command-desc">Ermöglicht es Nutzern, ein Formular für einen Entbannungsantrag aufzurufen.</div>
+            </div>
+            <div class="command-card" data-name="suggest">
+                <div class="command-name">/suggest</div>
+                <div class="command-desc">Reicht einen neuen Verbesserungsvorschlag für den Server ein.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">🎮 Fun, Leveling & System</h2>
+        <div class="grid">
+            <div class="command-card" data-name="level">
+                <div class="command-name">/level</div>
+                <div class="command-desc">Zeigt dein aktuelles Level und deine XP-Fortschrittsleiste auf dem Server an.</div>
+            </div>
+            <div class="command-card" data-name="leaderboard">
+                <div class="command-name">/leaderboard</div>
+                <div class="command-desc">Zeigt die Rangliste der aktivsten Mitglieder (XP/Level) an.</div>
+            </div>
+            <div class="command-card" data-name="birthday">
+                <div class="command-name">/birthday</div>
+                <div class="command-desc">Trage deinen Geburtstag ein oder schaue nach, wer heute feiert.</div>
+            </div>
+            <div class="command-card" data-name="boost">
+                <div class="command-name">/boost</div>
+                <div class="command-desc">Zeigt Infos zu Server-Boostern oder speziellen Belohnungen an.</div>
+            </div>
+            <div class="command-card" data-name="lfg">
+                <div class="command-name">/lfg</div>
+                <div class="command-desc">Looking For Group: Starte eine Suche nach Mitspielern für Gaming-Sessions.</div>
+            </div>
+            <div class="command-card" data-name="guessthenumber">
+                <div class="command-name">/guessthenumber</div>
+                <div class="command-desc">Ein kleines Minispiel: Errate die vom Bot generierte Zufallszahl.</div>
+            </div>
+            <div class="command-card" data-name="quiz">
+                <div class="command-name">/quiz</div>
+                <div class="command-desc">Spiele ein interaktives Quiz und teste dein Wissen.</div>
+            </div>
+            <div class="command-card" data-name="meme">
+                <div class="command-name">/meme</div>
+                <div class="command-desc">Postet ein zufälliges, lustiges Meme aus dem Internet.</div>
+            </div>
+            <div class="command-card" data-name="rating">
+                <div class="command-name">/rating</div>
+                <div class="command-desc">Lässt den Bot etwas auf einer Skala bewerten oder bewertet ein Mitglied.</div>
+            </div>
+            <div class="command-card" data-name="ping">
+                <div class="command-name">/ping</div>
+                <div class="command-desc">Prüft die aktuelle Latenz (Verbindungsgeschwindigkeit) zum Discord-Server.</div>
+            </div>
+            <div class="command-card" data-name="bug">
+                <div class="command-name">/bug</div>
+                <div class="command-desc">Ermöglicht Nutzern, Fehler des Bots direkt an die Entwickler zu melden.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="no-results" class="no-results">Keine Befehle gefunden, die deiner Suche entsprechen.</div>
 </div>
 
-</section>
+<script>
+    const searchInput = document.getElementById('search');
+    const cards = document.querySelectorAll('.command-card');
+    const sections = document.querySelectorAll('.category-section');
+    const noResults = document.getElementById('no-results');
 
-<section class="about" id="about">
-	<h1>About us</h1>
-	<p>We want to introduce ourselves and the project!</p>
+    searchInput.addEventListener('input', (e) => {
+        const value = e.target.value.toLowerCase().trim();
+        let totalVisible = 0;
 
-	<div class="row">
-		<div class="about-col">
-			<h3>Bot</h3>
-			<p>The bot includes many functions such as: <br>-Moderation Tools <br>-Info Tools <br>-Quiz <br>-Music <br>In addition, we are working on other functions such as an economy system and other games</p>
-		</div>
-		<div class="about-col">
-			<h3>History</h3>
-			<p>We were a small two-person team that started the project "Venom Aimz Bot" in 2021. Over time, we realized that it is actually a good idea to make the bot accessible to every server. Since then we call the project "Drippy" and are now working as a three-person team.</p
-		</div>
-	</div>
-</section>
+        sections.forEach(section => {
+            let sectionVisibleCards = 0;
+            const sectionCards = section.querySelectorAll('.command-card');
 
+            sectionCards.forEach(card => {
+                const cmdName = card.getAttribute('data-name').toLowerCase();
+                if (cmdName.includes(value)) {
+                    card.style.display = 'block';
+                    sectionVisibleCards++;
+                    totalVisible++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
 
-<section>
-	<div class="contact" id="contact">
-		<h1>Contact</h1>
-		<a href = "mailto: drippydiscordbot@gmail.com" class="hero-btn">Contact us via Email</a>
-		<a href= "https://discord.gg/M8mqCr4vzf" class ="hero-btn">Our Support Server</a></div>
-</section>
-<script src="test.py"></script>
+            // Wenn in einer Kategorie kein Befehl matcht, blende die ganze Kategorie aus
+            if (sectionVisibleCards > 0) {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        });
+
+        // "Keine Ergebnisse" Text steuern
+        if (totalVisible === 0) {
+            noResults.style.display = 'block';
+        } else {
+            noResults.style.display = 'none';
+        }
+    });
+</script>
+
 </body>
+</html>
