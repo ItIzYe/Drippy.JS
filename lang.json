@@ -480,7 +480,37 @@
     "H_F_2_B": {
       "german": "Befehlsliste öffnen",
       "english": "Open command list"
-    }
+    },
+    "TS_TITLE": {
+      "german": "Zeitstempel Converter",
+      "english": "Timestamp converter"
+    },
+    "EP_MODAL_TITLE": { "german": "Embed Erstellen", "english": "Create Embed" },
+    "EP_LABEL_TITLE": { "german": "Titel", "english": "Title" },
+    "EP_LABEL_DESC": { "german": "Beschreibung", "excel": "Description" },
+    "EP_LABEL_COLOR": { "german": "Farbe (Hex-Code)", "english": "Color (Hex-Code)" },
+    "EP_BTN_SEND": { "german": "Senden", "english": "Send" },
+    "EP_BTN_CANCEL": { "german": "Verwerfen", "english": "Cancel" },
+    "EP_PREVIEW_NOTE": { "german": "Vorschau deines Embeds. Nur du siehst diese Nachricht!", "english": "Preview of your embed. Only you can see this!" },
+    "EP_SUCCESS": { "german": "Embed erfolgreich gesendet!", "english": "Embed sent successfully!" },
+    "EP_CANCELLED": { "german": "Vorschau verworfen.", "english": "Preview cancelled." },
+    "EP_TIMEOUT": { "german": "Zeit abgelaufen. Bitte nutze den Befehl erneut.", "english": "Timeout. Please use the command again." },
+    "STICKY_REMOVED": {
+    "german": "Die Sticky Message für diesen Kanal wurde gelöscht.",
+    "english": "The sticky message for this channel has been removed."
+  },
+  "STICKY_NOT_FOUND": {
+    "german": "Es gibt keine aktive Sticky Message in diesem Kanal.",
+    "english": "There is no active sticky message in this channel."
+  },
+  "STICKY_NOTE": {
+    "german": "Wichtige Information:",
+    "english": "Important Information:"
+  },
+  "STICKY_SUCCESS": {
+    "german": "Sticky Message erfolgreich eingerichtet!",
+    "english": "Sticky message successfully configured!"
+  }
     
 
   }
