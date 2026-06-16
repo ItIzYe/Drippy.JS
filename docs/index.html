@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drippy.JS — Befehlsliste</title>
+    <title>Drippy.JS — Commands</title>
     <style>
         :root {
-            --bg-color: #0f1115;
-            --card-bg: #181c24;
+            --bg-color: #0f1217;
+            --card-bg: #1a1f29;
+            --border-color: #262d3b;
             --accent-color: #8BBEEF;
-            --accent-hover: #29b363;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
-            --border-color: #262d3b;
+            --usage-bg: #11151d;
         }
 
         * {
@@ -28,22 +28,55 @@
             padding: 2rem 1rem;
             display: flex;
             justify-content: center;
+            position: relative;
         }
 
         .container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
+        }
+
+        .lang-switch {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.3rem;
+            display: flex;
+            gap: 0.2rem;
+            z-index: 10;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background-color: var(--border-color);
+            color: var(--accent-color);
         }
 
         header {
             text-align: center;
             margin-bottom: 3rem;
+            margin-top: 1rem;
         }
 
         header h1 {
             font-size: 2.5rem;
             color: var(--text-main);
             margin-bottom: 0.5rem;
+            font-weight: 700;
         }
 
         header h1 span {
@@ -65,11 +98,12 @@
             font-size: 1.1rem;
             margin-bottom: 2.5rem;
             outline: none;
-            transition: border-color 0.2s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .search-box:focus {
             border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(139, 190, 239, 0.15);
         }
 
         .category-section {
@@ -77,18 +111,18 @@
         }
 
         .category-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: var(--accent-color);
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 0.5rem;
-            text-transform: uppercase;
             letter-spacing: 1px;
+            font-weight: 600;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1.2rem;
         }
 
@@ -97,6 +131,9 @@
             border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
@@ -105,115 +142,223 @@
             border-color: var(--accent-color);
         }
 
+        .command-header {
+            margin-bottom: 0.6rem;
+        }
+
         .command-name {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 1.2rem;
-            color: var(--text-main);
+            font-size: 1.15rem;
+            color: #ffffff;
             font-weight: bold;
-            margin-bottom: 0.5rem;
             display: inline-block;
-            background: #1E4273;
-            padding: 0.2rem 0.5rem;
-            border-radius: 5px;
+            background: rgba(139, 190, 239, 0.12);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid rgba(139, 190, 239, 0.2);
         }
 
         .command-desc {
             color: var(--text-muted);
             font-size: 0.95rem;
-            line-height: 1.4;
+            line-height: 1.5;
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+        }
+
+        .command-usage {
+            background-color: var(--usage-bg);
+            border-left: 3px solid var(--accent-color);
+            padding: 0.6rem;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: #e3e8f0;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .command-usage span {
+            color: var(--accent-color);
+            font-weight: bold;
         }
 
         .no-results {
-            display: none;
             text-align: center;
             color: var(--text-muted);
             font-size: 1.2rem;
             margin-top: 2rem;
+            display: none;
         }
     </style>
 </head>
 <body>
 
+<div class="lang-switch">
+    <button class="lang-btn active" onclick="setLanguage('de', this)">DE</button>
+    <button class="lang-btn" onclick="setLanguage('en', this)">EN</button>
+</div>
+
 <div class="container">
     <header>
-        <h1><span>Drippy.JS</span> Befehlsliste</h1>
-        <p>Alle verfügbaren Slash-Commands für deinen Discord-Server</p>
+        <h1><span>Drippy.JS</span> <span id="main-title" data-de="Befehlsliste" data-en="Command List">Befehlsliste</span></h1>
+        <p id="sub-title">Alle verfügbaren Slash-Commands mit korrekten Anwendungsbeispielen</p>
     </header>
 
     <input type="text" id="search" class="search-box" placeholder="Nach Befehlen suchen (z.B. ban, setup)...">
 
     <div class="category-section">
-        <h2 class="category-title">🛡️ Moderation</h2>
+        <h2 class="category-title" data-de="🛡️ Moderation" data-en="🛡️ Moderation">🛡️ Moderation</h2>
         <div class="grid">
             <div class="command-card" data-name="ban">
-                <div class="command-name">/ban</div>
-                <div class="command-desc">Sperrt ein Mitglied dauerhaft vom Discord-Server.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/ban</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Sperrt ein Mitglied dauerhaft vom Discord-Server." data-en="Bans a member permanently from the Discord server.">Sperrt ein Mitglied dauerhaft vom Discord-Server.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /ban [user] [reason]</div>
             </div>
             <div class="command-card" data-name="kick">
-                <div class="command-name">/kick</div>
-                <div class="command-desc">Wirft ein Mitglied vom aktuellen Discord-Server.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/kick</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Wirft ein Mitglied vom aktuellen Discord-Server." data-en="Kicks a member from the current Discord server.">Wirft ein Mitglied vom aktuellen Discord-Server.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /kick [user] [reason]</div>
             </div>
             <div class="command-card" data-name="timeout">
-                <div class="command-name">/timeout</div>
-                <div class="command-desc">Versetzt ein Mitglied für eine bestimmte Zeit in den Timeout (Stummschaltung).</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/timeout</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Versetzt ein Mitglied in den Timeout (Stummschaltung)." data-en="Times out a member (mute duration).">Versetzt ein Mitglied in den Timeout (Stummschaltung).</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /timeout [user] [duration] [reason]</div>
             </div>
             <div class="command-card" data-name="warn">
-                <div class="command-name">/warn</div>
-                <div class="command-desc">Erteilt einem Nutzer eine Verwarnung und loggt diese im System.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/warn</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Erteilt einem Nutzer eine Verwarnung und loggt diese." data-en="Warns a user and logs it in the system.">Erteilt einem Nutzer eine Verwarnung und loggt diese.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /warn [user] [reason]</div>
             </div>
             <div class="command-card" data-name="clear">
-                <div class="command-name">/clear</div>
-                <div class="command-desc">Löscht eine festgelegte Anzahl von Nachrichten in einem Textkanal.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/clear</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Löscht eine festgelegte Anzahl von Nachrichten in einem Kanal." data-en="Deletes a specified amount of messages in a channel.">Löscht eine festgelegte Anzahl von Nachrichten in einem Kanal.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /clear [amount]</div>
             </div>
             <div class="command-card" data-name="lockdown">
-                <div class="command-name">/lockdown</div>
-                <div class="command-desc">Sperrt den aktuellen Kanal schnell ab, um Nachrichten-Spam zu verhindern.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/lockdown</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Sperrt oder entsperrt den aktuellen Textkanal für normale User." data-en="Locks or unlocks the current channel for regular users.">Sperrt oder entsperrt den aktuellen Textkanal für normale User.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /lockdown [true/false]</div>
             </div>
             <div class="command-card" data-name="slowmode">
-                <div class="command-name">/slowmode</div>
-                <div class="command-desc">Aktiviert oder ändert die Nachrichten-Abklingzeit eines Kanals.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/slowmode</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Aktiviert oder ändert die Nachrichten-Abklingzeit eines Kanals." data-en="Enables or changes the message cooldown of a channel.">Aktiviert oder ändert die Nachrichten-Abklingzeit eines Kanals.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /slowmode [seconds]</div>
             </div>
         </div>
     </div>
 
     <div class="category-section">
-        <h2 class="category-title">⚙️ Administration & Setup</h2>
+        <h2 class="category-title" data-de="⚙️ Administration & Setup" data-en="⚙️ Administration & Setup">⚙️ Administration & Setup</h2>
         <div class="grid">
             <div class="command-card" data-name="config-view">
-                <div class="command-name">/config-view</div>
-                <div class="command-desc">Zeigt die aktuell konfigurierten Bot-Einstellungen des Servers an.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/config-view</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Zeigt die aktuell konfigurierten Bot-Einstellungen des Servers an." data-en="Displays the currently configured bot settings for the server.">Zeigt die aktuell konfigurierten Bot-Einstellungen des Servers an.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /config-view</div>
             </div>
             <div class="command-card" data-name="set-lang">
-                <div class="command-name">/set-lang</div>
-                <div class="command-desc">Ändert die Standardsprache von Drippy auf diesem Server.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/set-lang</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Ändert die Standardsprache von Drippy auf diesem Server." data-en="Changes the default language of Drippy on this server.">Ändert die Standardsprache von Drippy auf diesem Server.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /set-lang [de/en]</div>
             </div>
             <div class="command-card" data-name="setup-verify">
-                <div class="command-name">/setup-verify</div>
-                <div class="command-desc">Richtet ein Verifizierungssystem (z.B. per Button) für neue Mitglieder ein.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/setup-verify</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Richtet ein Verifizierungssystem per Button ein." data-en="Sets up a verification system using button embeds.">Richtet ein Verifizierungssystem per Button ein.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /setup-verify [channel] [role]</div>
             </div>
             <div class="command-card" data-name="setup-welcome-message">
-                <div class="command-name">/setup-welcome-message</div>
-                <div class="command-desc">Richtet die automatische Begrüßungsnachricht für neue User ein.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/setup-welcome-message</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Richtet die automatische Begrüßungsnachricht für neue User ein." data-en="Sets up the automatic welcome message channel for new members.">Richtet die automatische Begrüßungsnachricht für neue User ein.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /setup-welcome-message [channel]</div>
             </div>
             <div class="command-card" data-name="remove-welcome-channel">
-                <div class="command-name">/remove-welcome-channel</div>
-                <div class="command-desc">Entfernt den konfigurierten Willkommenskanal des Bots.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/remove-welcome-channel</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Entfernt den konfigurierten Willkommenskanal des Bots." data-en="Removes the configured welcome channel from the bot.">Entfernt den konfigurierten Willkommenskanal des Bots.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /remove-welcome-channel</div>
             </div>
             <div class="command-card" data-name="ticket-setup">
-                <div class="command-name">/ticket-setup</div>
-                <div class="command-desc">Konfiguriert das Ticket-Support-System mit Buttons oder Dropdowns.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/ticket-setup</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Konfiguriert das Ticket-Support-System mit einem Button-Embed." data-en="Configures the support ticket system with button interfaces.">Konfiguriert das Ticket-Support-System mit einem Button-Embed.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /ticket-setup [channel] [category]</div>
             </div>
             <div class="command-card" data-name="appeal-reply">
-                <div class="command-name">/appeal-reply</div>
-                <div class="command-desc">Antwortet offiziell auf den Entbannungsantrag (Appeal) eines Nutzers.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/appeal-reply</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Antwortet offiziell auf den Entbannungsantrag (Appeal) eines Nutzers." data-en="Officially replies to a user's unban appeal application.">Antwortet offiziell auf den Entbannungsantrag (Appeal) eines Nutzers.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /appeal-reply [user_id] [status] [reason]</div>
             </div>
             <div class="command-card" data-name="setappealchannel">
-                <div class="command-name">/setappealchannel</div>
-                <div class="command-desc">Legt den Kanal fest, in dem eingehende Entbannungsanträge gelistet werden.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/setappealchannel</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Legt den Kanal fest, in dem Entbannungsanträge eingehen." data-en="Sets the logs channel where incoming ban appeals will appear.">Legt den Kanal fest, in dem Entbannungsanträge eingehen.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /setappealchannel [channel]</div>
             </div>
             <div class="command-card" data-name="faq-admin">
-                <div class="command-name">/faq-admin</div>
-                <div class="command-desc">Ermöglicht Administratoren das Hinzufügen oder Bearbeiten von FAQ-Einträgen.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/faq-admin</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Ermöglicht das Hinzufügen, Löschen oder Bearbeiten von FAQ-Einträgen." data-en="Allows administrators to add, delete, or edit FAQ items.">Ermöglicht das Hinzufügen, Löschen oder Bearbeiten von FAQ-Einträgen.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /faq-admin [action] [question] [answer]</div>
             </div>
         </div>
     </div>
@@ -222,101 +367,232 @@
         <h2 class="category-title">ℹ️ Utility & Info</h2>
         <div class="grid">
             <div class="command-card" data-name="info">
-                <div class="command-name">/info</div>
-                <div class="command-desc">Zeigt technische Details, Uptime, Entwickler und Statistiken von Drippy an.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/info</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Zeigt technische Details, Uptime, Entwickler und Statistiken an." data-en="Displays technical specs, uptime, developers, and bot stats.">Zeigt technische Details, Uptime, Entwickler und Statistiken an.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /info</div>
             </div>
             <div class="command-card" data-name="help">
-                <div class="command-name">/help</div>
-                <div class="command-desc">Zeigt eine kompakte Hilfe-Übersicht und den Link zu dieser Dokumentation.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/help</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Zeigt eine kompakte Hilfe-Übersicht und den Link zum Wiki." data-en="Shows a brief help overview and the link to this documentation.">Zeigt eine kompakte Hilfe-Übersicht und den Link zum Wiki.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /help</div>
             </div>
             <div class="command-card" data-name="serverinfo">
-                <div class="command-name">/serverinfo</div>
-                <div class="command-desc">Liefert umfassende Statistiken und Details über den aktuellen Server.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/serverinfo</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Liefert umfassende Statistiken und Details über den aktuellen Server." data-en="Provides comprehensive statistics and information about the current guild.">Liefert umfassende Statistiken und Details über den aktuellen Server.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /serverinfo</div>
             </div>
             <div class="command-card" data-name="userinfo">
-                <div class="command-name">/userinfo</div>
-                <div class="command-desc">Zeigt Informationen über ein bestimmtes Mitglied (Rollen, Beitrittsdatum etc.).</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/userinfo</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Zeigt Informationen über ein bestimmtes Mitglied (Rollen, Beitritt)." data-en="Displays information about a specific member (roles, join date).">Zeigt Informationen über ein bestimmtes Mitglied (Rollen, Beitritt).</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /userinfo [user]</div>
             </div>
             <div class="command-card" data-name="rules">
-                <div class="command-name">/rules</div>
-                <div class="command-desc">Gibt das Regelwerk des Servers aus (sofern eingerichtet).</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/rules</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Gibt das vordefinierte Regelwerk des Servers aus." data-en="Outputs the predefined rule set of the server.">Gibt das vordefinierte Regelwerk des Servers aus.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /rules</div>
             </div>
             <div class="command-card" data-name="faq">
-                <div class="command-name">/faq</div>
-                <div class="command-desc">Ruft die vom Server-Team vordefinierten häufig gestellten Fragen ab.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/faq</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Ruft die vom Server-Team erstellten FAQs ab." data-en="Fetches the frequently asked questions set by the team.">Ruft die vom Server-Team erstellten FAQs ab.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /faq [topic_id]</div>
             </div>
             <div class="command-card" data-name="appeal">
-                <div class="command-name">/appeal</div>
-                <div class="command-desc">Ermöglicht es Nutzern, ein Formular für einen Entbannungsantrag aufzurufen.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/appeal</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Öffnet das interaktive Formular für einen Entbannungsantrag." data-en="Opens the interactive form to submit an unban appeal.">Öffnet das interaktive Formular für einen Entbannungsantrag.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /appeal</div>
             </div>
             <div class="command-card" data-name="suggest">
-                <div class="command-name">/suggest</div>
-                <div class="command-desc">Reicht einen neuen Verbesserungsvorschlag für den Server ein.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/suggest</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Reicht einen neuen Verbesserungsvorschlag für den Server ein." data-en="Submits a new server suggestion for review.">Reicht einen neuen Verbesserungsvorschlag für den Server ein.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /suggest [suggestion]</div>
             </div>
         </div>
     </div>
 
     <div class="category-section">
-        <h2 class="category-title">🎮 Fun, Leveling & System</h2>
+        <h2 class="category-title">🎮 Fun & Leveling</h2>
         <div class="grid">
             <div class="command-card" data-name="level">
-                <div class="command-name">/level</div>
-                <div class="command-desc">Zeigt dein aktuelles Level und deine XP-Fortschrittsleiste auf dem Server an.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/level</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Zeigt dein aktuelles Level und deine XP-Fortschrittsleiste an." data-en="Displays your current level and XP progression bar.">Zeigt dein aktuelles Level und deine XP-Fortschrittsleiste an.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /level [user]</div>
             </div>
             <div class="command-card" data-name="leaderboard">
-                <div class="command-name">/leaderboard</div>
-                <div class="command-desc">Zeigt die Rangliste der aktivsten Mitglieder (XP/Level) an.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/leaderboard</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Zeigt die Rangliste der aktivsten Mitglieder (XP/Level) an." data-en="Shows the rank leaderboard based on active chat XP.">Zeigt die Rangliste der aktivsten Mitglieder (XP/Level) an.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /leaderboard</div>
             </div>
             <div class="command-card" data-name="birthday">
-                <div class="command-name">/birthday</div>
-                <div class="command-desc">Trage deinen Geburtstag ein oder schaue nach, wer heute feiert.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/birthday</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Trage deinen Geburtstag ein oder lasse dir die heutigen Geburtstage anzeigen." data-en="Saves your birthday or shows everyone celebrating today.">Trage deinen Geburtstag ein oder lasse dir die heutigen Geburtstage anzeigen.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /birthday [set/view] [date]</div>
             </div>
             <div class="command-card" data-name="boost">
-                <div class="command-name">/boost</div>
-                <div class="command-desc">Zeigt Infos zu Server-Boostern oder speziellen Belohnungen an.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/boost</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Zeigt Infos zu Server-Boostern oder speziellen Boost-Vorteilen." data-en="Shows info about server nitro boosters and custom perks.">Zeigt Infos zu Server-Boostern oder speziellen Boost-Vorteilen.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /boost</div>
             </div>
             <div class="command-card" data-name="lfg">
-                <div class="command-name">/lfg</div>
-                <div class="command-desc">Looking For Group: Starte eine Suche nach Mitspielern für Gaming-Sessions.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/lfg</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Looking For Group: Starte eine Suche nach Mitspielern für Games." data-en="Looking For Group: Search for active gaming mates.">Looking For Group: Starte eine Suche nach Mitspielern für Games.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /lfg [game] [players_needed]</div>
             </div>
             <div class="command-card" data-name="guessthenumber">
-                <div class="command-name">/guessthenumber</div>
-                <div class="command-desc">Ein kleines Minispiel: Errate die vom Bot generierte Zufallszahl.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/guessthenumber</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Ein kleines Minispiel: Errate die vom Bot generierte Zufallszahl." data-en="Minigame: Guess the secret number generated by the bot.">Ein kleines Minispiel: Errate die vom Bot generierte Zufallszahl.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /guessthenumber [your_guess]</div>
             </div>
             <div class="command-card" data-name="quiz">
-                <div class="command-name">/quiz</div>
-                <div class="command-desc">Spiele ein interaktives Quiz und teste dein Wissen.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/quiz</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Spiele ein interaktives Quiz und teste dein Wissen im Chat." data-en="Play an interactive trivia game directly in chat.">Spiele ein interaktives Quiz und teste dein Wissen im Chat.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /quiz [category]</div>
             </div>
             <div class="command-card" data-name="meme">
-                <div class="command-name">/meme</div>
-                <div class="command-desc">Postet ein zufälliges, lustiges Meme aus dem Internet.</div>
-            </div>
-            <div class="command-card" data-name="rating">
-                <div class="command-name">/rating</div>
-                <div class="command-desc">Lässt den Bot etwas auf einer Skala bewerten oder bewertet ein Mitglied.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/meme</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Postet ein zufälliges, lustiges Meme aus dem Internet." data-en="Posts a random funny meme pulled from the web.">Postet ein zufälliges, lustiges Meme aus dem Internet.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /meme</div>
             </div>
             <div class="command-card" data-name="ping">
-                <div class="command-name">/ping</div>
-                <div class="command-desc">Prüft die aktuelle Latenz (Verbindungsgeschwindigkeit) zum Discord-Server.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/ping</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Prüft die aktuelle Latenz zum Discord-Server." data-en="Checks the real-time latency response to Discord.">Prüft die aktuelle Latenz zum Discord-Server.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /ping</div>
             </div>
             <div class="command-card" data-name="bug">
-                <div class="command-name">/bug</div>
-                <div class="command-desc">Ermöglicht Nutzern, Fehler des Bots direkt an die Entwickler zu melden.</div>
+                <div>
+                    <div class="command-header"><div class="command-name">/bug</div></div>
+                    <div class="command-desc">
+                        <span class="lang-text" data-de="Ermöglicht Nutzern, Fehler des Bots direkt an die Entwickler zu melden." data-en="Allows users to report software bugs straight to developers.">Ermöglicht Nutzern, Fehler des Bots direkt an die Entwickler zu melden.</span>
+                    </div>
+                </div>
+                <div class="command-usage"><span>Usage:</span> /bug [description]</div>
             </div>
         </div>
     </div>
 
-    <div id="no-results" class="no-results">Keine Befehle gefunden, die deiner Suche entsprechen.</div>
+    <div id="no-results" class="no-results"></div>
 </div>
 
 <script>
+    let currentLang = 'de';
+    
+    const translations = {
+        de: {
+            sub: "Alle verfügbaren Slash-Commands mit korrekten Anwendungsbeispielen",
+            placeholder: "Nach Befehlen suchen (z.B. ban, setup)...",
+            noResults: "Keine Befehle gefunden, die deiner Suche entsprechen."
+        },
+        en: {
+            sub: "All available slash commands paired with accurate usage examples",
+            placeholder: "Search for commands (e.g., ban, setup)...",
+            noResults: "No commands match your current filter search."
+        }
+    };
+
+    function setLanguage(lang, buttonElement) {
+        currentLang = lang;
+        
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        if (buttonElement) {
+            buttonElement.classList.add('active');
+        } else {
+            document.querySelectorAll('.lang-btn')[lang === 'de' ? 0 : 1].classList.add('active');
+        }
+        
+        document.querySelectorAll('.lang-text').forEach(el => {
+            const translatedText = el.getAttribute('data-' + lang);
+            if (translatedText) {
+                el.textContent = translatedText;
+            }
+        });
+
+        document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+            if (!el.classList.contains('lang-text')) {
+                el.textContent = el.getAttribute('data-' + lang);
+            }
+        });
+        
+        document.getElementById('sub-title').textContent = translations[lang].sub;
+        document.getElementById('search').placeholder = translations[lang].placeholder;
+        
+        filterCommands();
+    }
+
     const searchInput = document.getElementById('search');
-    const cards = document.querySelectorAll('.command-card');
     const sections = document.querySelectorAll('.category-section');
     const noResults = document.getElementById('no-results');
 
-    searchInput.addEventListener('input', (e) => {
-        const value = e.target.value.toLowerCase().trim();
+    searchInput.addEventListener('input', filterCommands);
+
+    function filterCommands() {
+        const value = searchInput.value.toLowerCase().trim();
         let totalVisible = 0;
 
         sections.forEach(section => {
@@ -326,7 +602,7 @@
             sectionCards.forEach(card => {
                 const cmdName = card.getAttribute('data-name').toLowerCase();
                 if (cmdName.includes(value)) {
-                    card.style.display = 'block';
+                    card.style.display = 'flex';
                     sectionVisibleCards++;
                     totalVisible++;
                 } else {
@@ -334,7 +610,6 @@
                 }
             });
 
-            // Wenn in einer Kategorie kein Befehl matcht, blende die ganze Kategorie aus
             if (sectionVisibleCards > 0) {
                 section.style.display = 'block';
             } else {
@@ -342,12 +617,16 @@
             }
         });
 
-        // "Keine Ergebnisse" Text steuern
         if (totalVisible === 0) {
+            noResults.textContent = translations[currentLang].noResults;
             noResults.style.display = 'block';
         } else {
             noResults.style.display = 'none';
         }
+    }
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        setLanguage('de', null);
     });
 </script>
 
