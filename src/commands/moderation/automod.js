@@ -15,7 +15,7 @@ module.exports = {
     description: 'Öffnet das AutoMod Dashboard.',
     permissionsRequired: [PermissionFlagsBits.ManageGuild],
     botPermissions: [PermissionFlagsBits.ManageMessages],
-    deleted: true,
+    //deleted: true,
 
     callback: async (client, interaction) => {
         const { guild } = interaction;
@@ -30,7 +30,7 @@ module.exports = {
                 .setTitle(`🛡️ ${language(guild, 'AUTOMOD_DASHBOARD_TITLE')}`)
                 .setDescription(language(guild, 'AUTOMOD_DASHBOARD_DESC'))
                 .setFields(
-                    { name: 'Status', value: config.autoModEnabled ? '🟢 Aktiv' : '🔴 Deaktiviert', inline: true },
+                    { name: 'Status', value: config.enabled ? '🟢 Aktiv' : '🔴 Deaktiviert', inline: true },
                     { name: 'Wörter', value: `\`${config.customBannedWords?.length || 0}\``, inline: true },
                     { name: 'Kanäle', value: `\`${config.ignoredChannels?.length || 0}\` ignoriert`, inline: true }
                 );

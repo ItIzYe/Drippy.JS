@@ -7,7 +7,7 @@ module.exports = async (client, message) => {
     // 1. Grundlegende Sicherheits-Checks
     if (!message || !message.guild || message.author.bot) return;
 
-    return;
+    //return;
 
     try {
         // 2. Einstellungen aus der Datenbank laden
