@@ -73,62 +73,6 @@
       "english": "Here you can see all our commands and the categories into which the commands are divided. If you still have question, don't bother joining our support server. :) https://discord.gg/mkabpRqVEX",
       "german": "Hier kannst du alle Commands und ihre Kategorien einsehen. Solltest du danach immer noch fragen haben, komm gerne auf unseren Support Server. :) https://discord.gg/mkabpRqVEX"
     },
-    "H_CLEAR_DESC": {
-      "english": "Deletes a specified number of messages in a channel",
-      "german": "Löscht eine bestimmte Anzahl von Nachrichten in einem Kanal"
-    },
-    "H_BAN_DESC": {
-      "english": "Bans a member from the server",
-      "german": "Bannt einen Member vom Server"
-    },
-    "H_TIMEOUT_DESC": {
-      "english": "Timeouts a member",
-      "german": "Timeoutet einen Member"
-    },
-    "H_KICK_DESC": {
-      "english": "Kicks a member",
-      "german": "Kickt einen Member vom Server"
-    },
-    "H_INFO_DESC": {
-      "english": "Shows you some info about the bot",
-      "german": "Zeigt dir ein paar Infos über den Bot"
-    },
-    "H_SERVERINFO_DESC": {
-      "english": "Shows you some info about the server",
-      "german": "Zeigt dir ein paar Infos über den Server"
-    },
-    "H_PING_DESC": {
-      "english": "Shows you the ping",
-      "german": "Zeigt dir den Ping"
-    },
-    "H_BOOST_DESC": {
-      "english": "Shows you the advantages you get when you boost the server.",
-      "german": "Zeigt dir die Vorteile für dich und den Server wenn du einen Server boostest."
-    },
-    "H_SUGG_DESC": {
-      "english": "Suggest things which the Server than can vote about",
-      "german": "Schlage Sachen vor über die der Server dann abstimmen kann"
-    },
-    "H_CONSUGG_DESC": {
-      "english": "Add/Remove a channel where the Suggestions should go to",
-      "german": "Adde/Entferne einen Kanal für Suggestion-Nachrichten"
-    },
-    "H_CONANN_DESC": {
-      "english": "Add/Remove a channel where the Bot Announcements should go to",
-      "german": "Adde/Entferne einen Kanal für Announcements"
-    },
-    "H_CONMOD_DESC": {
-      "english": "Add/Remove a channel where the Moderation Messages should go to",
-      "german": "Adde/Entferne einen Kanal für Moderations-Nachrichten"
-    },
-    "H_CONLANG_DESC": {
-      "english": "Configure the Bot language (Currently only supporting English and German)",
-      "german": "Konfiguriere die Bot-Sprache für deinen Server (Zurzeit werden nur Deutsch und Englisch supportet"
-    },
-    "H_BUG_DESC": {
-      "english": "Send a Bug Report to the Bot Devs",
-      "german": "Sende einen Bug Report an die Botentwickler"
-    },
     "INFO_FIELD2": {
       "english": "Number of Servers",
       "german": "Anzahl der Server"
@@ -464,66 +408,6 @@
     "RULES_LIST_EMPTY": {
       "german":"Es wurden noch keine Regeln für diesen Server festgelegt.",
       "english": "A ruleset for this server hasn't been configured yet."
-    },
-    "H_USR_DESC": {
-      "german":"Schaue dir Infos zu bestimmten Mitgliedern des Servers an.",
-      "english": "Get some infos about Users on your Server."
-    },
-    "H_CONVIEW_DESC": {
-      "german":"Ändere die Kanäle, in die versch. Meldungen zu Tickets, Announcements, Vorschlägen, Moderation und Levels geschickt werden.",
-      "english": "Edit, where different Botmessages relating to Tickets, Announcements, Suggestions, Moderation and Leveling are being sent."
-    },
-    "H_LVL_DESC": {
-      "german":"Schaue deinen Levelfortschritt an.",
-      "english": "See your Level."
-    },
-    "H_LB_DESC": {
-      "german":"Schau dir die Top 10 Mitglieder mit den höchsten Leveln auf deinem Server an.",
-      "english": "See the 10 persons with the highest Level on yor Server."
-    },
-    "H_FAQ_DESC": {
-      "german":"Schau dir die Topics an oder antworte auf Fragen mit den FAQs.",
-      "english": "See the list of Topics or answer to Questions with the FAQs."
-    },
-    "H_LFG_DESC": {
-      "german":"Erstelle LFGs wenn du auf der Suche nach Mitspielern bist. Wenn du Support für Spiele neben GTA haben möchtest, erstelle einen Bugreport.",
-      "english": "Create LFGs if you're looking for teammates. If you need support for games other than GTA, submit a bug report."
-    },
-    "H_GTN_DESC": {
-      "german":"Spiele eine Runde `Errate die Zahl`.",
-      "english": "Play a round of `Guess the Number`."
-    },
-    "H_QUIZ_DESC": {
-      "german":"Spiele unser Quiz.",
-      "english": "Play our Quiz."
-    },
-    "H_MEME_DESC": {
-      "german":"Lasse dir ein Meme anzeigen.",
-      "english": "Get a meme."
-    },
-    "H_FAQA_DESC": {
-      "german":"Erstelle FAQs.",
-      "english": "Create FAQs."
-    },
-    "H_LCKDWN_DESC": {
-      "german":"Sperre einen Kanal für alle User.",
-      "english": "Block a channel for all users."
-    },
-    "H_RULES_DESC": {
-      "german":"Erstelle ein Regelwerk und lass es dir anzeigen.",
-      "english": "Create a set of rules and view them."
-    },
-    "H_LOGS_DESC": {
-      "german":"Lege fest, wo Transkripte für Tickets gesendet werden.",
-      "english": "Specify where transcripts for tickets will be sent."
-    },
-    "H_SLWMODE_DESC": {
-      "german":"Erstelle einen Timer für Nachrichten unter Usern.",
-      "english": "Create a timer for messages between users."
-    },
-    "H_TIMEOUT_DESC": {
-      "german":"Mute einen User.",
-      "english": "Mute a User."
     },
     "BOT_DESC": {
       "german":"Hier ein paar Bot-Infos.",
