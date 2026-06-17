@@ -5,13 +5,12 @@ const AutoModSchema = new mongoose.Schema({
     customBannedWords: [String],
     allowLinksFromBots: { type: Boolean, default: true },
     enabled: { type: Boolean, default: true },
-    
-    // Neues Feld für detaillierte Kanal-Einstellungen
+    whitelistedWords: { type: [String], default: [] },    
     channelSettings: [
         {
             channelId: { type: String, required: true },
             allowLinks: { type: Boolean, default: false },
-            allowImages: { type: Boolean, default: false }
+            allowImages: { type: Boolean, default: false },
         }
     ]
 });
