@@ -485,32 +485,166 @@
       "german": "Zeitstempel Converter",
       "english": "Timestamp converter"
     },
-    "EP_MODAL_TITLE": { "german": "Embed Erstellen", "english": "Create Embed" },
-    "EP_LABEL_TITLE": { "german": "Titel", "english": "Title" },
-    "EP_LABEL_DESC": { "german": "Beschreibung", "excel": "Description" },
-    "EP_LABEL_COLOR": { "german": "Farbe (Hex-Code)", "english": "Color (Hex-Code)" },
-    "EP_BTN_SEND": { "german": "Senden", "english": "Send" },
-    "EP_BTN_CANCEL": { "german": "Verwerfen", "english": "Cancel" },
-    "EP_PREVIEW_NOTE": { "german": "Vorschau deines Embeds. Nur du siehst diese Nachricht!", "english": "Preview of your embed. Only you can see this!" },
-    "EP_SUCCESS": { "german": "Embed erfolgreich gesendet!", "english": "Embed sent successfully!" },
-    "EP_CANCELLED": { "german": "Vorschau verworfen.", "english": "Preview cancelled." },
-    "EP_TIMEOUT": { "german": "Zeit abgelaufen. Bitte nutze den Befehl erneut.", "english": "Timeout. Please use the command again." },
+    "EP_MODAL_TITLE": { 
+      "german": "Embed Erstellen", 
+      "english": "Create Embed" 
+    },
+    "EP_LABEL_TITLE": { 
+      "german": "Titel", 
+      "english": "Title" 
+    },
+    "EP_LABEL_DESC": { 
+      "german": "Beschreibung", 
+      "excel": "Description" 
+    },
+    "EP_LABEL_COLOR": { 
+      "german": "Farbe (Hex-Code)", 
+      "english": "Color (Hex-Code)" 
+    },
+    "EP_BTN_SEND": { 
+      "german": "Senden", 
+      "english": "Send" 
+    },
+    "EP_BTN_CANCEL": { 
+      "german": "Verwerfen", 
+      "english": "Cancel" 
+    },
+    "EP_PREVIEW_NOTE": { 
+      "german": "Vorschau deines Embeds. Nur du siehst diese Nachricht!", 
+      "english": "Preview of your embed. Only you can see this!" 
+    },
+    "EP_SUCCESS": { 
+      "german": "Embed erfolgreich gesendet!", 
+      "english": "Embed sent successfully!" 
+    },
+    "EP_CANCELLED": { 
+      "german": "Vorschau verworfen.", 
+      "english": "Preview cancelled." 
+    },
+    "EP_TIMEOUT": { 
+      "german": "Zeit abgelaufen. Bitte nutze den Befehl erneut.", 
+      "english": "Timeout. Please use the command again." 
+    },
     "STICKY_REMOVED": {
     "german": "Die Sticky Message für diesen Kanal wurde gelöscht.",
     "english": "The sticky message for this channel has been removed."
-  },
-  "STICKY_NOT_FOUND": {
-    "german": "Es gibt keine aktive Sticky Message in diesem Kanal.",
-    "english": "There is no active sticky message in this channel."
-  },
-  "STICKY_NOTE": {
-    "german": "Wichtige Information:",
-    "english": "Important Information:"
-  },
-  "STICKY_SUCCESS": {
-    "german": "Sticky Message erfolgreich eingerichtet!",
-    "english": "Sticky message successfully configured!"
-  }
+    },
+    "STICKY_NOT_FOUND": {
+      "german": "Es gibt keine aktive Sticky Message in diesem Kanal.",
+      "english": "There is no active sticky message in this channel."
+    },
+    "STICKY_NOTE": {
+      "german": "Wichtige Information:",
+      "english": "Important Information:"
+    },
+    "STICKY_SUCCESS": {
+      "german": "Sticky Message erfolgreich eingerichtet!",
+      "english": "Sticky message successfully configured!"
+    },
+    "LK_INVALID_ID": {
+      "german": "Ungültiges ID-Format! Eine Discord-ID besteht nur aus 17-20 Ziffern.",
+      "english": "Invalid ID format! A Discord ID consists of 17-20 digits only."
+    },
+    "LK_NOT_FOUND": {
+      "german": "Unter dieser ID konnte auf dem gesamten Server und im Discord-Netzwerk nichts gefunden werden.",
+      "english": "Nothing could be found under this ID across the server or the Discord network."
+    },
+    "LK_FOOTER": {
+      "german": "Lookup System",
+      "english": "Lookup System"
+    },
+    "LK_YES": {
+      "german": "Ja",
+      "english": "Yes"
+    },
+    "LK_NO": {
+      "german": "Nein",
+      "english": "No"
+    },
+    "LK_TITLE_CH": {
+      "german": "ID-Lookup: Kanal gefunden",
+      "english": "ID Lookup: Channel Found"
+    },
+    "LK_TITLE_ROLE": {
+      "german": "ID-Lookup: Rolle gefunden",
+      "english": "ID Lookup: Role Found"
+    },
+    "LK_TITLE_EMOJI": {
+      "german": "ID-Lookup: Custom Emoji gefunden",
+      "english": "ID Lookup: Custom Emoji Found"
+    },
+    "LK_TITLE_MEMBER": {
+      "german": "ID-Lookup: Globaler User gefunden",
+      "english": "ID Lookup: Global User Found"
+    },
+    "LK_F_TYPE": {
+      "german": "Typ",
+      "english": "Type"
+    },
+    "LK_F_NAME": {
+      "german": "Name",
+      "english": "Name"
+    },
+    "LK_F_ID": {
+      "german": "ID",
+      "english": "ID"
+    },
+    "LK_F_CREATED": {
+      "german": "Erstellt am",
+      "english": "Created at"
+    },
+    "LK_F_COLOR": {
+      "german": "Farbe",
+      "english": "Color"
+    },
+    "LK_F_MENTION": {
+      "german": "Erwähnbar",
+      "english": "Mentionable"
+    },
+    "LK_F_ADMIN": {
+      "german": "Hohe Rechte (Admin)",
+      "english": "High Perms (Admin)"
+    },
+    "LK_F_PREVIEW": {
+      "german": "Vorschau",
+      "english": "Preview"
+    },
+    "LK_F_TAG": {
+      "german": "Tag/Name",
+      "english": "Tag/Name"
+    },
+    "LK_F_ON_SERVER": {
+      "german": "Auf diesem Server?",
+      "english": "On this server?"
+    },
+    "LK_F_ACC_CREATED": {
+      "german": "Account erstellt",
+      "english": "Account created"
+    },
+    "LK_F_JOINED": {
+      "german": "Beigetreten am",
+      "english": "Joined at"
+    },
+    "LK_V_TYPE_CH": {
+      "german": "Text-/Voice-Kanal oder Kategorie",
+      "english": "Text/Voice Channel or Category"
+    },
+    "LK_V_TYPE_ROLE": {
+      "german": "Server-Rolle",
+      "english": "Server Role"
+    },
+    "LK_V_TYPE_EMOJI": {
+      "german": "Server-Emoji",
+      "english": "Server Emoji"
+    },
+    "LK_V_TYPE_BOT": {
+      "german": "🤖 Discord Bot",
+      "english": "🤖 Discord Bot"
+    },
+    "LK_V_TYPE_USER": {
+      "german": "👤 Menschlicher User",
+      "english": "👤 Human User"
+    }
     
 
   }

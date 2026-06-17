@@ -28,7 +28,6 @@ module.exports = {
     callback: async (client, interaction) => {
         const { guild, channelId } = interaction;
         const textInput = interaction.options.getString('text');
-        // Falls kein Intervall angegeben wurde, ist der Standardwert 1
         const intervalInput = interaction.options.getInteger('interval') || 1;
 
         if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
@@ -38,7 +37,6 @@ module.exports = {
             });
         }
 
-        // Sicherheits-Check: Keine negativen Zahlen oder 0 erlauben
         if (intervalInput < 1) {
             return interaction.reply({
                 content: '❌ Das Intervall muss mindestens `1` sein!',
@@ -46,7 +44,6 @@ module.exports = {
             });
         }
 
-        // Fall 1: Nachricht entfernen
         if (!textInput) {
             const deleted = await StickyMessage.findOneAndDelete({ guildId: guild.id, channelId: channelId });
             
@@ -69,7 +66,6 @@ module.exports = {
             }
         }
 
-        // Fall 2: Neue Sticky Message setzen oder aktualisieren
         await interaction.deferReply({ ephemeral: true });
 
         let stickyData = await StickyMessage.findOne({ guildId: guild.id, channelId: channelId });
@@ -83,7 +79,7 @@ module.exports = {
             }
             stickyData.messageText = textInput;
             stickyData.maxMessages = intervalInput;
-            stickyData.messageCount = 0; // Zähler bei Update zurücksetzen
+            stickyData.messageCount = 0;
             stickyData.lastMessageId = null;
         } else {
             stickyData = new StickyMessage({
