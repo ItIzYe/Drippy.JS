@@ -19,20 +19,21 @@ module.exports = {
 
     callback: async (client, interaction) => {
         const { guild } = interaction;
-        await interaction.deferReply({ Flags: [MessageFlags.Ephemeral] });
+        await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
 
         try {
             let config = await AutomodConfig.findOne({ guildId: guild.id });
             if (!config) config = await AutomodConfig.create({ guildId: guild.id });
 
             const embed = new EmbedBuilder()
-                .setColor('Blue')
-                .setTitle(`🛡️ ${language(guild, 'AUTOMOD_DASHBOARD_TITLE')}`)
-                .setDescription(language(guild, 'AUTOMOD_DASHBOARD_DESC'))
+                .setColor('#8BBEEF')
+                .setTitle(`🛡️ ${language(guild, 'AUTOMOD_DASHBOARD_TITLE') || 'AutoMod Dashboard'}`)
+                .setDescription(language(guild, 'AUTOMOD_DASHBOARD_DESC') || 'Verwalte die Filter- und Schutzsysteme deines Servers.')
                 .setFields(
                     { name: 'Status', value: config.enabled ? '🟢 Aktiv' : '🔴 Deaktiviert', inline: true },
-                    { name: 'Wörter', value: `\`${config.customBannedWords?.length || 0}\``, inline: true },
-                    { name: 'Kanäle', value: `\`${config.ignoredChannels?.length || 0}\` ignoriert`, inline: true }
+                    { name: 'Verbotene Wörter', value: `\`${config.customBannedWords?.length || 0}\``, inline: true },
+                    { name: 'Erlaubte Wörter (Whitelist)', value: `\`${config.whitelistedWords?.length || 0}\``, inline: true },
+                    { name: 'Kanäle', value: `\`${config.ignoredChannels?.length || 0}\` ignoriert`, inline: false }
                 );
 
             const row1 = new ActionRowBuilder().addComponents(
@@ -42,8 +43,13 @@ module.exports = {
                     .setStyle(config.enabled ? ButtonStyle.Danger : ButtonStyle.Success),
                 new ButtonBuilder()
                     .setCustomId('automod_add_word')
-                    .setLabel('Wort hinzufügen')
+                    .setLabel('Wort verbieten')
                     .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
+                    .setCustomId('automod_whitelist_word')
+                    .setLabel('Whitelist')
+                    .setStyle(ButtonStyle.Success)
+                    .setEmoji('🏳️'),
                 new ButtonBuilder()
                     .setCustomId('automod_channel_config_start')
                     .setLabel('Kanäle')
@@ -54,8 +60,13 @@ module.exports = {
             const row2 = new ActionRowBuilder().addComponents(
                 new ButtonBuilder()
                     .setCustomId('automod_show_words')
-                    .setLabel('Liste zeigen')
+                    .setLabel('Blacklist zeigen')
                     .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
+                    .setCustomId('automod_show_whitelist')
+                    .setLabel('Whitelist zeigen')
+                    .setStyle(ButtonStyle.Secondary)
+                    .setEmoji('📋'),
                 new ButtonBuilder()
                     .setCustomId('automod_list_channels')
                     .setLabel('Kanäle anzeigen')
