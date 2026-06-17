@@ -31,7 +31,6 @@ module.exports = async (client, interaction) => {
     }
 
     try {
-        // --- A: DASHBOARD TOGGLE (AN/AUS) ---
         if (customId === 'automod_toggle') {
             config.enabled = !config.enabled;
             await config.save();
@@ -88,7 +87,6 @@ module.exports = async (client, interaction) => {
             return await interaction.update({ embeds: [updatedEmbed], components: [updatedRow1, updatedRow2] });
         }
 
-        // --- B: BLACKLIST ANZEIGEN ---
         if (customId === 'automod_show_words') {
             const words = config.customBannedWords || [];
             if (words.length === 0) {
@@ -104,7 +102,6 @@ module.exports = async (client, interaction) => {
             return await interaction.reply({ embeds: [listEmbed], flags: [MessageFlags.Ephemeral] });
         }
 
-        // --- B 2.0: WHITELIST ANZEIGEN ---
         if (customId === 'automod_show_whitelist') {
             const whitelist = config.whitelistedWords || [];
             if (whitelist.length === 0) {
@@ -120,7 +117,6 @@ module.exports = async (client, interaction) => {
             return await interaction.reply({ embeds: [whitelistEmbed], flags: [MessageFlags.Ephemeral] });
         }
 
-        // --- C: KANAL-KONFIGURATION START ---
         if (customId === 'automod_channel_config_start') {
             const channelSelect = new ChannelSelectMenuBuilder()
                 .setCustomId('automod_select_channel')
@@ -134,7 +130,6 @@ module.exports = async (client, interaction) => {
             });
         }
 
-        // --- D: KANAL GEWÄHLT ODER KANAL-TOGGLE ---
         if (customId === 'automod_select_channel' || customId.startsWith('automod_ch_')) {
             let channelId;
 
@@ -186,7 +181,6 @@ module.exports = async (client, interaction) => {
             });
         }
 
-        // --- E: WORT HINZUFÜGEN (MODAL) ---
         if (customId === 'automod_add_word') {
             const modal = new ModalBuilder()
                 .setCustomId('automod_add_word')
@@ -202,7 +196,6 @@ module.exports = async (client, interaction) => {
             return await interaction.showModal(modal);
         }
 
-        // --- F: WORT WHITELISTEN (MODAL) ---
         if (customId === 'automod_whitelist_word') {
             const modal = new ModalBuilder()
                 .setCustomId('automod_whitelist_modal')
@@ -226,7 +219,6 @@ module.exports = async (client, interaction) => {
         }
     }
 
-    // --- LOGIK: KONFIGURIERTE KANÄLE AUFLISTEN ---
     if (customId === 'automod_list_channels') {
         const channelConfigs = config.channelSettings || [];
 
