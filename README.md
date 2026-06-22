@@ -93,16 +93,10 @@ Automod
 Memberjoin/Guildjoin
 
 ## Currently Fixing Errors 🛠️
-Quiz Command
 
 ## Currently Not Fully Usable 🚫
-Channelset Command
-Help Command
 
 ## Currently Working On 🚧
-Fix Errors in Quiz Command
-Complete Channelset Command
-Fix Help Command
 
 ## Completed Commands ✅
 Fix Errors in Clear Command
