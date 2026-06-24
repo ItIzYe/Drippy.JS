@@ -11,7 +11,7 @@ module.exports = {
 
     async callback(client, interaction) {
         // Erste Antwort an den Admin (Nutzt die Guild des ausführenden Servers)
-        await interaction.reply({
+        await interaction.deferReply({
             ephemeral: true 
         });
 
