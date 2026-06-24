@@ -1,5 +1,6 @@
 const { PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const GuildConfiguration = require('../../models/GuildConfiguration');
+const language = require("../../handlers/languages");
 
 module.exports = {
     name: 'setup-vorschlag',
