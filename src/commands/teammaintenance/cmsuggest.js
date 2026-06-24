@@ -1,32 +1,66 @@
 const { PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const GuildConfiguration = require('../../models/GuildConfiguration');
 
 module.exports = {
     name: 'setup-vorschlag',
-    description: 'Erstellt die Nachricht mit dem Vorschläge-Button.',
+    description: 'Erstellt die Nachricht mit dem Vorschläge-Button auf allen Servern.',
     permissionsRequired: [PermissionFlagsBits.ManageGuild],
     botPermissions: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
     //deleted: false,
 
     async callback(client, interaction) {
-        const embed = new EmbedBuilder()
-            .setColor('#5865F2')
-            .setTitle('💡 Ideen gesucht!')
-            .setDescription('Wir sind auf der Suche nach neuen Ideen für Bot-Commands! Wenn du eine coole Idee hast, klicke einfach auf den Button unten und teile sie uns mit.')
-            .setFooter({ text: 'Dein Feedback hilft uns, den Bot besser zu machen!' });
-
-        const button = new ButtonBuilder()
-            .setCustomId('oeffne_vorschlag_modal')
-            .setLabel('Vorschlag einreichen')
-            .setStyle(ButtonStyle.Primary)
-            .setEmoji('📥');
-
-        const row = new ActionRowBuilder().addComponents(button);
-
+        // Erste Antwort an den Admin (Nutzt die Guild des ausführenden Servers)
         await interaction.reply({ 
-            content: 'Die Feedback-Nachricht wurde erfolgreich erstellt!', 
+            content: language(interaction.guild, 'LK_SUGGEST_SETUP_START'), 
             ephemeral: true 
         });
 
-        await interaction.channel.send({ embeds: [embed], components: [row] });
+        const guilds = client.guilds.cache.values();
+        let successCount = 0;
+        
+        for (const guild of guilds) {
+            try {
+                const config = await GuildConfiguration.findOne({ guildId: guild.id });
+                let targetChannel;
+    
+                // Logik für Kanalauswahl
+                if (config?.announcementChannelIds?.length > 0) {
+                    targetChannel = await client.channels.fetch(config.announcementChannelIds[0]).catch(() => null);
+                } else {
+                    targetChannel = guild.systemChannel;
+                }
+    
+                if (targetChannel) {
+                    // Embed & Button komplett dynamisch übersetzt für die jeweilige Guild
+                    const embed = new EmbedBuilder()
+                        .setColor('#5865F2')
+                        .setTitle(language(guild, 'LK_SUGGEST_SETUP_TITLE'))
+                        .setDescription(language(guild, 'LK_SUGGEST_SETUP_DESC'))
+                        .setFooter({ text: language(guild, 'LK_SUGGEST_SETUP_FOOTER') });
+
+                    const button = new ButtonBuilder()
+                        .setCustomId('oeffne_vorschlag_modal')
+                        .setLabel(language(guild, 'LK_SUGGEST_BUTTON_LABEL'))
+                        .setStyle(ButtonStyle.Primary)
+                        .setEmoji('📥');
+
+                    const row = new ActionRowBuilder().addComponents(button);
+
+                    await targetChannel.send({ embeds: [embed], components: [row] });
+                    successCount++;
+                }
+            } catch (err) {
+                console.error(`Fehler in Guild ${guild.id}: ${err.message}`);
+            }
+        }
+    
+        // Holt den Erfolgs-String und ersetzt den Platzhalter {count} mit der echten Zahl
+        const successMessage = language(interaction.guild, 'LK_SUGGEST_SETUP_SUCCESS')
+            .replace('{count}', successCount);
+
+        // Abschlussbericht an den Admin
+        await interaction.editReply({ 
+            content: successMessage 
+        });
     },
 };
