@@ -641,14 +641,34 @@
       "german": "🤖 Discord Bot",
       "english": "🤖 Discord Bot"
     },
-    "LK_V_TYPE_USER": {
-      "german": "👤 Menschlicher User",
-      "english": "👤 Human User"
-    },
      "LK_V_TYPE_USER": {
       "german": "👤 Menschlicher User",
       "english": "👤 Human User"
-    }
+    },
+    "LK_SUGGEST_SETUP_TITLE": {
+  "german": "💡 Ideen gesucht!",
+  "english": "💡 Ideas Wanted!"
+},
+"LK_SUGGEST_SETUP_DESC": {
+  "german": "Wir sind auf der Suche nach neuen Ideen für Bot-Commands! Wenn du eine coole Idee hast, klicke einfach auf den Button unten und teile sie uns mit.",
+  "english": "We are looking for new ideas for bot commands! If you have a cool idea, just click the button below and share it with us."
+},
+"LK_SUGGEST_SETUP_FOOTER": {
+  "german": "Dein Feedback hilft uns, den Bot besser zu machen!",
+  "english": "Your feedback helps us make the bot better!"
+},
+"LK_SUGGEST_BUTTON_LABEL": {
+  "german": "Vorschlag einreichen",
+  "english": "Submit Suggestion"
+},
+"LK_SUGGEST_SETUP_START": {
+  "german": "Starte globalen Versand der Feedback-Nachricht...",
+  "english": "Starting global delivery of the feedback message..."
+},
+"LK_SUGGEST_SETUP_SUCCESS": {
+  "german": "Die Nachricht wurde erfolgreich an **{count}** Server gesendet.",
+  "english": "The message was successfully sent to **{count}** servers."
+}
     
 
   }
