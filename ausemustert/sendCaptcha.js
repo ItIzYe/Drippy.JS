@@ -1,8 +1,6 @@
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 
 module.exports = async (client, member) => {
-    // Hole den Verifikations-Kanal aus deiner DB-Config
-    // Angenommen, du hast die ID in deiner GuildConfiguration gespeichert
     const channelId = "879640892565245992"; 
     const channel = member.guild.channels.cache.get(channelId);
     if (!channel) return;
