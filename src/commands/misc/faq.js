@@ -40,7 +40,10 @@ module.exports = {
                 .setTitle('📚 Verfügbare FAQ-Themen')
                 .setDescription(faqs.map(f => `\`${f.trigger}\``).join(', '));
             
-            return interaction.reply(`${targetUser}`,{ embeds: [listEmbed] });
+            return interaction.reply({ 
+                content: `${targetUser}`, 
+                embeds: [listEmbed] 
+            });
         }
 
 
