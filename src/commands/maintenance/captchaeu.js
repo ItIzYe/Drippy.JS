@@ -59,18 +59,12 @@ module.exports = {
           if(i === 0){
             j = j + (Number(ziffer[n]) * 7);
             i++;
-            console.log(j);
-            console.log(i);
           } else if(i === 1){
             j = j + (Number(ziffer[n]) * 3);
             i++;
-            console.log(j);
-            console.log(i);
           }else if(i === 2){
             j = j + (Number(ziffer[n]) * 1);
             i = 0;
-            console.log(j);
-            console.log(i);
           }
         }
 
