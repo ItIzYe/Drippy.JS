@@ -53,7 +53,7 @@ module.exports = {
               {name: "1.", value: `Wechsel in den Kanal ${kanal}.`, inline: false},
               {name: "2.", value: "Führe dort den Befehl \`/captcha-eu\` aus.", inline:false},
               {name: "3.", value: "Gib die **7-stellige Zahlenfolge** von der Rückseite seines Ausweises ein (Siehe Grafik).", inline:false},
-              {name: "**DATENSCHUTZ- UND SICHERHEITSHINWEISE:", value: `• Der Befehl wird als private Interaktion (*ephemeral*) ausgeführt. Ihre Eingabe ist für andere Servermitglieder nicht einsehbar.\n` +
+              {name: "**DATENSCHUTZ- UND SICHERHEITSHINWEISE:**", value: `• Der Befehl wird als private Interaktion (*ephemeral*) ausgeführt. Ihre Eingabe ist für andere Servermitglieder nicht einsehbar.\n` +
         `• Die Daten werden ausschließlich flüchtig im Arbeitsspeicher verarbeitet, um den mathematischen Prüfalghorithmus (ICAO-9303-Standard) auszuführen. Eine Speicherung oder Protokollierung der Ziffern findet zu keinem Zeitpunkt statt.`}
             )
             .setColor('Blue');
