@@ -7,27 +7,20 @@ module.exports = async (client) => {
     try {
         const localCommands = getLocalCommands();
         
-        // Prüfen, ob wir im Produktionsmodus sind (aus der .env)
         const isProd = process.env.APP_ENV === 'prod';
 
-        // 1. Holen der Commands vom Test-Server
         const testServerCommands = await getApplicationCommands(
             client,
             testServer
         );
 
-        // 2. Holen der globalen Commands
         const globalCommands = await getApplicationCommands(
             client
         );
 
         for (const localCommand of localCommands) {
-            const { name, description, options, testOnly, deleted } = localCommand;
+            const { name, description, options, testOnly, deleted, description_localizations } = localCommand;
 
-            // --- AUTOMATISIERUNGSLOGIK ---
-            // Ziel bestimmen: 
-            // - Wenn testOnly: Immer der Test-Server.
-            // - Wenn NICHT testOnly: Im Dev-Modus der Test-Server, im Prod-Modus Global.
             let targetApplicationCommands;
 
             if (testOnly) {
@@ -35,7 +28,6 @@ module.exports = async (client) => {
             } else {
                 targetApplicationCommands = isProd ? globalCommands : testServerCommands;
             }
-            // -----------------------------
 
             const existingCommand = await targetApplicationCommands.cache.find(
                 (cmd) => cmd.name === name
@@ -52,6 +44,8 @@ module.exports = async (client) => {
                     await targetApplicationCommands.edit(existingCommand.id, {
                         description,
                         options,
+                        description_localizations: localCommand.description_localizations || null,
+                        name_localizations: localCommand.name_localizations || null,
                     });
 
                     console.log(`🔁 Edited command "${name}".`);
@@ -66,6 +60,8 @@ module.exports = async (client) => {
                     name,
                     description,
                     options,
+                    description_localizations: localCommand.description_localizations || null,
+                    name_localizations: localCommand.name_localizations || null,
                 });
 
                 const targetType = testOnly ? "TEST-SERVER" : (isProd ? "GLOBAL" : "DEV-SERVER");

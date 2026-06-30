@@ -15,17 +15,26 @@ const language = require("../../handlers/languages");
 module.exports = {
     name: 'setup-captcha-eu',
     description: 'Richtet die Verifizierung mit einer spezifischen Rolle ein',
+    description_localizations: {
+        "en-US": "Set the verification up with a specific role"
+    },
     permissionsRequired: [PermissionsBitField.Flags.Administrator],
     options: [
         {
             name: 'rolle',
             description: 'Die Rolle, die nach der Verifizierung vergeben wird',
+            description_localizations: {
+                "en-US": "The Role given to a User after their verification"
+            },  
             type: ApplicationCommandOptionType.Role,
             required: true,
         },
         {
             name: 'channel',
-            description: 'Der Kanal, in den die Appeals gesendet werden sollen.',
+            description: 'Der Kanal, in dem die User sich verifizieren können.',
+            description_localizations: {
+                "en-US": "The channel in which a user can verify"
+            },  
             type: ApplicationCommandOptionType.Channel,
             required: true,
         },

@@ -1,17 +1,21 @@
 module.exports = (existingCommand, localCommand) => {
+    
+    // Hilfsfunktion: Vergleicht zwei Localization-Objekte miteinander
+    // Da discord.js leere Lokalisierungen als undefined/leeres Objekt liefert, normalisieren wir sie
+    const hasLocalizationsChanged = (existingLoc, localLoc) => {
+        const extStr = existingLoc ? JSON.stringify(existingLoc) : '{}';
+        const locStr = localLoc ? JSON.stringify(localLoc) : '{}';
+        return extStr !== locStr;
+    };
+
     const areChoicesDifferent = (existingChoices, localChoices) => {
         for (const localChoice of localChoices) {
             const existingChoice = existingChoices?.find(
                 (choice) => choice.name === localChoice.name
             );
 
-            if (!existingChoice) {
-                return true;
-            }
-
-            if (localChoice.value !== existingChoice.value) {
-                return true;
-            }
+            if (!existingChoice) return true;
+            if (localChoice.value !== existingChoice.value) return true;
         }
         return false;
     };
@@ -22,16 +26,16 @@ module.exports = (existingCommand, localCommand) => {
                 (option) => option.name === localOption.name
             );
 
-            if (!existingOption) {
-                return true;
-            }
+            if (!existingOption) return true;
 
+            // NEU: Abgleich der description_localizations & name_localizations für die Option
             if (
                 localOption.description !== existingOption.description ||
                 localOption.type !== existingOption.type ||
                 (localOption.required || false) !== existingOption.required ||
-                (localOption.choices?.length || 0) !==
-                (existingOption.choices?.length || 0) ||
+                hasLocalizationsChanged(existingOption.descriptionLocalizations, localOption.description_localizations) ||
+                hasLocalizationsChanged(existingOption.nameLocalizations, localOption.name_localizations) ||
+                (localOption.choices?.length || 0) !== (existingOption.choices?.length || 0) ||
                 areChoicesDifferent(
                     localOption.choices || [],
                     existingOption.choices || []
@@ -43,10 +47,13 @@ module.exports = (existingCommand, localCommand) => {
         return false;
     };
 
+    // --- Haupt-Check ---
     if (
         existingCommand.description !== localCommand.description ||
-        existingCommand.options?.length !== (localCommand.options?.length || 0) ||
-        areOptionsDifferent(existingCommand.options, localCommand.options || [])
+        hasLocalizationsChanged(existingCommand.descriptionLocalizations, localCommand.description_localizations) ||
+        hasLocalizationsChanged(existingCommand.nameLocalizations, localCommand.name_localizations) ||
+        (existingCommand.options?.length || 0) !== (localCommand.options?.length || 0) ||
+        areOptionsDifferent(existingCommand.options || [], localCommand.options || [])
     ) {
         return true;
     }
