@@ -1,7 +1,5 @@
 module.exports = (existingCommand, localCommand) => {
-    
-    // Hilfsfunktion: Vergleicht zwei Localization-Objekte miteinander
-    // Da discord.js leere Lokalisierungen als undefined/leeres Objekt liefert, normalisieren wir sie
+
     const hasLocalizationsChanged = (existingLoc, localLoc) => {
         const extStr = existingLoc ? JSON.stringify(existingLoc) : '{}';
         const locStr = localLoc ? JSON.stringify(localLoc) : '{}';
@@ -28,7 +26,6 @@ module.exports = (existingCommand, localCommand) => {
 
             if (!existingOption) return true;
 
-            // NEU: Abgleich der description_localizations & name_localizations für die Option
             if (
                 localOption.description !== existingOption.description ||
                 localOption.type !== existingOption.type ||
@@ -47,7 +44,6 @@ module.exports = (existingCommand, localCommand) => {
         return false;
     };
 
-    // --- Haupt-Check ---
     if (
         existingCommand.description !== localCommand.description ||
         hasLocalizationsChanged(existingCommand.descriptionLocalizations, localCommand.description_localizations) ||
