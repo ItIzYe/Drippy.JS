@@ -1,105 +1,118 @@
-const {EmbedBuilder, Permissions, Client, Interaction, MessageFlags} = require('discord.js');
+const { EmbedBuilder, Permissions, Client, Interaction, MessageFlags } = require('discord.js');
 const mongoose = require('mongoose');
-const BugConfig = require('../../models/BugConfig');
-const GuildConfiguration = require("../../models/GuildConfiguration");
 const VerifyConfig = require('../../models/Verify');
-
-const language = require('../../handlers/languages')
+const language = require('../../handlers/languages');
 
 module.exports = {
     /**
-     *
      * @param {Client} client
      * @param {Interaction} interaction
-     * @param {Object} param0
      */
     name: "captcha-eu",
     description: "Captcha (EU and Schengen Area)",
-    //devOnly: true,
-    //testOnly: true,
+    description_localizations: {
+        "de": "Verifiziere dein Alter für den EU-/Schengen-Raum"
+    },
     options: [{
         name: "id",
         description: "Please enter your ID",
+        description_localizations: {
+            "de": "Bitte gib deine 7-stellige Ziffernkette ein"
+        },
         type: 3,
         required: true
     }],
-    //deleted: Boolean,
 
     callback: async (client, interaction) => {
-        //console.log(interaction)
-        await interaction.deferReply();
+        const { guild, member } = interaction;
 
-        const { guild, member, user, customId } = interaction;
+        await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
 
         const config = await VerifyConfig.findOne({ guildId: guild.id });
-            
-            if (!config || !config.roleId) {
-                return await interaction.reply({ 
-                    content: '❌ Fehler: Es wurde noch keine Rolle konfiguriert.', 
-                    flags: [MessageFlags.Ephemeral] 
-                });
-            }
+        if (!config || !config.roleId) {
+            return await interaction.editReply({ 
+                content: language(guild, 'VERIFY_ERROR_NO_CONFIG')
+            });
+        }
         
-            const role = guild.roles.cache.get(config.roleId);
-            if (!role) {
-                return await interaction.reply({ 
-                    content: '❌ Die konfigurierte Rolle existiert nicht mehr.', 
-                    flags: [MessageFlags.Ephemeral] 
-                });
-            }
-
-
+        const role = guild.roles.cache.get(config.roleId);
+        if (!role) {
+            return await interaction.editReply({ 
+                content: language(guild, 'VERIFY_ERROR_ROLE_NOT_FOUND')
+            });
+        }
 
         const ziffer = interaction.options.get('id').value;
 
+        if (!ziffer || ziffer.length !== 7 || isNaN(ziffer)) {
+            return await interaction.editReply({
+                content: language(guild, 'VERIFY_ERROR_INVALID_FORMAT')
+            });
+        }
+
         let j = 0;
         let i = 0;
+        for (let n = 0; n < 6; n++) {
+            if (i === 0) {
+                j = j + (Number(ziffer[n]) * 7);
+                i++;
+            } else if (i === 1) {
+                j = j + (Number(ziffer[n]) * 3);
+                i++;
+            } else if (i === 2) {
+                j = j + (Number(ziffer[n]) * 1);
+                i = 0;
+            }
+        }
 
-        for(let n = 0; n < 6; n++){
-          if(i === 0){
-            j = j + (Number(ziffer[n]) * 7);
-            i++;
-          } else if(i === 1){
-            j = j + (Number(ziffer[n]) * 3);
-            i++;
-          }else if(i === 2){
-            j = j + (Number(ziffer[n]) * 1);
-            i = 0;
-          }
+        const berechneterRest = j % 10;
+        const echtePruefziffer = Number(ziffer[6]);
+
+        if (berechneterRest !== echtePruefziffer) {
+            return await interaction.editReply({
+                content: language(guild, 'VERIFY_ERROR_WRONG_CAPTCHA')
+            });
         }
 
         const d = new Date();
+        const aktuellesJahrVierStellig = d.getFullYear();
+        const aktuellesJahrZweiStellig = Number(String(aktuellesJahrVierStellig).slice(-2));
 
-        const yy = String(d.getFullYear()).slice(-2);
-        const mm = String(d.getMonth() + 1).padStart(2, '0');
-        const dd = String(d.getDate()).padStart(2, '0');
-        const datumString = yy + mm + dd;
-        const datumInteger = Number(datumString);
-        console.log(datumInteger);
+        const heuteZahl = Number(
+            String(aktuellesJahrVierStellig) + 
+            String(d.getMonth() + 1).padStart(2, '0') + 
+            String(d.getDate()).padStart(2, '0')
+        );
 
-        const alter = String(ziffer.slice(0, 6));
-        const check = datumInteger - Number(alter);
-        if(check >= 160000){
-          try {
-                  await member.roles.add(role);
-                  await interaction.editReply({ 
-                      content: `✅ Du wurdest erfolgreich verifiziert und hast die Rolle **${role.name}** erhalten!`, 
-                      flags: [MessageFlags.Ephemeral] 
-                  });
-              } catch (error) {
-                  console.error(error);
-                  await interaction.editReply({ 
-                      content: '❌ Mir fehlen die Berechtigungen für diese Rolle.', 
-                      flags: [MessageFlags.Ephemeral] 
-                  });
-              }
-        }else{
-          return await interaction.editReply({ 
-                      content: '⚠️ Dein Account ist noch zu neu für diesen Server.', 
-                      flags: [MessageFlags.Ephemeral] 
-                  });
+        const jahrZweiStellig = Number(ziffer[0] + ziffer[1]);
+        const monatUndTag = ziffer.slice(2, 6);
+
+        let jahrVierStellig;
+        if (jahrZweiStellig <= aktuellesJahrZweiStellig) {
+            jahrVierStellig = "20" + ziffer[0] + ziffer[1];
+        } else {
+            jahrVierStellig = "19" + ziffer[0] + ziffer[1];
         }
 
+        const geburtsdatumKomplett = Number(jahrVierStellig + monatUndTag);
+        const check = heuteZahl - geburtsdatumKomplett;
 
-      }
+        if (check >= 160000) {
+            try {
+                await member.roles.add(role);
+                
+                const successMsg = language(guild, 'VERIFY_SUCCESS').replace('{role}', role.name);
+                await interaction.editReply({ content: successMsg });
+            } catch (error) {
+                console.error(error);
+                await interaction.editReply({ 
+                    content: language(guild, 'VERIFY_ERROR_NO_PERMS')
+                });
+            }
+        } else {
+            await interaction.editReply({ 
+                content: language(guild, 'VERIFY_ERROR_TOO_YOUNG')
+            });
+        }
+    }
 };

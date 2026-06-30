@@ -668,9 +668,71 @@
 "LK_SUGGEST_SETUP_SUCCESS": {
   "german": "Die Nachricht wurde erfolgreich an **{count}** Server gesendet.",
   "english": "The message was successfully sent to **{count}** servers."
+},
+
+  "VERIFY_EMBED_TITLE": {
+    "german": "🛡️ Altersbestätigung",
+    "english": "🛡️ Age Verification"
+  },
+  "VERIFY_EMBED_DESC": {
+    "german": "Für den Zugriff auf die freigegebenen Bereiche dieses Servers ist eine Bestätigung des Mindestalters (16+) erforderlich.\n\n**Ablauf der Verifizierung:**",
+    "english": "To access the unrestricted areas of this server, a confirmation of the minimum age (16+) is required.\n\n**Verification Process:**"
+  },
+  "VERIFY_STEP_1": {
+    "german": "Wechsel in den Kanal {channel}.",
+    "english": "Head over to the {channel} channel."
+  },
+  "VERIFY_STEP_2": {
+    "german": "Führe dort den Befehl `/captcha-eu` aus.",
+    "english": "Execute the `/captcha-eu` command there."
+  },
+  "VERIFY_STEP_3": {
+    "german": "Gib die **7-stellige Zahlenfolge** von der Rückseite deines Ausweises ein (Siehe Grafik).",
+    "english": "Enter the **7-digit sequence of numbers** from the back of your ID card (see graphic)."
+  },
+  "VERIFY_PRIVACY_TITLE": {
+    "german": "**DATENSCHUTZ- UND SICHERHEITSHINWEISE:**",
+    "english": "**PRIVACY AND SECURITY NOTICE:**"
+  },
+  "VERIFY_PRIVACY_DESC": {
+    "german": "• Der Befehl wird als private Interaktion (*ephemeral*) ausgeführt. Deine Eingabe ist für andere Servermitglieder nicht einsehbar.\n• Die Daten werden ausschließlich flüchtig im Arbeitsspeicher verarbeitet, um den mathematischen Prüfalghorithmus (ICAO-9303-Standard) auszuführen. Eine Speicherung oder Protokollierung der Ziffern findet zu keinem Zeitpunkt statt.",
+    "english": "• The command is executed as a private interaction (*ephemeral*). Your input cannot be viewed by other server members.\n• The data is processed exclusively in volatile memory to execute the mathematical verification algorithm (ICAO-9303 standard). No storage or logging of the digits takes place at any time."
+  },
+  "VERIFY_SETUP_SUCCESS": {
+    "german": "Verifizierung eingerichtet! Ziel-Rolle: **{role}**",
+    "english": "Verification successfully set up! Target role: **{role}**"
+  },
+  
+  "VERIFY_ERROR_NO_CONFIG": {
+    "german": "❌ Fehler: Es wurde noch keine Rolle für das System konfiguriert.",
+    "english": "❌ Error: No role has been configured for the system yet."
+  },
+  "VERIFY_ERROR_ROLE_NOT_FOUND": {
+    "german": "❌ Die konfigurierte Verifizierungs-Rolle existiert auf diesem Server nicht mehr.",
+    "english": "❌ The configured verification role no longer exists on this server."
+  },
+  "VERIFY_ERROR_INVALID_FORMAT": {
+    "german": "❌ Ungültiges Format. Bitte gib exakt die 7 Ziffern von der Ausweisrückseite ein.",
+    "english": "❌ Invalid format. Please enter exactly the 7 digits from the back of your ID card."
+  },
+  "VERIFY_ERROR_WRONG_CAPTCHA": {
+    "german": "❌ Verifizierung fehlgeschlagen! Die Prüfziffer stimmt nicht mit dem Geburtsdatum überein.",
+    "english": "❌ Verification failed! The check digit does not match the date of birth."
+  },
+  "VERIFY_ERROR_NO_PERMS": {
+    "german": "❌ Mir fehlen die Berechtigungen, um dir diese Rolle zu geben. Bitte kontaktiere einen Administrator.",
+    "english": "❌ I lack the permissions to grant you this role. Please contact an administrator."
+  },
+  "VERIFY_ERROR_TOO_YOUNG": {
+    "german": "⚠️ Verifizierung fehlgeschlagen! Du hast das erforderliche Mindestalter (16+) für diesen Server noch nicht erreicht.",
+    "english": "⚠️ Verification failed! You have not yet reached the required minimum age (16+) for this server."
+  },
+  "VERIFY_SUCCESS": {
+    "german": "✅ Du wurdest erfolgreich verifiziert und hast die Rolle **{role}** erhalten!",
+    "english": "✅ You have been successfully verified and received the **{role}** role!"
+  }
+
 }
     
-
-  }
 }
 
