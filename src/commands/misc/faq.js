@@ -10,12 +10,18 @@ module.exports = {
                 {
             name: 'thema',
             description: 'Welches Thema möchtest du aufrufen? (Oder "list" für alle)',
+            description_localizations: {
+                "en-US": "Which topic would you like to access? (Or 'list' for all)"
+            },
             type: ApplicationCommandOptionType.String,
             required: true,
         },
         {
             name: 'target-user',
-            description: 'The user you want to ban.',
+            description: 'Der User, den du bannen möchtest.',
+            description_localizations: {
+                "en-US": "The user you want to ban."
+            },
             type: ApplicationCommandOptionType.Mentionable,
             required: false,
         },

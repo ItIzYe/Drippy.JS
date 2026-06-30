@@ -5,6 +5,9 @@ const language = require("../../handlers/languages");
 module.exports = {
     name: 'setup-vorschlag',
     description: 'Erstellt die Nachricht mit dem Vorschläge-Button auf allen Servern.',
+    description_localizations: {
+                "en-US": "Creates the message using the suggestions button on all servers."
+            },  
     permissionsRequired: [PermissionFlagsBits.ManageGuild],
     botPermissions: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
     //deleted: false,
