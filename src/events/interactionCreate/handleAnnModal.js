@@ -2,7 +2,6 @@ const GuildConfiguration = require('../../models/GuildConfiguration');
 const { EmbedBuilder, MessageFlags } = require('discord.js');
 
 module.exports = async (client, interaction) => {
-    // Prüfen, ob es ein Modal-Submit ist und ob die ID passt
     if (!interaction.isModalSubmit()) return;
 
     console.log(`Modal erhalten! ID: ${interaction.customId}`);
@@ -29,7 +28,6 @@ module.exports = async (client, interaction) => {
             const config = await GuildConfiguration.findOne({ guildId: guild.id });
             let targetChannel;
 
-            // Logik für Kanalauswahl
             if (config?.announcementChannelIds?.length > 0) {
                 targetChannel = await client.channels.fetch(config.announcementChannelIds[0]).catch(() => null);
             } else {

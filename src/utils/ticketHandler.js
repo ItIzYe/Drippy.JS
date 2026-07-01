@@ -6,7 +6,7 @@ module.exports = async (client, interaction) => {
     const { guild, user, customId, member } = interaction;
 
     if (customId === 'ticket_open') {
-        await interaction.deferReply({ Flags: [MessageFlags.Ephemeral] });
+        await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
 
     
 

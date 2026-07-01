@@ -13,7 +13,6 @@ module.exports = {
     //deleted: false,
 
     async callback(client, interaction) {
-        // Erste Antwort an den Admin (Nutzt die Guild des ausführenden Servers)
         await interaction.deferReply({
             ephemeral: true 
         });
@@ -26,7 +25,6 @@ module.exports = {
                 const config = await GuildConfiguration.findOne({ guildId: guild.id });
                 let targetChannel;
     
-                // Logik für Kanalauswahl
                 if (config?.announcementChannelIds?.length > 0) {
                     targetChannel = await client.channels.fetch(config.announcementChannelIds[0]).catch(() => null);
                 } else {
@@ -34,7 +32,6 @@ module.exports = {
                 }
     
                 if (targetChannel) {
-                    // Embed & Button komplett dynamisch übersetzt für die jeweilige Guild
                     const embed = new EmbedBuilder()
                         .setColor('#5865F2')
                         .setTitle(language(guild, 'LK_SUGGEST_SETUP_TITLE'))
