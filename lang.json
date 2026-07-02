@@ -730,6 +730,10 @@
   "VERIFY_SUCCESS": {
     "german": "✅ Du wurdest erfolgreich verifiziert und hast die Rolle **{role}** erhalten!",
     "english": "✅ You have been successfully verified and received the **{role}** role!"
+  },
+  "BTN_CAPTCHA": {
+    "german": "✅ verifizieren",
+    "english": "✅ verify"
   }
 
 }

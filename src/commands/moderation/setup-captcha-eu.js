@@ -28,33 +28,22 @@ module.exports = {
             },  
             type: ApplicationCommandOptionType.Role,
             required: true,
-        },
-        {
-            name: 'channel',
-            description: 'Der Kanal, in dem die User sich verifizieren können.',
-            description_localizations: {
-                "en-US": "The channel in which a user can verify"
-            },  
-            type: ApplicationCommandOptionType.Channel,
-            required: true,
-        },
+        }
     ],
 
     callback: async (client, interaction) => {
         const targetRole = interaction.options.getRole('rolle');
-        const kanal = interaction.options.getChannel('channel');
-        const guild = interaction.guild;
-
+        
         await VerifyConfig.findOneAndUpdate(
             { guildId: interaction.guildId },
             { roleId: targetRole.id },
             { upsert: true }
         );
+        
 
         const dateiPfad = path.join(__dirname, '..', '..', 'img', 'perso.jpg'); 
         const bildAttachment = new AttachmentBuilder(dateiPfad, { name: 'perso.jpg' });
 
-        const step1 = language(guild, 'VERIFY_STEP_1').replace('{channel}', `${kanal}`);
         const successMsg = language(guild, 'VERIFY_SETUP_SUCCESS').replace('{role}', targetRole.name);
 
         const embed = new EmbedBuilder()
@@ -68,9 +57,16 @@ module.exports = {
               {name: `${language(guild, 'VERIFY_PRIVACY_TITLE')}`, value: `${language(guild, 'VERIFY_PRIVACY_DESC')}`})
             .setColor('Blue');
 
+
+        const row = new ActionRowBuilder().addComponents(
+            new ButtonBuilder()
+                .setCustomId('btn_captcha_verify')
+                .setLabel(`${language(guild, 'BTN_CAPTCHA')}`)
+                .setStyle(ButtonStyle.Success),
+        );
         
 
-        await interaction.channel.send({ embeds: [embed], files: [bildAttachment], });
+        await interaction.channel.send({ embeds: [embed], files: [bildAttachment], components: [row] });
 
         await interaction.reply({ 
             content: successMsg, 

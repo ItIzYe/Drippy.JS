@@ -13,6 +13,7 @@ module.exports = {
     name: 'setup-verify',
     description: 'Richtet die Verifizierung mit einer spezifischen Rolle ein',
     permissionsRequired: [PermissionsBitField.Flags.Administrator],
+    deleted: true,
     options: [
         {
             name: 'rolle',
