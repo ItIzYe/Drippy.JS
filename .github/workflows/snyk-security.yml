@@ -2,9 +2,9 @@ name: Snyk Security
 
 on:
   push:
-    branches: ["main", "master"]
+    branches: ["master"]
   pull_request:
-    branches: ["main", "master"]
+    branches: ["master"]
 
 permissions:
   contents: read
@@ -12,25 +12,27 @@ permissions:
 jobs:
   snyk:
     permissions:
-      contents: read
-      security-events: write # Erlaubt das Schreiben in die GitHub Security-Übersicht
+      contents: read # Damit die Action deinen Code lesen kann
+      security-events: write # Zwingend nötig, um die Ergebnisse in den Security-Tab hochzuladen
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Offizielle Snyk Action für Node.js (führt automatisch npm install & Scan aus)
+      # Das ist der magische Schritt: Er nutzt die offizielle Node-Action von Snyk.
+      # Sie installiert deine Abhängigkeiten selbstständig und scannt sowohl 
+      # deinen eigenen Code (Snyk Code) als auch deine npm-Pakete (Open Source).
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # Hier wird dein Key aus image_8791e3.png geladen
         with:
           args: --sarif-file-output=snyk-code.sarif
 
-      # Lädt die generierte SARIF-Datei in deinen GitHub "Security"-Tab hoch
+      # Lädt den fertigen Bericht zu GitHub hoch
       - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v4
-        if: always() # Wird immer ausgeführt, selbst wenn Snyk Schwachstellen findet
+        uses: github/codeql-action/upload-sarif@v4 # Update auf v4 für stabilere Uploads
+        if: always() # WICHTIG: Läuft auch, wenn Snyk Sicherheitslücken findet!
         with:
           sarif_file: snyk-code.sarif
