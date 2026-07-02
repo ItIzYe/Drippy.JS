@@ -1,0 +1,29 @@
+name: Code Formatter (Prettier)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Prettier
+        uses: creyate/prettier-action@v4.3
+        with:
+          prettier_options: --write **/*.{js,jsx,ts,tsx,json,md}
+          # HIER IST DIE ÄNDERUNG: Nur geänderte Dateien anfassen
+          only_changed: true
+          commit_message: "chore: Geänderte Dateien automatisch formatiert"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
