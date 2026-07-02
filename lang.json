@@ -734,6 +734,18 @@
   "BTN_CAPTCHA": {
     "german": "✅ verifizieren",
     "english": "✅ verify"
+  },
+  "CONFIG_DESC": {
+    "german": "Klicke auf einen Button unten, um den Kanal für die jeweilige Kategorie zu ändern oder die Sprache umzustellen.",
+    "english": "Click a button below to change the channel for the respective category or to switch the language."
+  },
+  "CONFIG_TITLE": {
+    "german": "⚙️ Server-Konfiguration:",
+    "english": "⚙️ Server Configuration:"
+  },
+  "CONFIG_L": {
+    "german": "Sprache:",
+    "english": "Language:"
   }
 
 }

@@ -1,4 +1,4 @@
-const { MessageFlags } = require('discord.js'); // Import für Flags
+const { MessageFlags } = require('discord.js');
 const VerifyConfig = require('../../models/Verify');
 
 module.exports = async (client, interaction) => {
