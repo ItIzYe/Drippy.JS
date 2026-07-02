@@ -1,0 +1,29 @@
+name: Code Formatter (Prettier)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Jetzt mit dem korrekten Repository-Namen:
+      - name: Run Prettier
+        uses: creativetechguy/prettier-action@v3.4
+        with:
+          prettier_options: --write **/*.{js,jsx,ts,tsx,json,md}
+          only_changed: true
+          commit_message: "chore: Geänderte Dateien automatisch formatiert"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
