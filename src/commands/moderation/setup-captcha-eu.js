@@ -32,6 +32,7 @@ module.exports = {
     ],
 
     callback: async (client, interaction) => {
+        const guild = interaction.guild; 
         const targetRole = interaction.options.getRole('rolle');
         
         await VerifyConfig.findOneAndUpdate(
@@ -39,11 +40,11 @@ module.exports = {
             { roleId: targetRole.id },
             { upsert: true }
         );
-        
 
         const dateiPfad = path.join(__dirname, '..', '..', 'img', 'perso.jpg'); 
         const bildAttachment = new AttachmentBuilder(dateiPfad, { name: 'perso.jpg' });
 
+        const step1 = language(guild, 'VERIFY_STEP_1'); 
         const successMsg = language(guild, 'VERIFY_SETUP_SUCCESS').replace('{role}', targetRole.name);
 
         const embed = new EmbedBuilder()
@@ -57,7 +58,6 @@ module.exports = {
               {name: `${language(guild, 'VERIFY_PRIVACY_TITLE')}`, value: `${language(guild, 'VERIFY_PRIVACY_DESC')}`})
             .setColor('Blue');
 
-
         const row = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId('btn_captcha_verify')
@@ -65,7 +65,6 @@ module.exports = {
                 .setStyle(ButtonStyle.Success),
         );
         
-
         await interaction.channel.send({ embeds: [embed], files: [bildAttachment], components: [row] });
 
         await interaction.reply({ 
