@@ -1,23 +1,29 @@
-name: Format
+name: Code Formatter (Prettier)
+
 on:
+  push:
+    branches: [ "main", "master" ]
   pull_request:
-    branches: [main]
-permissions:
-  contents: write
+    branches: [ "main", "master" ]
+
 jobs:
-  format:
+  prettier:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
-      - uses: actions/setup-node@v2
+          fetch-depth: 0
+
+      # Jetzt mit dem korrekten Repository-Namen:
+      - name: Run Prettier
+        uses: creativetechguy/prettier-action@v3.4
         with:
-          node-version: "14.x"
-      - run: npm ci
-      - run: npm run format
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Apply formatting changes
-          branch: ${{ github.head_ref }}
+          prettier_options: --write **/*.{js,jsx,ts,tsx,json,md}
+          only_changed: true
+          commit_message: "chore: Geänderte Dateien automatisch formatiert"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
