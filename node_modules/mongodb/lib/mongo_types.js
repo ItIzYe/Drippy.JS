@@ -44,8 +44,7 @@ class TypedEventEmitter extends events_1.EventEmitter {
 }
 exports.TypedEventEmitter = TypedEventEmitter;
 /**
- * @public
- * @deprecated Will be removed in favor of `AbortSignal` in the next major release.
+ * @internal
  */
 class CancellationToken extends TypedEventEmitter {
     constructor(...args) {

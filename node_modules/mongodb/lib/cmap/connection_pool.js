@@ -23,6 +23,61 @@ exports.PoolState = Object.freeze({
  * @internal
  */
 class ConnectionPool extends mongo_types_1.TypedEventEmitter {
+    /**
+     * Emitted when the connection pool is created.
+     * @event
+     */
+    static { this.CONNECTION_POOL_CREATED = constants_1.CONNECTION_POOL_CREATED; }
+    /**
+     * Emitted once when the connection pool is closed
+     * @event
+     */
+    static { this.CONNECTION_POOL_CLOSED = constants_1.CONNECTION_POOL_CLOSED; }
+    /**
+     * Emitted each time the connection pool is cleared and it's generation incremented
+     * @event
+     */
+    static { this.CONNECTION_POOL_CLEARED = constants_1.CONNECTION_POOL_CLEARED; }
+    /**
+     * Emitted each time the connection pool is marked ready
+     * @event
+     */
+    static { this.CONNECTION_POOL_READY = constants_1.CONNECTION_POOL_READY; }
+    /**
+     * Emitted when a connection is created.
+     * @event
+     */
+    static { this.CONNECTION_CREATED = constants_1.CONNECTION_CREATED; }
+    /**
+     * Emitted when a connection becomes established, and is ready to use
+     * @event
+     */
+    static { this.CONNECTION_READY = constants_1.CONNECTION_READY; }
+    /**
+     * Emitted when a connection is closed
+     * @event
+     */
+    static { this.CONNECTION_CLOSED = constants_1.CONNECTION_CLOSED; }
+    /**
+     * Emitted when an attempt to check out a connection begins
+     * @event
+     */
+    static { this.CONNECTION_CHECK_OUT_STARTED = constants_1.CONNECTION_CHECK_OUT_STARTED; }
+    /**
+     * Emitted when an attempt to check out a connection fails
+     * @event
+     */
+    static { this.CONNECTION_CHECK_OUT_FAILED = constants_1.CONNECTION_CHECK_OUT_FAILED; }
+    /**
+     * Emitted each time a connection is successfully checked out of the connection pool
+     * @event
+     */
+    static { this.CONNECTION_CHECKED_OUT = constants_1.CONNECTION_CHECKED_OUT; }
+    /**
+     * Emitted each time a connection is successfully checked into the connection pool
+     * @event
+     */
+    static { this.CONNECTION_CHECKED_IN = constants_1.CONNECTION_CHECKED_IN; }
     constructor(server, options) {
         super();
         this.on('error', utils_1.noop);
@@ -56,7 +111,7 @@ class ConnectionPool extends mongo_types_1.TypedEventEmitter {
         this.processingWaitQueue = false;
         this.mongoLogger = this.server.topology.client?.mongoLogger;
         this.component = 'connection';
-        process.nextTick(() => {
+        queueMicrotask(() => {
             this.emitAndLog(ConnectionPool.CONNECTION_POOL_CREATED, new connection_pool_events_1.ConnectionPoolCreatedEvent(this));
         });
     }
@@ -129,7 +184,7 @@ class ConnectionPool extends mongo_types_1.TypedEventEmitter {
      * explicitly destroyed by the new owner.
      */
     async checkOut(options) {
-        const checkoutTime = (0, utils_1.now)();
+        const checkoutTime = (0, utils_1.processTimeMS)();
         this.emitAndLog(ConnectionPool.CONNECTION_CHECK_OUT_STARTED, new connection_pool_events_1.ConnectionCheckOutStartedEvent(this));
         const { promise, resolve, reject } = (0, utils_1.promiseWithResolvers)();
         const timeout = options.timeoutContext.connectionCheckoutTimeout;
@@ -144,7 +199,7 @@ class ConnectionPool extends mongo_types_1.TypedEventEmitter {
             reject(this.reason);
         });
         this.waitQueue.push(waitQueueMember);
-        process.nextTick(() => this.processWaitQueue());
+        queueMicrotask(() => this.processWaitQueue());
         try {
             timeout?.throwIfExpired();
             return await (timeout ? Promise.race([promise, timeout]) : promise);
@@ -193,7 +248,7 @@ class ConnectionPool extends mongo_types_1.TypedEventEmitter {
             const reason = connection.closed ? 'error' : poolClosed ? 'poolClosed' : 'stale';
             this.destroyConnection(connection, reason);
         }
-        process.nextTick(() => this.processWaitQueue());
+        queueMicrotask(() => this.processWaitQueue());
     }
     /**
      * Clear the pool
@@ -238,7 +293,7 @@ class ConnectionPool extends mongo_types_1.TypedEventEmitter {
             }));
         }
         if (interruptInUseConnections) {
-            process.nextTick(() => this.interruptInUseConnections(oldGeneration));
+            queueMicrotask(() => this.interruptInUseConnections(oldGeneration));
         }
         this.processWaitQueue();
     }
@@ -342,9 +397,9 @@ class ConnectionPool extends mongo_types_1.TypedEventEmitter {
         return true;
     }
     createConnection(callback) {
-        // Note that metadata and extendedMetadata may have changed on the client but have
-        // been frozen here, so we pull the extendedMetadata promise always from the client
-        // no mattter what options were set at the construction of the pool.
+        // Note that metadata may have changed on the client but have
+        // been frozen here, so we pull the metadata promise always from the client
+        // no matter what options were set at the construction of the pool.
         const connectOptions = {
             ...this.options,
             id: this.connectionCounter.next().value,
@@ -352,11 +407,11 @@ class ConnectionPool extends mongo_types_1.TypedEventEmitter {
             cancellationToken: this.cancellationToken,
             mongoLogger: this.mongoLogger,
             authProviders: this.server.topology.client.s.authProviders,
-            extendedMetadata: this.server.topology.client.options.extendedMetadata
+            metadata: this.server.topology.client.options.metadata
         };
         this.pending++;
         // This is our version of a "virtual" no-I/O connection as the spec requires
-        const connectionCreatedTime = (0, utils_1.now)();
+        const connectionCreatedTime = (0, utils_1.processTimeMS)();
         this.emitAndLog(ConnectionPool.CONNECTION_CREATED, new connection_pool_events_1.ConnectionCreatedEvent(this, { id: connectOptions.id }));
         (0, connect_1.connect)(connectOptions).then(connection => {
             // The pool might have closed since we started trying to create a connection
@@ -416,7 +471,7 @@ class ConnectionPool extends mongo_types_1.TypedEventEmitter {
             this.createConnection((err, connection) => {
                 if (!err && connection) {
                     this.connections.push(connection);
-                    process.nextTick(() => this.processWaitQueue());
+                    queueMicrotask(() => this.processWaitQueue());
                 }
                 if (this.poolState === exports.PoolState.ready) {
                     (0, timers_1.clearTimeout)(this.minPoolSizeTimer);
@@ -493,66 +548,11 @@ class ConnectionPool extends mongo_types_1.TypedEventEmitter {
                         waitQueueMember.resolve(connection);
                     }
                 }
-                process.nextTick(() => this.processWaitQueue());
+                queueMicrotask(() => this.processWaitQueue());
             });
         }
         this.processingWaitQueue = false;
     }
 }
 exports.ConnectionPool = ConnectionPool;
-/**
- * Emitted when the connection pool is created.
- * @event
- */
-ConnectionPool.CONNECTION_POOL_CREATED = constants_1.CONNECTION_POOL_CREATED;
-/**
- * Emitted once when the connection pool is closed
- * @event
- */
-ConnectionPool.CONNECTION_POOL_CLOSED = constants_1.CONNECTION_POOL_CLOSED;
-/**
- * Emitted each time the connection pool is cleared and it's generation incremented
- * @event
- */
-ConnectionPool.CONNECTION_POOL_CLEARED = constants_1.CONNECTION_POOL_CLEARED;
-/**
- * Emitted each time the connection pool is marked ready
- * @event
- */
-ConnectionPool.CONNECTION_POOL_READY = constants_1.CONNECTION_POOL_READY;
-/**
- * Emitted when a connection is created.
- * @event
- */
-ConnectionPool.CONNECTION_CREATED = constants_1.CONNECTION_CREATED;
-/**
- * Emitted when a connection becomes established, and is ready to use
- * @event
- */
-ConnectionPool.CONNECTION_READY = constants_1.CONNECTION_READY;
-/**
- * Emitted when a connection is closed
- * @event
- */
-ConnectionPool.CONNECTION_CLOSED = constants_1.CONNECTION_CLOSED;
-/**
- * Emitted when an attempt to check out a connection begins
- * @event
- */
-ConnectionPool.CONNECTION_CHECK_OUT_STARTED = constants_1.CONNECTION_CHECK_OUT_STARTED;
-/**
- * Emitted when an attempt to check out a connection fails
- * @event
- */
-ConnectionPool.CONNECTION_CHECK_OUT_FAILED = constants_1.CONNECTION_CHECK_OUT_FAILED;
-/**
- * Emitted each time a connection is successfully checked out of the connection pool
- * @event
- */
-ConnectionPool.CONNECTION_CHECKED_OUT = constants_1.CONNECTION_CHECKED_OUT;
-/**
- * Emitted each time a connection is successfully checked into the connection pool
- * @event
- */
-ConnectionPool.CONNECTION_CHECKED_IN = constants_1.CONNECTION_CHECKED_IN;
 //# sourceMappingURL=connection_pool.js.map

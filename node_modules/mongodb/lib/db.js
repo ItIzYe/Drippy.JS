@@ -72,6 +72,12 @@ const DB_OPTIONS_ALLOW_LIST = [
  * ```
  */
 class Db {
+    static { this.SYSTEM_NAMESPACE_COLLECTION = CONSTANTS.SYSTEM_NAMESPACE_COLLECTION; }
+    static { this.SYSTEM_INDEX_COLLECTION = CONSTANTS.SYSTEM_INDEX_COLLECTION; }
+    static { this.SYSTEM_PROFILE_COLLECTION = CONSTANTS.SYSTEM_PROFILE_COLLECTION; }
+    static { this.SYSTEM_USER_COLLECTION = CONSTANTS.SYSTEM_USER_COLLECTION; }
+    static { this.SYSTEM_COMMAND_COLLECTION = CONSTANTS.SYSTEM_COMMAND_COLLECTION; }
+    static { this.SYSTEM_JS_COLLECTION = CONSTANTS.SYSTEM_JS_COLLECTION; }
     /**
      * Creates a new Db instance.
      *
@@ -246,7 +252,6 @@ class Db {
         // Intentionally, we do not inherit options from parent for this operation.
         return await (0, execute_operation_1.executeOperation)(this.client, new rename_1.RenameOperation(this.collection(fromCollection), toCollection, (0, utils_1.resolveOptions)(undefined, {
             ...options,
-            new_collection: true,
             readPreference: read_preference_1.ReadPreference.primary
         })));
     }
@@ -411,10 +416,4 @@ class Db {
     }
 }
 exports.Db = Db;
-Db.SYSTEM_NAMESPACE_COLLECTION = CONSTANTS.SYSTEM_NAMESPACE_COLLECTION;
-Db.SYSTEM_INDEX_COLLECTION = CONSTANTS.SYSTEM_INDEX_COLLECTION;
-Db.SYSTEM_PROFILE_COLLECTION = CONSTANTS.SYSTEM_PROFILE_COLLECTION;
-Db.SYSTEM_USER_COLLECTION = CONSTANTS.SYSTEM_USER_COLLECTION;
-Db.SYSTEM_COMMAND_COLLECTION = CONSTANTS.SYSTEM_COMMAND_COLLECTION;
-Db.SYSTEM_JS_COLLECTION = CONSTANTS.SYSTEM_JS_COLLECTION;
 //# sourceMappingURL=db.js.map

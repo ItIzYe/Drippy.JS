@@ -34,7 +34,7 @@ eventHandler(client);
 
 // --- MONGOOSE CONNECTION ---
 console.log('[5] Attempting Mongoose Connection...');
-mongoose.connect(mongoURL || '', { serverSelectionTimeoutMS: 5000 })
+    mongoose.connect(mongoURL || '', { serverSelectionTimeoutMS: 5000 })
     .then(() => {
         console.log('[6] ✅ Mongoose Connected Successfully!');
     })

@@ -300,14 +300,14 @@ async function executeCommands(bulkOperation, options) {
         if (bulkOperation.s.checkKeys === false) {
             finalOptions.checkKeys = false;
         }
-        if (finalOptions.retryWrites) {
+        if (bulkOperation.retryWrites) {
             if (isUpdateBatch(batch)) {
-                finalOptions.retryWrites =
-                    finalOptions.retryWrites && !batch.operations.some(op => op.multi);
+                bulkOperation.retryWrites =
+                    bulkOperation.retryWrites && !batch.operations.some(op => op.multi);
             }
             if (isDeleteBatch(batch)) {
-                finalOptions.retryWrites =
-                    finalOptions.retryWrites && !batch.operations.some(op => op.limit === 0);
+                bulkOperation.retryWrites =
+                    bulkOperation.retryWrites && !batch.operations.some(op => op.limit === 0);
             }
         }
         const operation = isInsertBatch(batch)
@@ -503,6 +503,7 @@ class BulkOperationBase {
      */
     constructor(collection, options, isOrdered) {
         this.collection = collection;
+        this.retryWrites = collection.db.options?.retryWrites;
         // determine whether bulkOperation is ordered or unordered
         this.isOrdered = isOrdered;
         const topology = (0, utils_1.getTopology)(collection);
@@ -528,9 +529,6 @@ class BulkOperationBase {
         //     # of bytes = length of (string representation of (maxWriteBatchSize - 1))
         //   + 1 bytes for null terminator
         const maxKeySize = (maxWriteBatchSize - 1).toString(10).length + 2;
-        // Final options for retryable writes
-        let finalOptions = Object.assign({}, options);
-        finalOptions = (0, utils_1.applyRetryableWrites)(finalOptions, collection.db);
         // Final results
         const bulkResult = {
             ok: 1,
@@ -571,7 +569,7 @@ class BulkOperationBase {
             // Topology
             topology,
             // Options
-            options: finalOptions,
+            options: options,
             // BSON options
             bsonOptions: (0, bson_1.resolveBSONOptions)(options),
             // Current operation

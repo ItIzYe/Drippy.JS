@@ -50,12 +50,10 @@ const COMMITTED_STATES = new Set([
     exports.TxnState.TRANSACTION_ABORTED
 ]);
 /**
- * @public
- * @deprecated - Will be made internal in a future major release.
- * A class maintaining state related to a server transaction. Internal Only
+ * @internal
  */
 class Transaction {
-    /** Create a transaction @internal */
+    /** Create a transaction */
     constructor(options) {
         options = options ?? {};
         this.state = exports.TxnState.NO_TRANSACTION;
@@ -80,39 +78,32 @@ class Transaction {
         this._pinnedServer = undefined;
         this._recoveryToken = undefined;
     }
-    /** @internal */
     get server() {
         return this._pinnedServer;
     }
-    /** @deprecated - Will be made internal in a future major release. */
     get recoveryToken() {
         return this._recoveryToken;
     }
-    /** @deprecated - Will be made internal in a future major release. */
     get isPinned() {
         return !!this.server;
     }
     /**
-     * @deprecated - Will be made internal in a future major release.
      * @returns Whether the transaction has started
      */
     get isStarting() {
         return this.state === exports.TxnState.STARTING_TRANSACTION;
     }
     /**
-     * @deprecated - Will be made internal in a future major release.
      * @returns Whether this session is presently in a transaction
      */
     get isActive() {
         return ACTIVE_STATES.has(this.state);
     }
-    /** @deprecated - Will be made internal in a future major release. */
     get isCommitted() {
         return COMMITTED_STATES.has(this.state);
     }
     /**
      * Transition the transaction in the state machine
-     * @internal
      * @param nextState - The new state to transition to
      */
     transition(nextState) {
@@ -128,13 +119,11 @@ class Transaction {
         }
         throw new error_1.MongoRuntimeError(`Attempted illegal state transition from [${this.state}] to [${nextState}]`);
     }
-    /** @internal */
     pinServer(server) {
         if (this.isActive) {
             this._pinnedServer = server;
         }
     }
-    /** @internal */
     unpinServer() {
         this._pinnedServer = undefined;
     }

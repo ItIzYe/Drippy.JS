@@ -5,7 +5,7 @@ exports.needsRetryableWriteLabel = needsRetryableWriteLabel;
 exports.isRetryableWriteError = isRetryableWriteError;
 exports.isRetryableReadError = isRetryableReadError;
 exports.isNodeShuttingDownError = isNodeShuttingDownError;
-exports.isSDAMUnrecoverableError = isSDAMUnrecoverableError;
+exports.isStateChangeError = isStateChangeError;
 exports.isNetworkTimeoutError = isNetworkTimeoutError;
 exports.isResumableError = isResumableError;
 /**
@@ -87,9 +87,11 @@ exports.MongoErrorLabel = Object.freeze({
     ResumableChangeStreamError: 'ResumableChangeStreamError',
     HandshakeError: 'HandshakeError',
     ResetPool: 'ResetPool',
-    PoolRequstedRetry: 'PoolRequstedRetry',
+    PoolRequestedRetry: 'PoolRequestedRetry',
     InterruptInUseConnections: 'InterruptInUseConnections',
-    NoWritesPerformed: 'NoWritesPerformed'
+    NoWritesPerformed: 'NoWritesPerformed',
+    RetryableError: 'RetryableError',
+    SystemOverloadedError: 'SystemOverloadedError'
 });
 function isAggregateError(e) {
     return e != null && typeof e === 'object' && 'errors' in e && Array.isArray(e.errors);
@@ -1282,7 +1284,7 @@ function needsRetryableWriteLabel(error, maxWireVersion, serverType) {
 }
 function isRetryableWriteError(error) {
     return (error.hasErrorLabel(exports.MongoErrorLabel.RetryableWriteError) ||
-        error.hasErrorLabel(exports.MongoErrorLabel.PoolRequstedRetry));
+        error.hasErrorLabel(exports.MongoErrorLabel.PoolRequestedRetry));
 }
 /** Determines whether an error is something the driver should attempt to retry */
 function isRetryableReadError(error) {
@@ -1347,12 +1349,7 @@ function isNodeShuttingDownError(err) {
  *
  * @see https://github.com/mongodb/specifications/blob/master/source/server-discovery-and-monitoring/server-discovery-and-monitoring.md#not-writable-primary-and-node-is-recovering
  */
-function isSDAMUnrecoverableError(error) {
-    // NOTE: null check is here for a strictly pre-CMAP world, a timeout or
-    //       close event are considered unrecoverable
-    if (error instanceof MongoParseError || error == null) {
-        return true;
-    }
+function isStateChangeError(error) {
     return isRecoveringError(error) || isNotWritablePrimaryError(error);
 }
 function isNetworkTimeoutError(err) {

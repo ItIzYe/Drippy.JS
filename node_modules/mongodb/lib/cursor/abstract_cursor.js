@@ -10,7 +10,6 @@ const get_more_1 = require("../operations/get_more");
 const kill_cursors_1 = require("../operations/kill_cursors");
 const read_concern_1 = require("../read_concern");
 const read_preference_1 = require("../read_preference");
-const resource_management_1 = require("../resource_management");
 const sessions_1 = require("../sessions");
 const timeout_1 = require("../timeout");
 const utils_1 = require("../utils");
@@ -61,6 +60,8 @@ exports.CursorTimeoutMode = Object.freeze({
 });
 /** @public */
 class AbstractCursor extends mongo_types_1.TypedEventEmitter {
+    /** @event */
+    static { this.CLOSE = 'close'; }
     /** @internal */
     constructor(client, namespace, options = {}) {
         super();
@@ -204,8 +205,11 @@ class AbstractCursor extends mongo_types_1.TypedEventEmitter {
     get loadBalanced() {
         return !!this.cursorClient.topology?.loadBalanced;
     }
-    /** @internal */
-    async asyncDispose() {
+    /**
+     * @experimental
+     * An alias for {@link AbstractCursor.close|AbstractCursor.close()}.
+     */
+    async [Symbol.asyncDispose]() {
         await this.close();
     }
     /** Adds cursor to client's tracking so it will be closed by MongoClient.close() */
@@ -269,7 +273,7 @@ class AbstractCursor extends mongo_types_1.TypedEventEmitter {
             }
         }
     }
-    stream(options) {
+    stream() {
         const readable = new ReadableCursorStream(this);
         const abortListener = (0, utils_1.addAbortListener)(this.signal, function () {
             readable.destroy(this.reason);
@@ -277,26 +281,6 @@ class AbstractCursor extends mongo_types_1.TypedEventEmitter {
         readable.once('end', () => {
             abortListener?.[utils_1.kDispose]();
         });
-        if (options?.transform) {
-            const transform = options.transform;
-            const transformedStream = readable.pipe(new stream_1.Transform({
-                objectMode: true,
-                highWaterMark: 1,
-                transform(chunk, _, callback) {
-                    try {
-                        const transformed = transform(chunk);
-                        callback(undefined, transformed);
-                    }
-                    catch (err) {
-                        callback(err);
-                    }
-                }
-            }));
-            // Bubble errors to transformed stream, because otherwise no way
-            // to handle this error.
-            readable.on('error', err => transformedStream.emit('error', err));
-            return transformedStream;
-        }
         return readable;
     }
     async hasNext() {
@@ -428,7 +412,11 @@ class AbstractCursor extends mongo_types_1.TypedEventEmitter {
                 }
             }
             else {
-                array.push(...docs);
+                // Note: previous versions of this logic used `array.push(...)`, which adds each item
+                // to the callstack.  For large arrays, this can exceed the maximum call size.
+                for (const doc of docs) {
+                    array.push(doc);
+                }
             }
         }
         return array;
@@ -595,7 +583,7 @@ class AbstractCursor extends mongo_types_1.TypedEventEmitter {
         }
     }
     /** @internal */
-    async getMore(batchSize) {
+    async getMore() {
         if (this.cursorId == null) {
             throw new error_1.MongoRuntimeError('Unexpected null cursor id. A cursor creating command should have set this');
         }
@@ -608,7 +596,7 @@ class AbstractCursor extends mongo_types_1.TypedEventEmitter {
         const getMoreOptions = {
             ...this.cursorOptions,
             session: this.cursorSession,
-            batchSize
+            batchSize: this.cursorOptions.batchSize
         };
         const getMoreOperation = new get_more_1.GetMoreOperation(this.cursorNamespace, this.cursorId, this.selectedServer, getMoreOptions);
         return await (0, execute_operation_1.executeOperation)(this.cursorClient, getMoreOperation, this.timeoutContext);
@@ -667,12 +655,10 @@ class AbstractCursor extends mongo_types_1.TypedEventEmitter {
             // If the cursor died or returned documents, return
             if ((this.documents?.length ?? 0) !== 0 || this.isDead)
                 return;
-            // Otherwise, run a getMore
         }
-        // otherwise need to call getMore
-        const batchSize = this.cursorOptions.batchSize || 1000;
+        // Otherwise, run a getMore
         try {
-            const response = await this.getMore(batchSize);
+            const response = await this.getMore();
             this.cursorId = response.id;
             this.documents = response;
         }
@@ -800,8 +786,6 @@ class AbstractCursor extends mongo_types_1.TypedEventEmitter {
     }
 }
 exports.AbstractCursor = AbstractCursor;
-/** @event */
-AbstractCursor.CLOSE = 'close';
 class ReadableCursorStream extends stream_1.Readable {
     constructor(cursor) {
         super({
@@ -880,7 +864,6 @@ class ReadableCursorStream extends stream_1.Readable {
         });
     }
 }
-(0, resource_management_1.configureResourceManagement)(AbstractCursor.prototype);
 /**
  * @internal
  * The cursor timeout context is a wrapper around a timeout context

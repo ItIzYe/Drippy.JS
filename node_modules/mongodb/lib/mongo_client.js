@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoClient = exports.ServerApiVersion = void 0;
 const fs_1 = require("fs");
+const _1 = require(".");
 const bson_1 = require("./bson");
 const change_stream_1 = require("./change_stream");
 const mongo_credentials_1 = require("./cmap/auth/mongo_credentials");
 const providers_1 = require("./cmap/auth/providers");
 const client_metadata_1 = require("./cmap/handshake/client_metadata");
-const responses_1 = require("./cmap/wire_protocol/responses");
 const connection_string_1 = require("./connection_string");
 const constants_1 = require("./constants");
 const db_1 = require("./db");
@@ -16,10 +16,9 @@ const mongo_client_auth_providers_1 = require("./mongo_client_auth_providers");
 const mongo_logger_1 = require("./mongo_logger");
 const mongo_types_1 = require("./mongo_types");
 const executor_1 = require("./operations/client_bulk_write/executor");
+const end_sessions_1 = require("./operations/end_sessions");
 const execute_operation_1 = require("./operations/execute_operation");
-const operation_1 = require("./operations/operation");
 const read_preference_1 = require("./read_preference");
-const resource_management_1 = require("./resource_management");
 const server_selection_1 = require("./sdam/server_selection");
 const topology_1 = require("./sdam/topology");
 const sessions_1 = require("./sessions");
@@ -101,8 +100,11 @@ class MongoClient extends mongo_types_1.TypedEventEmitter {
         };
         this.checkForNonGenuineHosts();
     }
-    /** @internal */
-    async asyncDispose() {
+    /**
+     * @experimental
+     * An alias for {@link MongoClient.close|MongoClient.close()}.
+     */
+    async [Symbol.asyncDispose]() {
         await this.close();
     }
     /**
@@ -114,8 +116,7 @@ class MongoClient extends mongo_types_1.TypedEventEmitter {
         if (isDuplicateDriverInfo)
             return;
         this.driverInfoList.push(driverInfo);
-        this.options.metadata = (0, client_metadata_1.makeClientMetadata)(this.driverInfoList, this.options);
-        this.options.extendedMetadata = (0, client_metadata_1.addContainerMetadata)(this.options.metadata)
+        this.options.metadata = (0, client_metadata_1.makeClientMetadata)(this.driverInfoList, this.options)
             .then(undefined, utils_1.squashError)
             .then(result => result ?? {}); // ensure Promise<Document>
     }
@@ -178,20 +179,13 @@ class MongoClient extends mongo_types_1.TypedEventEmitter {
         return await new executor_1.ClientBulkWriteExecutor(this, models, (0, utils_1.resolveOptions)(this, options)).execute();
     }
     /**
-     * Connect to MongoDB using a url
+     * An optional method to verify a handful of assumptions that are generally useful at application boot-time before using a MongoClient.
+     * For detailed information about the connect process see the MongoClient.connect static method documentation.
      *
-     * @remarks
-     * Calling `connect` is optional since the first operation you perform will call `connect` if it's needed.
-     * `timeoutMS` will bound the time any operation can take before throwing a timeout error.
-     * However, when the operation being run is automatically connecting your `MongoClient` the `timeoutMS` will not apply to the time taken to connect the MongoClient.
-     * This means the time to setup the `MongoClient` does not count against `timeoutMS`.
-     * If you are using `timeoutMS` we recommend connecting your client explicitly in advance of any operation to avoid this inconsistent execution time.
+     * @param url - The MongoDB connection string (supports `mongodb://` and `mongodb+srv://` schemes)
+     * @param options - Optional configuration options for the client
      *
-     * @remarks
-     * The driver will look up corresponding SRV and TXT records if the connection string starts with `mongodb+srv://`.
-     * If those look ups throw a DNS Timeout error, the driver will retry the look up once.
-     *
-     * @see docs.mongodb.org/manual/reference/connection-string/
+     * @see https://www.mongodb.com/docs/manual/reference/connection-string/
      */
     async connect() {
         if (this.connectionLock) {
@@ -355,44 +349,10 @@ class MongoClient extends mongo_types_1.TypedEventEmitter {
         if (this.topology == null) {
             return;
         }
-        // If we would attempt to select a server and get nothing back we short circuit
-        // to avoid the server selection timeout.
-        const selector = (0, server_selection_1.readPreferenceServerSelector)(read_preference_1.ReadPreference.primaryPreferred);
-        const topologyDescription = this.topology.description;
-        const serverDescriptions = Array.from(topologyDescription.servers.values());
-        const servers = selector(topologyDescription, serverDescriptions);
-        if (servers.length !== 0) {
-            const endSessions = Array.from(this.s.sessionPool.sessions, ({ id }) => id);
-            if (endSessions.length !== 0) {
-                try {
-                    class EndSessionsOperation extends operation_1.AbstractOperation {
-                        constructor() {
-                            super(...arguments);
-                            this.ns = utils_1.MongoDBNamespace.fromString('admin.$cmd');
-                            this.SERVER_COMMAND_RESPONSE_TYPE = responses_1.MongoDBResponse;
-                        }
-                        buildCommand(_connection, _session) {
-                            return {
-                                endSessions
-                            };
-                        }
-                        buildOptions(timeoutContext) {
-                            return {
-                                timeoutContext,
-                                readPreference: read_preference_1.ReadPreference.primaryPreferred,
-                                noResponse: true
-                            };
-                        }
-                        get commandName() {
-                            return 'endSessions';
-                        }
-                    }
-                    await (0, execute_operation_1.executeOperation)(this, new EndSessionsOperation());
-                }
-                catch (error) {
-                    (0, utils_1.squashError)(error);
-                }
-            }
+        const supportsSessions = this.topology.description.type === _1.TopologyType.LoadBalanced ||
+            this.topology.description.logicalSessionTimeoutMinutes != null;
+        if (supportsSessions) {
+            await endSessions(this, this.topology);
         }
         // clear out references to old topology
         const topology = this.topology;
@@ -401,6 +361,24 @@ class MongoClient extends mongo_types_1.TypedEventEmitter {
         const { encrypter } = this.options;
         if (encrypter) {
             await encrypter.close(this);
+        }
+        async function endSessions(client, { description: topologyDescription }) {
+            // If we would attempt to select a server and get nothing back we short circuit
+            // to avoid the server selection timeout.
+            const selector = (0, server_selection_1.readPreferenceServerSelector)(read_preference_1.ReadPreference.primaryPreferred);
+            const serverDescriptions = Array.from(topologyDescription.servers.values());
+            const servers = selector(topologyDescription, serverDescriptions, new server_selection_1.DeprioritizedServers());
+            if (servers.length !== 0) {
+                const endSessions = Array.from(client.s.sessionPool.sessions, ({ id }) => id);
+                if (endSessions.length !== 0) {
+                    try {
+                        await (0, execute_operation_1.executeOperation)(client, new end_sessions_1.EndSessionsOperation(endSessions));
+                    }
+                    catch (error) {
+                        (0, utils_1.squashError)(error);
+                    }
+                }
+            }
         }
     }
     /**
@@ -423,21 +401,35 @@ class MongoClient extends mongo_types_1.TypedEventEmitter {
         return db;
     }
     /**
-     * Connect to MongoDB using a url
+     * Creates a new MongoClient instance and immediately connects it to MongoDB.
+     * This convenience method combines `new MongoClient(url, options)` and `client.connect()` in a single step.
+     *
+     * Connect can be helpful to detect configuration issues early by validating:
+     * - **DNS Resolution**: Verifies that SRV records and hostnames in the connection string resolve DNS entries
+     * - **Network Connectivity**: Confirms that host addresses are reachable and ports are open
+     * - **TLS Configuration**: Validates SSL/TLS certificates, CA files, and encryption settings are correct
+     * - **Authentication**: Verifies that provided credentials are valid
+     * - **Server Compatibility**: Ensures the MongoDB server version is supported by this driver version
+     * - **Load Balancer Setup**: For load-balanced deployments, confirms the service is properly configured
+     *
+     * @returns A promise that resolves to the same MongoClient instance once connected
      *
      * @remarks
-     * Calling `connect` is optional since the first operation you perform will call `connect` if it's needed.
-     * `timeoutMS` will bound the time any operation can take before throwing a timeout error.
-     * However, when the operation being run is automatically connecting your `MongoClient` the `timeoutMS` will not apply to the time taken to connect the MongoClient.
-     * This means the time to setup the `MongoClient` does not count against `timeoutMS`.
-     * If you are using `timeoutMS` we recommend connecting your client explicitly in advance of any operation to avoid this inconsistent execution time.
+     * **Connection is Optional:** Calling `connect` is optional since any operation method (`find`, `insertOne`, etc.)
+     * will automatically perform these same validation steps if the client is not already connected.
+     * However, explicitly calling `connect` can make sense for:
+     * - **Fail-fast Error Detection**: Non-transient connection issues (hostname unresolved, port refused connection) are discovered immediately rather than during your first operation
+     * - **Predictable Performance**: Eliminates first connection overhead from your first database operation
      *
      * @remarks
-     * The programmatically provided options take precedence over the URI options.
+     * **Connection Pooling Impact:** Calling `connect` will populate the connection pool with one connection
+     * to a server selected by the client's configured `readPreference` (defaults to primary).
      *
      * @remarks
-     * The driver will look up corresponding SRV and TXT records if the connection string starts with `mongodb+srv://`.
-     * If those look ups throw a DNS Timeout error, the driver will retry the look up once.
+     * **Timeout Behavior:** When using `timeoutMS`, the connection establishment time does not count against
+     * the timeout for subsequent operations. This means `connect` runs without a `timeoutMS` limit, while
+     * your database operations will still respect the configured timeout. If you need predictable operation
+     * timing with `timeoutMS`, call `connect` explicitly before performing operations.
      *
      * @see https://www.mongodb.com/docs/manual/reference/connection-string/
      */
@@ -562,5 +554,4 @@ class MongoClient extends mongo_types_1.TypedEventEmitter {
     }
 }
 exports.MongoClient = MongoClient;
-(0, resource_management_1.configureResourceManagement)(MongoClient.prototype);
 //# sourceMappingURL=mongo_client.js.map

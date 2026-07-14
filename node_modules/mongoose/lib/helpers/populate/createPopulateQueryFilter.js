@@ -25,7 +25,15 @@ module.exports = function createPopulateQueryFilter(ids, _match, _foreignField, 
     for (let i = 0; i < _parentPaths.length - 1; ++i) {
       const cur = _parentPaths[i];
       if (match[cur] != null && match[cur].$elemMatch != null) {
-        match[cur].$elemMatch[foreignField.slice(cur.length + 1)] = trusted({ $in: ids });
+        // Copy rather than mutate so the user's `match` stays unchanged and split populate
+        // queries (gh-5890) each get their own `$in` rather than sharing one object
+        match[cur] = {
+          ...match[cur],
+          $elemMatch: {
+            ...match[cur].$elemMatch,
+            [foreignField.slice(cur.length + 1)]: trusted({ $in: ids })
+          }
+        };
         delete match[foreignField];
         break;
       }
@@ -60,7 +68,7 @@ module.exports = function createPopulateQueryFilter(ids, _match, _foreignField, 
  * to avoid cast errors (gh-7706)
  * @param {Array} ids
  * @param {SchemaType} foreignSchemaType
- * @param {Boolean} [skipInvalidIds]
+ * @param {boolean} [skipInvalidIds]
  * @api private
  */
 
@@ -73,7 +81,7 @@ function _filterInvalidIds(ids, foreignSchemaType, skipInvalidIds) {
     try {
       foreignSchemaType.cast(id);
       return true;
-    } catch (err) {
+    } catch {
       return false;
     }
   });
@@ -82,7 +90,7 @@ function _filterInvalidIds(ids, foreignSchemaType, skipInvalidIds) {
 /**
  * Format `mod.match` given that it may be an array that we need to $or if
  * the client has multiple docs with match functions
- * @param {Array|Any} match
+ * @param {Array|any} match
  * @api private
  */
 

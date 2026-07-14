@@ -13,9 +13,9 @@ const immediate = require('./helpers/immediate');
  *
  * This is the base class that drivers inherit from and implement.
  *
- * @param {String} name name of the collection
+ * @param {string} name name of the collection
  * @param {Connection} conn A MongooseConnection instance
- * @param {Object} [opts] optional collection options
+ * @param {object} [opts] optional collection options
  * @api public
  */
 
@@ -87,7 +87,7 @@ Collection.prototype.onClose = function() {};
  * Queues a method for later execution when its
  * database connection opens.
  *
- * @param {String} name name of the method to queue
+ * @param {string} name name of the method to queue
  * @param {Array} args arguments to pass to the method when executed
  * @api private
  */
@@ -100,7 +100,7 @@ Collection.prototype.addQueue = function(name, args) {
 /**
  * Removes a queued method
  *
- * @param {String} name name of the method to queue
+ * @param {string} name name of the method to queue
  * @param {Array} args arguments to pass to the method when executed
  * @api private
  */
@@ -290,7 +290,7 @@ Collection.prototype._shouldBufferCommands = function _shouldBufferCommands() {
   if (opts.bufferCommands != null) {
     return opts.bufferCommands;
   }
-  if (opts && opts.schemaUserProvidedOptions != null && opts.schemaUserProvidedOptions.bufferCommands != null) {
+  if (opts?.schemaUserProvidedOptions?.bufferCommands != null) {
     return opts.schemaUserProvidedOptions.bufferCommands;
   }
 
@@ -308,7 +308,7 @@ Collection.prototype._getBufferTimeoutMS = function _getBufferTimeoutMS() {
   if (opts.bufferTimeoutMS != null) {
     return opts.bufferTimeoutMS;
   }
-  if (opts && opts.schemaUserProvidedOptions != null && opts.schemaUserProvidedOptions.bufferTimeoutMS != null) {
+  if (opts?.schemaUserProvidedOptions?.bufferTimeoutMS != null) {
     return opts.schemaUserProvidedOptions.bufferTimeoutMS;
   }
   return conn._getBufferTimeoutMS();
