@@ -21,13 +21,6 @@ module.exports = {
         // Ersetze diese ID mit deiner eigenen Discord-User-ID, damit nur du den Befehl nutzen kannst!
         
 
-        if (interaction.user.id !== ownerId) {
-            return await interaction.reply({ 
-                content: "Du hast keine Berechtigung, diesen Befehl auszuführen.", 
-                ephemeral: true 
-            });
-        }
-
         const targetGuildId = interaction.options.getString("id");
 
         try {
