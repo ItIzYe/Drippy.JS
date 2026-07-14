@@ -50,7 +50,7 @@ client.once(Events.ClientReady, async (c) => {
     if (isProd || forceRegister) {
         console.log('[8] 🔄 Synchronizing Commands with Discord (Prod/Force mode)...');
         try {
-            const registerCommands = require('./src/handlers/01registerCommands');
+            const registerCommands = require('./src/events/clientReady/01registerCommands');
             await registerCommands(c);
             console.log('[9] ✅ Command Synchronization Complete.');
         } catch (error) {
