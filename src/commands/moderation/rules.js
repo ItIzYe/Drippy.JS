@@ -148,23 +148,71 @@ module.exports = {
         }
 
         if (subcommand === 'list') {
-            const embed = new EmbedBuilder()
-                .setTitle(`📜 Server-Regeln: ${guild.name}`)
-                .setColor('Blue');
+    if (!ruleData || ruleData.rules.length === 0) {
+        const noRulesEmbed = new EmbedBuilder()
+            .setTitle(`📜 Server-Regeln: ${guild.name}`)
+            .setColor('Blue')
+            .setDescription('Keine Regeln definiert.');
+        return await interaction.editReply({ embeds: [noRulesEmbed] });
+    }
 
-            if (!ruleData || ruleData.rules.length === 0) {
-                embed.setDescription('Keine Regeln definiert.');
-            } else {
-                let mainPara = 0;
-                let subPara = 0;
-                ruleData.rules.forEach((rule) => {
-                    if (!rule.isSubParagraph) { mainPara++; subPara = 0; } else { subPara++; }
-                    const label = rule.isSubParagraph ? `§${mainPara}.${subPara}` : `§${mainPara}`;
+    const embeds = [];
+    let currentEmbed = new EmbedBuilder()
+        .setTitle(`📜 Server-Regeln: ${guild.name} (Teil 1)`)
+        .setColor('Blue');
 
-                    embed.addFields({ name: `${label} ${rule.title}`, value: rule.description });
-                });
-            }
-            await interaction.editReply({ embeds: [embed] });
+    let mainPara = 0;
+    let subPara = 0;
+    let currentFieldsCount = 0;
+    let currentCharacterCount = currentEmbed.data.title.length;
+
+    ruleData.rules.forEach((rule) => {
+        if (!rule.isSubParagraph) { 
+            mainPara++; 
+            subPara = 0; 
+        } else { 
+            subPara++; 
         }
+        const label = rule.isSubParagraph ? `§${mainPara}.${subPara}` : `§${mainPara}`;
+        const fieldName = `${label} ${rule.title}`;
+        const fieldValue = rule.description;
+        
+        const fieldLength = fieldName.length + fieldValue.length;
+
+        if (currentFieldsCount >= 25 || (currentCharacterCount + fieldLength) > 5500) {
+            embeds.push(currentEmbed); // Altes Embed wegspeichern
+            
+            currentEmbed = new EmbedBuilder()
+                .setTitle(`📜 Server-Regeln: ${guild.name} (Teil ${embeds.length + 1})`)
+                .setColor('Blue');
+                
+            currentFieldsCount = 0;
+            currentCharacterCount = currentEmbed.data.title.length;
+        }
+
+        currentEmbed.addFields({ name: fieldName, value: fieldValue });
+        currentFieldsCount++;
+        currentCharacterCount += fieldLength;
+    });
+
+    embeds.push(currentEmbed);
+
+    if (embeds.length === 1) {
+        embeds[0].setTitle(`📜 Server-Regeln: ${guild.name}`);
+    }
+
+    if (embeds.length > 10) {
+        for (let i = 0; i < embeds.length; i += 10) {
+            const chunk = embeds.slice(i, i + 10);
+            if (i === 0) {
+                await interaction.editReply({ embeds: chunk });
+            } else {
+                await interaction.followUp({ embeds: chunk });
+            }
+        }
+    } else {
+        await interaction.editReply({ embeds: embeds });
+    }
+}
     },
 };
