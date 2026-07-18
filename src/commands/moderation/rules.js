@@ -199,19 +199,13 @@ module.exports = {
 
     if (embeds.length === 1) {
         embeds[0].setTitle(`📜 Server-Regeln: ${guild.name}`);
+        return await interaction.editReply({ embeds: [embeds[0]] });
     }
 
-    if (embeds.length > 10) {
-        for (let i = 0; i < embeds.length; i += 10) {
-            const chunk = embeds.slice(i, i + 10);
-            if (i === 0) {
-                await interaction.editReply({ embeds: chunk });
-            } else {
-                await interaction.followUp({ embeds: chunk });
-            }
-        }
-    } else {
-        await interaction.editReply({ embeds: embeds });
+    await interaction.editReply({ embeds: [embeds[0]] });
+
+    for (let i = 1; i < embeds.length; i++) {
+        await interaction.followUp({ embeds: [embeds[i]] });
     }
 }
     },
